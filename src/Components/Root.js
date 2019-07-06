@@ -13,7 +13,7 @@ import MainComponent from './Containers/MainComponent';
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router  >
+        <Router exact path = "/"  >
               <Switch>
                   <App >
                     <Route exact path="/" component={() => { return <MainComponent /> } } />
