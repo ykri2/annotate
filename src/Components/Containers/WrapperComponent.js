@@ -82,6 +82,7 @@ class WrapperComponent extends Component {
 
         return (
             <div className="wrapper_component">
+                
                 <div className="wrapper_component_inner" >
                 <div className="settings_menu_upper">
                     <OptionMenu listitems={{

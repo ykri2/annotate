@@ -9,9 +9,8 @@ import { fabric } from 'fabric';
 import PopupComponent from '../Containers/PopupComponent';
 import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotation';
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
-
 const img = require(`${'../resources/anntph.jpg'}`);
-
+const baseurl = "."
 /**
  * React+Fabricjs component
  * Creates the fabric canvas
@@ -114,8 +113,10 @@ class FabricContainer extends React.Component {
     var freeDrawing =this.freeDrawing;
     var textVal = this.textVal;
     var activeObj = this.activeObj; 
+ 
 
-    fabric.Image.fromURL(`${baseurl + img}`, function(img) {
+    fabric.Image.fromURL(`${img}`, function(img) {
+
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
       // add background image
@@ -486,7 +487,7 @@ class FabricContainer extends React.Component {
 
         <p className="annotation_id_p" >{annotation.index}</p>
 
-        <canvas ref={c => (this.c = c)}  style={{
+        <canvas ref={c => (this.c = c)} width={500} height={500} style={{
           outline: 'black 3px solid'
         }} />
         { this.state.canvas && children }
@@ -510,7 +511,7 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
-
+          <img src={require(`${baseurl + img}`)}/>
         </div>
       </Fragment>
     )
