@@ -102,7 +102,7 @@ class FabricContainer extends React.Component {
   /** Creates canvas after component has mounted */
   componentDidMount() {
     const canvas = new fabric.Canvas(this.c)
-
+    console.log(img)
 
     var rect = this.rect;
     var ellipse = this.ellipse;
@@ -114,6 +114,7 @@ class FabricContainer extends React.Component {
     var activeObj = this.activeObj; 
 
     fabric.Image.fromURL(img, function(img) {
+      console.log('error')
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
       // add background image
@@ -508,6 +509,7 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
+          <img src={img} />
         </div>
       </Fragment>
     )
