@@ -115,7 +115,7 @@ class FabricContainer extends React.Component {
     var textVal = this.textVal;
     var activeObj = this.activeObj; 
 
-    fabric.Image.fromURL(`${baseUrl + '../resources/anntph.jpg'}`, function(img) {
+    fabric.Image.fromURL(`${baseUrl + '' + img}`, function(img) {
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
       // add background image
