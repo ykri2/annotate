@@ -52,7 +52,16 @@ module.exports = {
                     'sass-loader',
                 ],
             },
-            { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
+              {
+                test: /\.(jpg|png)$/,
+                use: {
+                  loader: "file-loader",
+                  options: {
+                    name: "[path][name].[hash].[ext]",
+                  },
+                },
+              },
+      
         ]
     },
 
@@ -79,3 +88,18 @@ module.exports = {
     ]
 
 }
+
+/** 
+
+
+{
+    test: /\.(jpg|png)$/,
+    use: {
+      loader: "url-loader",
+      options: {
+        limit: 25000,
+      },
+    },
+  }
+
+  *****/
