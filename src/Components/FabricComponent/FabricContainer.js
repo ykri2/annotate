@@ -103,7 +103,8 @@ class FabricContainer extends React.Component {
   componentDidMount() {
     const canvas = new fabric.Canvas(this.c)
     console.log(img)
-
+    var baseurl = "."
+    console.log(baseurl + img)
 
     var rect = this.rect;
     var ellipse = this.ellipse;
@@ -114,7 +115,7 @@ class FabricContainer extends React.Component {
     var textVal = this.textVal;
     var activeObj = this.activeObj; 
 
-    fabric.Image.fromURL(img, function(img) {
+    fabric.Image.fromURL(`${baseUrl + '../resources/anntph.jpg'}`, function(img) {
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
       // add background image
