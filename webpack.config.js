@@ -4,9 +4,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const helpers = require('./config/helpers')
 
-const NODE_ENV = process.env.NODE_ENV;
+const NODE_ENV = 'production';
 const devMode = NODE_ENV === "production";
-
+console.log(process.env.NODE_ENV)
+console.log(NODE_ENV)
 module.exports = {
 
     entry: {
@@ -57,7 +58,7 @@ module.exports = {
                 use: {
                   loader: "file-loader",
                   options: {
-                    name: "[path][name].[hash].[ext]",
+                    name: "/[path][name].[hash].[ext]",
                   },
                 },
               },
