@@ -10,7 +10,7 @@ import PopupComponent from '../Containers/PopupComponent';
 import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotation';
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
 
-const img = require(`${'./a67d324aa952ab973570f92e74e4b69a.jpg'}`);
+const img = require(`${'../resources/anntph.jpg'}`);
 
 /**
  * React+Fabricjs component

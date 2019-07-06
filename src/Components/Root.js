@@ -13,7 +13,7 @@ import MainComponent from './Containers/MainComponent';
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router exact path = "/"  >
+        <Router basename={process.env.PUBLIC_URL} >
               <Switch>
                   <App >
                     <Route exact path="/" component={() => { return <MainComponent /> } } />
