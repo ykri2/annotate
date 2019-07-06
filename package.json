@@ -12,7 +12,7 @@
   },
   "author": "yk",
   "license": "ISC",
-  "homepage": "https://ykr2.github.io/annotate",
+  "homepage": "https://ykri2.github.io/annotate/",
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.2.3",
