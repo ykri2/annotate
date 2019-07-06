@@ -10,7 +10,7 @@ import PopupComponent from '../Containers/PopupComponent';
 import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotation';
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
 
-const img = require(`${'../resources/anntph.jpg'}`);
+const img = require(`${'./a67d324aa952ab973570f92e74e4b69a.jpg'}`);
 
 /**
  * React+Fabricjs component
@@ -104,6 +104,7 @@ class FabricContainer extends React.Component {
     const canvas = new fabric.Canvas(this.c)
     console.log(img)
 
+
     var rect = this.rect;
     var ellipse = this.ellipse;
     var isDown = this.isDown;
@@ -114,7 +115,6 @@ class FabricContainer extends React.Component {
     var activeObj = this.activeObj; 
 
     fabric.Image.fromURL(img, function(img) {
-      console.log('error')
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
       // add background image
@@ -485,7 +485,7 @@ class FabricContainer extends React.Component {
 
         <p className="annotation_id_p" >{annotation.index}</p>
 
-        <canvas ref={c => (this.c = c)} width={img.naturalWidth} height={img.naturalHeight} style={{
+        <canvas ref={c => (this.c = c)}  style={{
           outline: 'black 3px solid'
         }} />
         { this.state.canvas && children }
@@ -509,7 +509,7 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
-          <img src={img} />
+
         </div>
       </Fragment>
     )
