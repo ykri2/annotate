@@ -10,6 +10,7 @@ import PopupComponent from '../Containers/PopupComponent';
 import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotation';
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
 
+let baseurl = "."
 let img = require(`${'../resources/anntph.jpg'}`);
 import img3 from '../resources/anntph.jpg'; 
 
@@ -118,7 +119,7 @@ class FabricContainer extends React.Component {
     var activeObj = this.activeObj; 
  
 
-    fabric.Image.fromURL(img, function(img) {
+    fabric.Image.fromURL(baseurl + img, function(img) {
 
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
@@ -490,7 +491,7 @@ class FabricContainer extends React.Component {
 
         <p className="annotation_id_p" >{annotation.index}</p>
 
-        <canvas ref={c => (this.c = c)} width={"500ox"} heihgt={"500px"} style={{
+        <canvas ref={c => (this.c = c)} width={"500px"} heihgt={"500px"} style={{
           outline: 'black 3px solid'
         }} />
         { this.state.canvas && children }
@@ -514,7 +515,7 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
-          <img src={img3} width={"500px"} heihgt={"500px"}/>
+          <img src={baseurl + img3} width={"500px"} heihgt={"500px"}/>
         </div>
       </Fragment>
     )
