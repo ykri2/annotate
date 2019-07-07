@@ -12,7 +12,7 @@ import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionTo
 
 let baseurl = "."
 let img = require(`${'../resources/anntph.jpg'}`);
-import img3 from '../resources/anntph.jpg'; 
+
 
 /**
  * React+Fabricjs component
@@ -105,9 +105,6 @@ class FabricContainer extends React.Component {
   /** Creates canvas after component has mounted */
   componentDidMount() {
     const canvas = new fabric.Canvas(this.c)
-    console.log(img)
-
-    console.log(img3)
 
     var rect = this.rect;
     var ellipse = this.ellipse;
@@ -515,7 +512,6 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
-          <img src={baseurl + img3} width={"500px"} heihgt={"500px"}/>
         </div>
       </Fragment>
     )
