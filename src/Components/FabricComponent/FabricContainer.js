@@ -106,7 +106,7 @@ class FabricContainer extends React.Component {
   componentDidMount() {
     const canvas = new fabric.Canvas(this.c)
     console.log(img)
-    console.log(img2)
+
     console.log(img3)
 
     var rect = this.rect;
