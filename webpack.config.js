@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const helpers = require('./config/helpers')
 
 const NODE_ENV = 'production';
+const PUBLIC_URL = '/annotate/';
 const devMode = NODE_ENV === "production";
 console.log(process.env.NODE_ENV)
 console.log(NODE_ENV)
@@ -56,9 +57,9 @@ module.exports = {
             {
                 test: /\.(jpg|png)$/,
                 use: {
-                  loader: "url-loader",
+                  loader: "file-loader",
                   options: {
-                    limit: 25000,
+                    name: "[path][name].[hash].[ext]",
                   },
                 },
               }
@@ -72,7 +73,8 @@ module.exports = {
 
         new webpack.DefinePlugin({
             'process.env' : {
-                NODE_ENV: JSON.stringify(NODE_ENV)
+                NODE_ENV: JSON.stringify(NODE_ENV),
+                PUBLIC_URL: JSON.stringify(PUBLIC_URL)
             }
         }),
 
@@ -93,12 +95,12 @@ module.exports = {
 /** 
 
 
- {
+{
                 test: /\.(jpg|png)$/,
                 use: {
-                  loader: "file-loader",
+                  loader: "url-loader",
                   options: {
-                    name: "/[path][name].[hash].[ext]",
+                    limit: 25000,
                   },
                 },
               }

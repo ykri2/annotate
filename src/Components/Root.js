@@ -10,13 +10,14 @@ import MainComponent from './Containers/MainComponent';
  * Root component 
  * Wrappes app and routes to provider
  **/
+console.log(process.env)
 const Root = ({ store }) => (
       
       <Provider store={store} >
         <Router basename={process.env.PUBLIC_URL} >
               <Switch>
                   <App >
-                    <Route exact path="/" component={() => { return <MainComponent /> } } />
+                    <Route path="/" component={() => { return <MainComponent /> } } />
 
                   </App>
             </Switch>

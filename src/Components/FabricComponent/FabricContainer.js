@@ -10,13 +10,12 @@ import PopupComponent from '../Containers/PopupComponent';
 import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotation';
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
 
-const baseurl = "."
 let img = require(`${'../resources/anntph.jpg'}`);
 import img3 from '../resources/anntph.jpg'; 
 
 /**
  * React+Fabricjs component
- * Creates the fabric canvas
+ * Creates the fabric canvasq
  **/
 
 class Point {
