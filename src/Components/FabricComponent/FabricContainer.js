@@ -115,7 +115,7 @@ class FabricContainer extends React.Component {
     var activeObj = this.activeObj; 
  
 
-    fabric.Image.fromURL(`${img}`, function(img) {
+    fabric.Image.fromURL(baseurl + img, function(img) {
 
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
@@ -487,7 +487,7 @@ class FabricContainer extends React.Component {
 
         <p className="annotation_id_p" >{annotation.index}</p>
 
-        <canvas ref={c => (this.c = c)} width={500} height={500} style={{
+        <canvas ref={c => (this.c = c)} width={"500ox"} heihgt={"500px"} style={{
           outline: 'black 3px solid'
         }} />
         { this.state.canvas && children }
@@ -511,7 +511,7 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
-          <img src={baseurl + img}/>
+          <img src={baseurl + img} width={"500px"} heihgt={"500px"}/>
         </div>
       </Fragment>
     )
