@@ -12,7 +12,7 @@ import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionTo
 
 const baseurl = "."
 let img = require(`${'../resources/anntph.jpg'}`);
-let img2 = require(baseurl + `${'../resources/anntph.jpg'}`);
+let img2 = require(baseurl + `${img}`);
 import img3 from '../resources/anntph.jpg'; 
 
 /**
@@ -108,6 +108,7 @@ class FabricContainer extends React.Component {
     const canvas = new fabric.Canvas(this.c)
     console.log(img)
     console.log(img2)
+    console.log(img3)
 
     var rect = this.rect;
     var ellipse = this.ellipse;
