@@ -511,7 +511,7 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
-          <img src={require(`${baseurl + img}`)}/>
+          <img src={baseurl + img}/>
         </div>
       </Fragment>
     )
