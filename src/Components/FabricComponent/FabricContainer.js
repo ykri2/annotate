@@ -12,7 +12,6 @@ import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionTo
 
 const baseurl = "."
 let img = require(`${'../resources/anntph.jpg'}`);
-let img2 = require(baseurl + `${img}`);
 import img3 from '../resources/anntph.jpg'; 
 
 /**
@@ -516,7 +515,6 @@ class FabricContainer extends React.Component {
           <button className="canvas_btn" onClick={this.resetZoomOnCanvas.bind(this)}>
             <p className="canvas_btn_p">RESET ZOOM</p>
           </button>
-          <img src={img2} width={"500px"} heihgt={"500px"}/>
           <img src={img3} width={"500px"} heihgt={"500px"}/>
         </div>
       </Fragment>
