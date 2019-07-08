@@ -179,7 +179,7 @@ class WrapperComponent extends Component {
         const object_position  = this.removeFromCurrentObjects(id)
         
         
-        console.log('object pos: ' + object_position)
+
 
         if(object_position <= this.state.annotation.areas.length - 1) {
             this.props.removeAreaFromGlobalAnnotation(this.state.annotation.index, id, object_position)

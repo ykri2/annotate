@@ -268,8 +268,8 @@ class FabricContainer extends React.Component {
             ry: pointer.y - origY,                
             angle: 0,
             fill: '',
-            stroke: 'orange',
-            strokeWidth:6,
+            stroke: '#cd6133',
+            strokeWidth: 5,
             type : 'ellipse',
             id : this.generateUUID(),
           });
@@ -284,7 +284,7 @@ class FabricContainer extends React.Component {
 			      width: pointer.x-origX,
 			      height: pointer.y-origY,
 			      fill: '',
-		        stroke : 'orange',
+		        stroke : '#cd6133',
 		        type : 'rect',
 		        id : this.generateUUID(),
 		        strokeWidth: 5,
@@ -298,9 +298,9 @@ class FabricContainer extends React.Component {
           this.roofPoints.push(new Point(this.x, this.y));
           var points = [this.x, this.y, this.x, this.y];
           this.lines.push(new fabric.Line(points, {
-              strokeWidth: 3,
+              strokeWidth: 4,
               selectable: false,
-              stroke: 'orange'
+              stroke: '#cd6133'
           }))
           canvas.add(this.lines[this.lineCounter]);
           this.lineCounter++;
@@ -582,11 +582,10 @@ class FabricContainer extends React.Component {
   /** Remove selected shape from canvas */
   removeSelectedObject(e) {
     e.preventDefault()
-    console.log('[0]are we here?')
     let canvas = this.state.canvas;
     let activeObject = canvas.getActiveObject()
     this.removeObjectsFromCanvas(canvas, [activeObject], () => {
-      console.log('[1]are we here?')
+
       this.props.removeObjectFromState(activeObject['id'])
     })
 

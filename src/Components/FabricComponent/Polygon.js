@@ -70,8 +70,8 @@ Polygon.defaultProps = {
     lockRotation: true,
 
 
-    stroke: 'black',
-    strokeWidth: 2,
+    stroke: '#cd6133',
+    strokeWidth: 5,
     fill:'transparent'
 };
 

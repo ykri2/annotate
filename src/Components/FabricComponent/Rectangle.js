@@ -47,8 +47,8 @@ Rectangle.defaultProps = {
     width: 50,
     height: 50,
 
-    stroke: 'black',
-    strokeWidth: 2,
+    stroke: '#cd6133',
+    strokeWidth: 5,
     fill:'transparent'
 };
 
