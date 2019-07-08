@@ -19,7 +19,24 @@ class Ellipse extends React.Component {
 
     componentDidMount() {
         const ellipse = new fabric.Ellipse(this.props)
-        this.props.canvas.add(ellipse)
+
+        var text = new fabric.Text(this.props.text_content.toUpperCase(), {
+            fontSize: this.props.fontSize,
+            fontFamily: 'Helvetica',
+            fill: this.props.stroke,
+            stroke: 'black',
+            strokeWidth: this.props.strokeWidth/10,
+            top: this.props.top + (this.props.ry - (this.props.fontSize/3)),
+            left: this.props.left + (this.props.rx - (this.props.fontSize/3))
+        });
+          
+        var group = new fabric.Group([ ellipse, text ], {
+           
+        });
+          
+
+
+        this.props.canvas.add(group)
     }
 
     render() {
@@ -38,6 +55,7 @@ Ellipse.propTypes = {
     fill: PropTypes.string.isRequired,
     stroke: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
+    fontSize: PropTypes.number.isRequired,
 
     id: PropTypes.string.isRequired
 };
@@ -51,10 +69,11 @@ Ellipse.defaultProps = {
     originX: 'left',
     originY: 'top',
     stroke: '#cd6133',
+    fontSize: 20,
     strokeWidth: 5,
     fill:'transparent'
 };
 
-
+ 
 
 export default Ellipse

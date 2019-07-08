@@ -19,7 +19,24 @@ class Rectangle extends React.Component {
 
     componentDidMount() {
         const rect = new fabric.Rect(this.props)
-        this.props.canvas.add(rect)
+
+        var text = new fabric.Text(this.props.text_content.toUpperCase(), {
+            fontSize: this.props.fontSize,
+            fontFamily: 'Helvetica',
+            fill: this.props.stroke,
+            stroke: 'black',
+            strokeWidth: this.props.strokeWidth/10,
+            top: this.props.top + (this.props.height/2 - (this.props.fontSize/3)),
+            left: this.props.left + (this.props.width/2 - (this.props.fontSize/3) - 15),
+        });
+          
+        var group = new fabric.Group([ rect, text ], {
+           
+        });
+          
+
+
+        this.props.canvas.add(group)
     }
 
     render() {
@@ -37,7 +54,7 @@ Rectangle.propTypes = {
 
     stroke: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
-
+    fontSize: PropTypes.number.isRequired
 };
 
 Rectangle.defaultProps = {
@@ -49,7 +66,9 @@ Rectangle.defaultProps = {
 
     stroke: '#cd6133',
     strokeWidth: 5,
-    fill:'transparent'
+    fontSize: 20,
+    fill:'transparent',
+    text_content: 'undefined'
 };
 
 

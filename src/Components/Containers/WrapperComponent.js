@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import { fabric } from 'fabric'
 import PropTypes from 'prop-types';
 
 import FabricContainer from '../FabricComponent/FabricContainer.js';
@@ -158,7 +158,7 @@ class WrapperComponent extends Component {
     previewJsonInWrapper(json_preview) {
         const annotations = json_preview.objects;
         this.setState({ showcase_annotations: annotations })
-    }
+    } 
 
 
     removeFromCurrentObjects(id){
@@ -179,7 +179,7 @@ class WrapperComponent extends Component {
         const object_position  = this.removeFromCurrentObjects(id)
         
         
-
+        console.log('object pos: ' + object_position)
 
         if(object_position <= this.state.annotation.areas.length - 1) {
             this.props.removeAreaFromGlobalAnnotation(this.state.annotation.index, id, object_position)
@@ -238,14 +238,15 @@ class WrapperComponent extends Component {
             const { shape_attribute, shape_properties } = area;
             let which = shape_attribute.type;
             switch(which) {
-                case "rect":
+                case "rect":    
                     ncurrentObjects.push(<Rectangle key={counter} id={shape_attribute.id} 
-                        top={shape_attribute.y} 
-                        left={shape_attribute.x} 
+                        top={shape_attribute.y}
+                        left={shape_attribute.x}
                         width={shape_attribute.width} 
                         height={shape_attribute.height} 
-                         />
-                    )
+                        text_content={shape_properties.what}
+                         />)
+                        
                     break;
                 case "ellipse":
                     ncurrentObjects.push(<Ellipse key={counter} id={shape_attribute.id} 
@@ -254,7 +255,9 @@ class WrapperComponent extends Component {
                         rx={shape_attribute.rx} 
                         ry={shape_attribute.ry} 
                         originX={shape_attribute.originX}
-                        originY={shape_attribute.originY}   />
+                        originY={shape_attribute.originY}
+                        text_content={shape_properties.what}   
+                        />
                     )
                     break;
                 case "polyline":
@@ -262,6 +265,7 @@ class WrapperComponent extends Component {
                         points={shape_attribute.all_points}
                         width={shape_attribute.width}
                         height={shape_attribute.height}
+                        text_content={shape_properties.what}
                          />
                         )
                     break;

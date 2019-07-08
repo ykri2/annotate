@@ -190,10 +190,13 @@ class FabricContainer extends React.Component {
     /** on dobble click on the background or active object to toggle popup, listener temporary removed when drawing polygon */
     const oldDobbleClick = (options) => {
       let activeObject = canvas.getActiveObject();
+      console.log(activeObject._objects)
+      console.log(activeObject._objects[0].id)
+      
       if(activeObject === null || activeObject === undefined) {
         this.togglePopup('BG')
       } else {
-        this.togglePopup(activeObject.id)
+        this.togglePopup(activeObject._objects[0].id)
       }
     }
     canvas.on('mouse:dblclick', oldDobbleClick)
@@ -582,10 +585,11 @@ class FabricContainer extends React.Component {
   /** Remove selected shape from canvas */
   removeSelectedObject(e) {
     e.preventDefault()
+    console.log('[0]are we here?')
     let canvas = this.state.canvas;
     let activeObject = canvas.getActiveObject()
     this.removeObjectsFromCanvas(canvas, [activeObject], () => {
-
+      console.log('[1]are we here?')
       this.props.removeObjectFromState(activeObject['id'])
     })
 
@@ -621,6 +625,8 @@ class FabricContainer extends React.Component {
   /** Show popup on shape selection */
   togglePopup(...args) {
     const annotation = this.props.annotation;
+
+
     if(this.state.popup_current_area !== undefined) {
       this.setState((state, props) => ({
         show_popup: !state.show_popup,
@@ -670,8 +676,8 @@ class FabricContainer extends React.Component {
     const currentShapeId = this.state.popup_current_id;
     let currentCanvasObject = {};
     this.state.canvas.getObjects().forEach((object) => {
-      if(object.id === currentShapeId) {
-        currentCanvasObject = object;
+      if(object._objects[0].id === currentShapeId) {
+        currentCanvasObject = object._objects[0];
       }
     })
     if(newAnnotation.filename !== undefined && newAnnotation.filename !== null) {
@@ -687,7 +693,9 @@ class FabricContainer extends React.Component {
 
 /** Unused **/
 function mapStateToProps(state, props) {
-  return {};
+  return {
+
+  };
 }
 
 /** Unused **/

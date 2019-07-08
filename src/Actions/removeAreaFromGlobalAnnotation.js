@@ -1,8 +1,10 @@
 
 
 export function removeAreaFromGlobalAnnotation(aid, id, object_pos){
-
-
+	console.log('removing area')
+	console.log(id)
+	console.log(aid)
+	console.log(object_pos)
 	return function(dispatch){
 
 		dispatch({type: 'REMOVE_AREA_PROGRESSING'})

@@ -39,7 +39,26 @@ class Polygon extends React.Component {
                 height: this.props.height
             })
         }
-        this.props.canvas.add(polygon)
+
+        //const a = Math.round(this.props.points.length/2)
+   
+        let text = new fabric.Text(this.props.text_content.toUpperCase(), {
+            fontSize: this.props.fontSize,
+            fontFamily: 'Helvetica',
+            fill: this.props.stroke,
+            stroke: 'black',
+            strokeWidth: this.props.strokeWidth/10,
+            top: this.props.points[0].y,
+            left: this.props.points[0].x
+        });
+          
+        let group = new fabric.Group([ polygon, text ], {
+           
+        });
+          
+
+
+        this.props.canvas.add(group)
     }
 
     render() {
@@ -59,6 +78,7 @@ Polygon.propTypes = {
     fill: PropTypes.string.isRequired,
     stroke: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
+    fontSize: PropTypes.number.isRequired,
 
     id: PropTypes.string.isRequired
 
@@ -72,6 +92,7 @@ Polygon.defaultProps = {
 
     stroke: '#cd6133',
     strokeWidth: 5,
+    fontSize: 20,
     fill:'transparent'
 };
 

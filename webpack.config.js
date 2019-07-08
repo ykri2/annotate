@@ -7,7 +7,8 @@ const helpers = require('./config/helpers')
 const NODE_ENV = 'production';
 const PUBLIC_URL = '/annotate/';
 const devMode = NODE_ENV === "production";
-
+console.log(process.env.NODE_ENV)
+console.log(NODE_ENV)
 module.exports = {
 
     entry: {

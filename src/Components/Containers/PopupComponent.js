@@ -166,6 +166,7 @@ class PopupComponent extends React.Component {
           well_illuminated: currentState.well_illuminated
         })
       }
+      this.props.closePopup()
     }
 
   }
