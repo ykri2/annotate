@@ -48,7 +48,7 @@ class FabricContainer extends React.Component {
     this.nextAnnotation = this.nextAnnotation.bind(this)
     this.prevAnnotation = this.prevAnnotation.bind(this)
     this.togglePopup = this.togglePopup.bind(this)
-
+    
     this.x = 0;
     this.y = 0;
 
@@ -72,12 +72,26 @@ class FabricContainer extends React.Component {
     this.activeObj;
   }
 
+
+  generateUUID() {
+    var d = new Date().getTime();
+    if(window.performance && typeof window.performance.now === "function"){
+        d += performance.now(); //use high-precision timer if available
+    }
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+  }
+
   /** draw polyline methods */
   makeRoof(roofPoints, callback) {
       let left = this.findLeftPaddingForRoof(roofPoints)
       let top = this.findTopPaddingForRoof(roofPoints)
       roofPoints.push(new Point(roofPoints[0].x, roofPoints[0].y))
-      callback('polyline', { roofPoints : roofPoints, left: left, top: top });
+      callback('polyline', { roofPoints : roofPoints, left: left, top: top, id: this.generateUUID() });
   }
 
   findTopPaddingForRoof(roofPoints) {
@@ -176,7 +190,6 @@ class FabricContainer extends React.Component {
     /** on dobble click on the background or active object to toggle popup, listener temporary removed when drawing polygon */
     const oldDobbleClick = (options) => {
       let activeObject = canvas.getActiveObject();
-      console.log(activeObject)
       if(activeObject === null || activeObject === undefined) {
         this.togglePopup('BG')
       } else {
@@ -221,19 +234,6 @@ class FabricContainer extends React.Component {
       return [px, py]
     }
 
-    const generateUUID = () => {
-	    var d = new Date().getTime();
-	    if(window.performance && typeof window.performance.now === "function"){
-	        d += performance.now(); //use high-precision timer if available
-	    }
-	    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-	        var r = (d + Math.random()*16)%16 | 0;
-	        d = Math.floor(d/16);
-	        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-	    });
-	    return uuid;
-	  }
-
     /** used to to set line start x and y to current mouse coordinates  */
     const setStartingPoint = (options) => {
       const offsetTop = this.c.offsetTop;
@@ -250,12 +250,13 @@ class FabricContainer extends React.Component {
       options.e.stopPropagation();
 
   
-      if(freeDrawing) {
+      if(freeDrawing !== false && this.drawingObject.type !== null && this.drawingObject.type !== undefined && this.drawingObject.type !== "") {
+        console.log("rly?")
         isDown = true;
-        canvas.selection = false;
         var pointer = canvas.getPointer(options.e)
         origX = pointer.x;
         origY = pointer.y;
+        canvas.selection = false;
 
         if(this.drawingObject.type === "ellipse"){
           ellipse = new fabric.Ellipse({
@@ -270,7 +271,7 @@ class FabricContainer extends React.Component {
             stroke: 'orange',
             strokeWidth:6,
             type : 'ellipse',
-            id : canvas.getObjects().length+1 ,
+            id : this.generateUUID(),
           });
           canvas.add(ellipse)
           activeObj = ellipse;
@@ -283,9 +284,9 @@ class FabricContainer extends React.Component {
 			      width: pointer.x-origX,
 			      height: pointer.y-origY,
 			      fill: '',
-		        stroke : 'red',
+		        stroke : 'orange',
 		        type : 'rect',
-		        id : canvas.getObjects().length+1,
+		        id : this.generateUUID(),
 		        strokeWidth: 5,
           });
           canvas.add(rect);
@@ -299,13 +300,11 @@ class FabricContainer extends React.Component {
           this.lines.push(new fabric.Line(points, {
               strokeWidth: 3,
               selectable: false,
-              stroke: 'red'
+              stroke: 'orange'
           }))
           canvas.add(this.lines[this.lineCounter]);
           this.lineCounter++;
-          canvas.on('mouse:up', function (options) {
-              canvas.selection = true;
-          });
+
         }
       }
     }
@@ -361,8 +360,7 @@ class FabricContainer extends React.Component {
         canvas.renderAll();
       }
 
-      if (this.lines[0] !== null && this.lines[0] !== undefined && this.drawingObject.type == "roof") {
-        console.log('mouse:move')  
+      if (this.lines[0] !== null && this.lines[0] !== undefined && this.drawingObject.type == "roof") { 
         setStartingPoint(options);
         this.lines[this.lineCounter - 1].set({
           x2: this.x,
@@ -378,24 +376,32 @@ class FabricContainer extends React.Component {
     const mouse_up = (options) => {
       options.e.preventDefault();
       options.e.stopPropagation();
-      if(freeDrawing) {
-        console.log('mouse:up')
+
+      if(freeDrawing && this.drawingObject.type !== "") {
         isDown = false;
         if(this.drawingObject.type === 'ellipse') {
-          console.log(ellipse)
           canvas.remove(ellipse)
           this.freeDrawing = false;
           this.drawingObject.type = ''
           this.props.addNewObject('ellipse', {
-
+            left: ellipse.left,
+            top: ellipse.top,
+            rx: ellipse.rx,
+            ry: ellipse.ry,
+            id: ellipse.id,
+            originX: ellipse.originX,
+            originY: ellipse.originY
           })
         } else if( this.drawingObject.type === 'rect') {
-          console.log(ellipse)
           canvas.remove(rect)
           this.freeDrawing = false;
           this.drawingObject.type = ''
           this.props.addNewObject('rect', {
-
+            left: rect.left,
+            top: rect.top,
+            height: rect.height,
+            width: rect.width,
+            id: rect.id
           })
         }
           
@@ -418,6 +424,7 @@ class FabricContainer extends React.Component {
           obj.rx *= obj.scaleX;
           obj.ry *= obj.scaleY;
         }
+
       } catch(error) { console.log(error) }
     } 
     canvas.on("object:modified", object_modified)
@@ -474,9 +481,6 @@ class FabricContainer extends React.Component {
             <button className="editor_shape_option" value="rect" onClick={this.startRect.bind(this)} >
               <p className="editor_shape_option_p" value="rect"> RECTANGLE </p>
             </button>
-            <button className="editor_shape_option" value="circle" onClick={this.addNewObject.bind(this)} >
-              <p className="editor_shape_option_p" value="circle"> CIRCLE </p>
-            </button>
             <button className="editor_shape_option" value="ellipse" onClick={this.startEllipse.bind(this)} >
               <p className="editor_shape_option_p" value="ellipse"> ELLIPSE </p>
             </button>
@@ -524,7 +528,6 @@ class FabricContainer extends React.Component {
     }
     this.drawingObject.type = "ellipse";
     this.freeDrawing = true;
-    console.log(this.drawingObject)
   }
 
   startRect(e) {
@@ -533,7 +536,6 @@ class FabricContainer extends React.Component {
     }
     this.drawingObject.type = "rect";
     this.freeDrawing = true;
-    console.log(this.drawingObject)
   }
 
 
@@ -556,7 +558,6 @@ class FabricContainer extends React.Component {
     } else {
       this.drawingObject.type = "roof";
     }
-
   }
 
   /** **/
@@ -575,16 +576,17 @@ class FabricContainer extends React.Component {
   /** Display json of current shapes/annotations */
   previewCurrentObjectsJSON(e) {
     e.preventDefault()
-    console.log(this.state.canvas.toJSON())
     this.props.previewJsonInWrapper(this.state.canvas.toJSON())
   }
 
   /** Remove selected shape from canvas */
   removeSelectedObject(e) {
     e.preventDefault()
+    console.log('[0]are we here?')
     let canvas = this.state.canvas;
     let activeObject = canvas.getActiveObject()
     this.removeObjectsFromCanvas(canvas, [activeObject], () => {
+      console.log('[1]are we here?')
       this.props.removeObjectFromState(activeObject['id'])
     })
 
@@ -620,7 +622,6 @@ class FabricContainer extends React.Component {
   /** Show popup on shape selection */
   togglePopup(...args) {
     const annotation = this.props.annotation;
-  
     if(this.state.popup_current_area !== undefined) {
       this.setState((state, props) => ({
         show_popup: !state.show_popup,
@@ -635,7 +636,16 @@ class FabricContainer extends React.Component {
       }))
     } else {
       const id = args[0];
-      if(id > annotation.areas.length - 1) {
+      const isObjectInAnnotations = annotation.areas.filter((object) => {
+        return object.shape_attribute.id === id;
+      })
+      if(isObjectInAnnotations[0] !== undefined && isObjectInAnnotations[0] !== null && isObjectInAnnotations.length === 1) {
+        this.setState((state) => ({
+          show_popup: !state.show_popup,
+          popup_current_area: isObjectInAnnotations[0],
+          popup_current_id: id
+        }))
+      } else {
         const area = { 
           shape_attribute: {},
           shape_properties: {
@@ -652,14 +662,7 @@ class FabricContainer extends React.Component {
           popup_current_area: area,
           popup_current_id: id
         }))
-      } else {
-        const area = annotation.areas[id]
-        this.setState((state) => ({
-          show_popup: !state.show_popup,
-          popup_current_area: area,
-          popup_current_id: id
-        }))
-      }
+      } 
     }
   }
 

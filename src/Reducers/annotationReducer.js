@@ -21,7 +21,7 @@ const initialState = {
                   y: 549,
                   width: 282.9,
                   height: 72.57,
-                  id: 0,
+                  id: "6295ddd696-e1c9-42af-88aa-7175d5b96426",
                },
                shape_properties: {
                   what: "boat",
@@ -36,12 +36,10 @@ const initialState = {
                shape_attribute: 
                {
                   type: "polyline",
- 
-           
                   all_points: [{"x":118.89999389648438,"y":292.71665954589844},{"x":189.89999389648438,"y":257.71665954589844},{"x":228.89999389648438,"y":294.71665954589844},{"x":229.89999389648438,"y":323.71665954589844},{"x":307.8999938964844,"y":354.71665954589844},{"x":337.8999938964844,"y":381.71665954589844},{"x":313.8999938964844,"y":427.71665954589844},{"x":210.89999389648438,"y":438.71665954589844},{"x":187.89999389648438,"y":393.71665954589844},{"x":150.89999389648438,"y":389.71665954589844},{"x":123.89999389648438,"y":312.71665954589844},{"x":123.89999389648438,"y":294.71665954589844},{"x":118.89999389648438,"y":292.71665954589844}],
                   width: 336.04,
                   height: 214.213,
-                  id: 1,
+                  id: "6295c3676-e1c9-42af-88aa-7173456796426",
                },
                shape_properties: {
                   what: "tree",
@@ -60,7 +58,7 @@ const initialState = {
                   y: 300.253,
                   rx: 235.152,
                   ry: 100,
-                  id: 2,
+                  id: "6295d696-e1c9-42af-88aa-7175d5b96426",
                },
                shape_properties: {
                   what: "buildings",
@@ -93,7 +91,7 @@ const initialState = {
                   y: 301.55,
                   width: 369,
                   height: 172.2,
-                  id: 0,
+                  id: "6295d696-e1c9-42af-88aa-7175d5b96e326",
                },
                shape_properties: {
                   what: "building",
@@ -112,7 +110,7 @@ const initialState = {
                   y: 446.58,
                   width: 302.58,
                   height: 62.73,
-                  id: 1
+                  id: "6295d696-e1c9-42af-88aa-73275d5b96d26"
                },
                shape_properties: {
                   what: "boat",
@@ -182,8 +180,7 @@ export default function reducer(state=initialState, action){
             annotations: state.annotations.map((annotation) => {
                if(annotation.index === action.payload.annot_id) {
                   let areas = annotation.areas
-                  annotation.areas = areas.splice(areas.findIndex(e => e.shape_attribute.id === action.payload.area_id), 1)
-                  console.log(areas)
+                  annotation.areas = areas.splice(areas.findIndex(e => e.shape_attribute.id === action.payload.id), 1)
                }
                return annotation
             })

@@ -29,9 +29,6 @@ class Circle extends React.Component {
 
 Circle.propTypes = {
     canvas: PropTypes.object,
-
-    id: PropTypes.number.isRequired,
-
     top: PropTypes.number.isRequired,
     left: PropTypes.number.isRequired,
     radius: PropTypes.number,
@@ -39,6 +36,8 @@ Circle.propTypes = {
     fill: PropTypes.string.isRequired,
     stroke: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
+
+    id: PropTypes.string.isRequired
 
 };
 

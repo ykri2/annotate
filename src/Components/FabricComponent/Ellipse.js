@@ -33,11 +33,13 @@ Ellipse.propTypes = {
     left: PropTypes.number.isRequired,
     rx: PropTypes.number.isRequired,
     ry: PropTypes.number.isRequired,
+    originX: PropTypes.string.isRequired,
+    originY: PropTypes.string.isRequired,
     fill: PropTypes.string.isRequired,
-
     stroke: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
 
+    id: PropTypes.string.isRequired
 };
 
 Ellipse.defaultProps = {
@@ -46,7 +48,8 @@ Ellipse.defaultProps = {
     left: 0,
     rx: 100,
     ry: 70,
-
+    originX: 'left',
+    originY: 'top',
     stroke: 'black',
     strokeWidth: 2,
     fill:'transparent'

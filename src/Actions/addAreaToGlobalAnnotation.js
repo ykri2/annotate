@@ -4,8 +4,11 @@ import { fabric } from 'fabric';
 
 export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canvasObject){
 	let currentAnnotationObj = currentAnnotation;
+	let areas = currentAnnotationObj.areas;
+	let exists = false;
 	let newArea = {};
-	console.log(canvasObject)
+
+
 	if(canvasObject.type === 'polyline') {
 		if((canvasObject.scaleX <  1 || canvasObject.scaleX > 1) || (canvasObject.scaleY > 1 || canvasObject.scaleY < 1)) {
 			let matrix = canvasObject.calcTransformMatrix();
@@ -61,6 +64,8 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 				y: canvasObject.top,
 				rx: (canvasObject.rx * canvasObject.scaleX),
 				ry: (canvasObject.ry * canvasObject.scaleY),
+				originX: canvasObject.originX,
+				originY: canvasObject.originY,
 				id: canvasObject.id,
 			},
 			shape_properties: {
@@ -72,9 +77,19 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 				}
 			}
 		}
-	} 
+	}
+	
+	for (let i = 0; i <= areas.length - 1; i++) {
+		if(areas[i].shape_attribute.id === newArea.shape_attribute.id) {
+			areas[i] = newArea;
+			exists = true;
+		}
+	}
+	if(exists !== true) {
+		areas.push(newArea)
+	}
 
-	currentAnnotationObj.areas[canvasObject.id] = newArea;
+	currentAnnotation.areas = areas;
 
 	console.log(currentAnnotationObj)
 

@@ -160,39 +160,66 @@ class WrapperComponent extends Component {
         this.setState({ showcase_annotations: annotations })
     }
 
+
+    removeFromCurrentObjects(id){
+        let currentObjects = this.state.currentObjects
+        let counter = undefined
+        for (let i = 0; i <= currentObjects.length - 1; i++) {
+            if(currentObjects[i].props.id === id) {
+                currentObjects.splice(i, 1)
+                let counter = i;
+            } 
+        }
+        return counter;
+    }
+
     /** used to remove object/shape from component state **/
     removeObjectFromState(id) {
-        let currentObjects = this.state.currentObjects
-        currentObjects.forEach(obj => {
-            if(obj.props.id === id) {
-                currentObjects.splice(id - 1, 1)
-            }
-        });
-        this.setState({ currentObjects: currentObjects })
-        if(id <= this.state.annotation.areas.length - 1) {
-            this.props.removeAreaFromGlobalAnnotation(this.state.annotation.index, id)
+
+        const object_position  = this.removeFromCurrentObjects(id)
+        
+        
+        console.log('object pos: ' + object_position)
+
+        if(object_position <= this.state.annotation.areas.length - 1) {
+            this.props.removeAreaFromGlobalAnnotation(this.state.annotation.index, id, object_position)
         }
     }
 
     /** Adds a new shape to the canvas **/
     addNewObject(...args) {
         const which = args[0]
-        let polydata = {}
+        let data= {}
         if(args.length > 1) {
-            polydata = args[1] 
+            data = args[1] 
         }
         let ncurrentObjects = this.state.currentObjects;
         let currSize = ncurrentObjects.length;
         switch(which) {
             case "rect":
-                ncurrentObjects.push(<Rectangle key={currSize} id={currSize} top={150} left={300} width={150} height={150} fill={"transparent"} />)
+                ncurrentObjects.push(<Rectangle key={currSize} 
+                    id={data.id} 
+                    top={data.top} 
+                    left={data.left} 
+                    width={data.width} 
+                    height={data.height}
+                    />)
                 break;
             case "ellipse":
-                ncurrentObjects.push(<Ellipse key={currSize} id={currSize} top={150} left={300} rx={150} ry={100} fill={"transparent"} />)
+                ncurrentObjects.push(<Ellipse key={currSize} 
+                    id={data.id} 
+                    top={data.top} 
+                    left={data.left} 
+                    rx={data.rx} 
+                    ry={data.ry}
+                    originX={data.originX}
+                    originY={data.originY}
+                      />)
                 break;
             case "polyline":
-                ncurrentObjects.push(<Polygon key={currSize} id={currSize} fill={"transparent"} 
-                    points={polydata.roofPoints} 
+                ncurrentObjects.push(<Polygon key={currSize} 
+                    id={data.id} 
+                    points={data.roofPoints} 
                     />) 
                 break;
             default:
@@ -212,29 +239,30 @@ class WrapperComponent extends Component {
             let which = shape_attribute.type;
             switch(which) {
                 case "rect":
-                    ncurrentObjects.push(<Rectangle key={counter} id={counter} 
+                    ncurrentObjects.push(<Rectangle key={counter} id={shape_attribute.id} 
                         top={shape_attribute.y} 
                         left={shape_attribute.x} 
                         width={shape_attribute.width} 
                         height={shape_attribute.height} 
-                        fill={"transparent"} />
+                         />
                     )
                     break;
                 case "ellipse":
-                    ncurrentObjects.push(<Ellipse key={counter} id={counter} 
+                    ncurrentObjects.push(<Ellipse key={counter} id={shape_attribute.id} 
                         top={shape_attribute.y} 
                         left={shape_attribute.x} 
                         rx={shape_attribute.rx} 
                         ry={shape_attribute.ry} 
-                        fill={"transparent"} />
+                        originX={shape_attribute.originX}
+                        originY={shape_attribute.originY}   />
                     )
                     break;
                 case "polyline":
-                    ncurrentObjects.push(<Polygon key={counter} id={counter} 
+                    ncurrentObjects.push(<Polygon key={counter} id={shape_attribute.id} 
                         points={shape_attribute.all_points}
                         width={shape_attribute.width}
                         height={shape_attribute.height}
-                        fill={"transparent"} />
+                         />
                         )
                     break;
                 default:

@@ -1,13 +1,9 @@
 
 
 export function addDescriptionToGlobalAnnotation(currentAnnotation, newAnnotation){
-	console.log('adding description')
-
 	let currentAnnotationObj = currentAnnotation;
-
 	currentAnnotationObj.file_properties = newAnnotation;
 
-	console.log(currentAnnotationObj)
 
 	return function(dispatch){
 

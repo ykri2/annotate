@@ -14,7 +14,7 @@ console.log(process.env)
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router basename={process.env.PUBLIC_URL} >
+        <Router  >
               <Switch>
                   <App >
                     <Route path="/" component={() => { return <MainComponent /> } } />

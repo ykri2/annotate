@@ -1,11 +1,10 @@
 import {combineReducers} from 'redux';
-import unoReducer from './unoReducer.js';
+
 import annotations from './annotationReducer';
 
 
 /** Reducers index file **/
 const appReducer = combineReducers({
-    unoReducer,
     annotations
 });
 
