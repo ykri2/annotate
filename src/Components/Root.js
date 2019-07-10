@@ -13,17 +13,17 @@ import UWrapperComponent from "./Containers/UploadComponents/UWrapperComponent";
  * Root component 
  * Wrappes app and routes to provider
  **/
-console.log(process.env)
+
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router basename="/"  >
+        <Router basename={process.env.PUBLIC_URL}  >
               <Switch>
                   <App >
                     <Route exact path="/" component={() => { console.log("A");  return <MainComponent /> } } />
                     <Route exact path="/about" component={() => { console.log("B"); return <AboutComponent /> } } />
                     <Route exact path="/instructions" component={() => { console.log("C"); return <InstructionsComponent /> } } />
-                    <Route exact path="/upload" component={() => { console.log("C"); return <UWrapperComponent /> } } />
+                    <Route exact path="/upload" component={() => { console.log("D"); return <UWrapperComponent /> } } />
                   </App>
             </Switch>
         </Router>
