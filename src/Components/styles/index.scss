@@ -147,42 +147,43 @@
                     display: flex;
                     flex-direction: row;
 
-                    .loader_wrapper {
-                        padding: 200px 0 200px 0;
-                        
-                    }
     
                     .editor_menu_left {
                         height: 100%;
                         width: 10%;        
                         display: flex;
                         flex-direction: column;
-                        
+                        align-items: center;
+                        justify-content: center;
 
                         .editor_side_option {
-                            height: 20%;
-                            width: 100%;        
+                            border: 1px solid transparent;
+                            margin: 15px 15px 15px 15px;
+                            height: 15%;
+                            width: 80%;        
                             display: flex;
                             flex-direction: column;
                             align-items: center;
                             justify-content: center;
-                            background-color: #ffffff;
+                            background-color: #182C61;
                             cursor: pointer;
 
                             .editor_side_option_p {
                                 text-decoration: none;
-                                font-family: 'Ubuntu Mono', monospace;
-                                font-size: 0.75em;
+                                font-family: 'Ubuntu Condensed', sans-serif;
+                                font-size: 0.8em;
+                                font-weight: 400;
                                 text-align: center;
-                                color: #182C61;
+                                color: #FFFFFF;
                             }
                         }
                         .editor_side_option:hover {
-                            background-color: #182C61;
+                            background-color: #FFFFFF;
+                            box-shadow: 0px 1px 7px 3px rgba(0,0,0,0.2);
                    
                             .editor_side_option_p {
-                                font-size: 1em;
-                                color: #ffffff;
+                                font-size: 1.2em;
+                                color: #182C61;
                             }
                         }
                     }
@@ -536,9 +537,203 @@
     }
     
 
-    /*** EVERYTHING BELOW HERE IS HEADER RELATED ***/
+    /*** ABOUT COMPONENT **/
+    .about_comp {
+        height: auto;
+        width: 100%;    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1.5px solid #182C61;
+        border-top: 1.5px solid #182C61;
+        margin: 5px 0 5px 0;
+
+        .about_comp_infobox {
+            margin: 20px 0 20px 0;
+            height: auto;
+            width: 60%;    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
 
 
+            .about_comp_title {
+                font-family: 'Ubuntu Condensed', sans-serif;
+                font-size: 1.3em;
+                font-weight: 400;
+                text-align: center;
+                color: #182C61;
+                padding: 10px 10px 10px 10px;
+            }
+            .about_comp_section {
+                height: auto;
+                width: 100%;    
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 15px;
+                margin: 20px 5px 5px 5px;
+
+                .about_comp_paragraph_one {
+                    font-family: 'Ubuntu', monospace;
+                    font-size: 0.85em;
+                    text-align: center;
+                    color: #182C61;
+                }
+                .about_comp_paragraph_two {
+                    font-family: 'Ubuntu Condensed', sans-serif;
+                    font-size: 0.7em;
+                    font-weight: 400;
+                    text-align: center;
+                    color: #182C61;
+                }
+            }
+            
+        }
+    }
+
+
+    /*** INSTRUCTIONS COMPONENT **/
+    .instructions_comp {
+        height: auto;
+        width: 100%;    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1.5px solid #182C61;
+        border-top: 1.5px solid #182C61;
+        margin: 5px 0 5px 0;
+
+        .instructions_comp_infobox {
+            margin: 20px 0 20px 0;
+            height: auto;
+            width: 60%;    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+
+            .instructions_comp_title {
+                font-family: 'Ubuntu Condensed', sans-serif;
+                font-size: 1.3em;
+                font-weight: 400;
+                text-align: center;
+                color: #182C61;
+                padding: 10px 10px 10px 10px;
+                text-decoration: underline;
+            }
+            .instructions_comp_section {
+                height: auto;
+                width: 100%;    
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 15px;
+                margin: 20px 5px 20px 5px;
+
+                .instructions_paragraph_header {
+                    font-family: 'Ubuntu Condensed', sans-serif;
+                    font-size: 1em;
+                    font-weight: 400;
+                    text-align: center;
+                    color: #182C61;
+                    margin: 5px 0 5px 0;
+                }
+
+                .instructions_comp_paragraph {
+                    font-family: 'Ubuntu', monospace;
+                    font-size: 0.85em;
+                    text-align: center;
+                    color: #182C61;
+                }
+
+                .instructions_comp_paragraph_two {
+                    font-family: 'Ubuntu Condensed', sans-serif;
+                    font-size: 0.7em;
+                    font-weight: 400;
+                    text-align: center;
+                    color: #182C61;
+                }
+            }
+            
+        }
+    }
+
+
+
+
+    /*** UPLOAD WRAPPPER COMPONENT **/
+    .uwrapper_comp {
+        height: auto;
+        width: 100%;    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1.5px solid #182C61;
+        border-top: 1.5px solid #182C61;
+        margin: 5px 0 5px 0;
+
+        .uwrapper_comp_infobox {
+            margin: 20px 0 20px 0;
+            height: auto;
+            width: 60%;    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+
+            .uwrapper_comp_title {
+                font-family: 'Ubuntu Condensed', sans-serif;
+                font-size: 1.3em;
+                font-weight: 400;
+                text-align: center;
+                color: #182C61;
+                padding: 10px 10px 10px 10px;
+                text-decoration: underline;
+            }
+            .uwrapper_comp_section {
+                height: auto;
+                width: 100%;    
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 15px;
+                margin: 20px 5px 20px 5px;
+
+                .uwrapper_paragraph_header {
+                    font-family: 'Ubuntu Condensed', sans-serif;
+                    font-size: 1em;
+                    font-weight: 400;
+                    text-align: center;
+                    color: #182C61;
+                    margin: 5px 0 5px 0;
+                }
+
+                .uwrapper_comp_paragraph {
+                    font-family: 'Ubuntu', monospace;
+                    font-size: 0.85em;
+                    text-align: center;
+                    color: #182C61;
+                }
+
+            }
+            
+        }
+    }
+
+
+
+
+    /*** HEADER COMPONENT ***/
     .header_comp {
         width: 100%;
         height: auto;
@@ -568,7 +763,7 @@
 
 
 
-/*** EVERYTHING NAV RELATED BELOW THIS LINE BROTHAH ***/
+/*** NAVBAR COMPONENT ***/
 
     .navbar_comp {
         margin: 0px 0 15px 0;
@@ -659,7 +854,7 @@
 
     
 
-    /*** EVERYTHING BELOW HERE IS FOOTER COMPONENTS ***/
+    /*** FOOTER COMPONENT ***/
 
     .footer_comp {
         margin: 20px 0 5px 0;

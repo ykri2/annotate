@@ -49,12 +49,14 @@ class PopupComponent extends React.Component {
       }
     }
 
+    /** adds changes to state for select-type input */
     onChangeSelect(e) {
       this.setState({ 
         [e.target.name]: e.target.value
       })
     }
 
+    /** adds changes to state for text-type input */
     onChangeText(e) {
       this.setState({ 
         [e.target.name]: e.target.value
@@ -145,7 +147,7 @@ class PopupComponent extends React.Component {
       );
     }
 
-
+    /** saves annotation - get information from state and calls addNewToGlobalAnnotations() */
     saveAnnotation(e) {
       e.preventDefault();
       const currentState = this.state
@@ -171,12 +173,13 @@ class PopupComponent extends React.Component {
 
   }
 
-
+  /** must-have props for popup component */
   PopupComponent.propTypes = {
     current_area: PropTypes.object.isRequired,
     closePopup: PropTypes.func.isRequired
   };
   
+  /** default props for popup component */
   PopupComponent.defaultProps = {
   
   };

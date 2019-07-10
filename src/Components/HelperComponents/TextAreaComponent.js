@@ -39,11 +39,12 @@ class TextAreaComponent extends Component {
 }
 
 
-
+/** must-have props for text-area */
 TextAreaComponent.propTypes = {
 
 };
 
+/** must-have default prop values for text area  */
 TextAreaComponent.defaultProps = {
 
 };

@@ -1,4 +1,4 @@
-
+/** initialState for global annotations storage in redux store  */
 const initialState = {
     annotations:
       [
@@ -130,7 +130,7 @@ const initialState = {
 }
 
 
-
+/** ADD ANNOTATION CASES */
 export default function reducer(state=initialState, action){
    switch(action.type){
       case "FETCH_ANNOTATIONS_COMPLETE": {
@@ -148,7 +148,7 @@ export default function reducer(state=initialState, action){
             annotations: action.payload
          })
       }
-        
+      /** ADD ARE TO ANNOTATION CASES */
       case "ADD_AREA_PROGRESSING":{
          return {...state, fetching:true}
       }
@@ -166,6 +166,7 @@ export default function reducer(state=initialState, action){
             })
          }
       }
+      /** REMOVED AREA FROM ANNOTATION CASES */
       case "REMOVE_AREA_PROGRESSING":{
          return {...state, fetching:true}
       }
@@ -186,7 +187,7 @@ export default function reducer(state=initialState, action){
             })
          }
       }
-
+      /** ADD DESCRIPTION TO ANNOTATION CASES */
       case "ADD_DESCRIPTION_PROGRESSING":{
          return {...state, fetching:true}
       }

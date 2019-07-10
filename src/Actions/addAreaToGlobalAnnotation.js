@@ -2,21 +2,51 @@ import { fabric } from 'fabric';
 
 
 
+const getAbsolutePosition = (canvasObject, key) =>{
+	if(canvasObject.group) {
+		if(key === 'point') {
+			let matrix = canvasObject.calcTransformMatrix();
+			return fabric.util.transformPoint({y: canvasObject.top, x: canvasObject.left}, matrix)
+		}
+		else if(key === 'angle') {
+			return canvasObject.angle + canvasObject.group.angle;
+		}
+		else if(key === 'scaleX') {
+			return canvasObject.scaleX * canvasObject.group.scaleX;
+		} 
+		else if(key === 'scaleY') {
+			return canvasObject.scaleY * canvasObject.group.scaleY;
+		}
+	}
+	return 'none'
+}
+
+
+
+
+/** Redux action - adds a new area to redux store "global" annotations */
 export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canvasObject){
 	let currentAnnotationObj = currentAnnotation;
 	let areas = currentAnnotationObj.areas;
 	let exists = false;
 	let newArea = {};
 
+	console.log(getAbsolutePosition(canvasObject, 'point'))
+	console.log(canvasObject.type)
+	console.log(canvasObject)
 
+	/** decide on which type of object to add */
 	if(canvasObject.type === 'polyline') {
-		if((canvasObject.scaleX <  1 || canvasObject.scaleX > 1) || (canvasObject.scaleY > 1 || canvasObject.scaleY < 1)) {
+		if((canvasObject.group.scaleX <  1 || canvasObject.group.scaleX > 1) || (canvasObject.group.scaleY > 1 || canvasObject.group.scaleY < 1)) {
+			console.log('wehere?')
 			let matrix = canvasObject.calcTransformMatrix();
 			canvasObject.points = canvasObject.points.map((point) => {
+				console.log("here?1")
 				return new fabric.Point(
 					point.x - canvasObject.pathOffset.x,
 					point.y - canvasObject.pathOffset.y);
 			}).map((point) => {
+				console.log("here?2")
 				return fabric.util.transformPoint(point, matrix);
 			})
 		}
@@ -24,8 +54,8 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 			shape_attribute: {
 				type: canvasObject.type,
 				all_points: canvasObject.points,
-				width: (canvasObject.width * canvasObject.scaleX),
-				height: (canvasObject.height * canvasObject.scaleY),
+				width: (canvasObject.width * canvasObject.group.scaleX),
+				height: (canvasObject.height * canvasObject.group.scaleY),
 				id: canvasObject.id,
 			},
 			shape_properties: {
@@ -38,13 +68,14 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 			}
 		}
 	} else if(canvasObject.type === 'rect') {
+		let point = getAbsolutePosition(canvasObject, 'point')
 		newArea = { 
 			shape_attribute: {
 				type: canvasObject.type,
-				x: canvasObject.left,
-				y: canvasObject.top,
-				width: (canvasObject.width * canvasObject.scaleX),
-				height: (canvasObject.height * canvasObject.scaleY),
+				x: point.x,
+				y: point.y,
+				width: (canvasObject.width * canvasObject.group.scaleX),
+				height: (canvasObject.height * canvasObject.group.scaleY),
 				id: canvasObject.id,
 			},
 			shape_properties: {
@@ -57,13 +88,14 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 			}
 		}
 	} else if(canvasObject.type === 'ellipse') {
+		let point = getAbsolutePosition(canvasObject, 'point')
 		newArea = { 
 			shape_attribute: {
 				type: canvasObject.type,
-				x: canvasObject.left,
-				y: canvasObject.top,
-				rx: (canvasObject.rx * canvasObject.scaleX),
-				ry: (canvasObject.ry * canvasObject.scaleY),
+				x: point.x,
+				y: point.y,
+				rx: (canvasObject.rx * canvasObject.group.scaleX),
+				ry: (canvasObject.ry * canvasObject.group.scaleY),
 				originX: canvasObject.originX,
 				originY: canvasObject.originY,
 				id: canvasObject.id,
@@ -79,6 +111,7 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 		}
 	}
 	
+	/** check if the area is existent or new */
 	for (let i = 0; i <= areas.length - 1; i++) {
 		if(areas[i].shape_attribute.id === newArea.shape_attribute.id) {
 			areas[i] = newArea;
@@ -89,14 +122,15 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 		areas.push(newArea)
 	}
 
+	/** set currentAnnotation.areas to new array of areas */
 	currentAnnotation.areas = areas;
 
-	console.log(currentAnnotationObj)
 
 	return function(dispatch){
 
 		dispatch({type: 'ADD_AREA_PROGRESSING'})
 
+		/** set timeout - switch with API-call when backend is added  */
 		setTimeout(function(){ 
 			dispatch({type: 'ADD_AREA_FULFILLED', payload: currentAnnotationObj}) 
 		}, 2000);

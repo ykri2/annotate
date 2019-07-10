@@ -10,6 +10,7 @@ import PopupComponent from '../Containers/PopupComponent';
 import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotation';
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
 
+/** Baseurl - required for running on GitHub Pages */
 let baseurl = "."
 let img = require(`${'../resources/anntph.jpg'}`);
 
@@ -19,6 +20,10 @@ let img = require(`${'../resources/anntph.jpg'}`);
  * Creates the fabric canvasq
  **/
 
+
+
+
+/** Point Class - used to make polygon points */
 class Point {
   constructor(x,y) {
     this.x = x;
@@ -72,11 +77,13 @@ class FabricContainer extends React.Component {
     this.activeObj;
   }
 
+  
 
+  /** Used to generate unique id for each shape on canvas -  ID also used for saving annotations */
   generateUUID() {
     var d = new Date().getTime();
     if(window.performance && typeof window.performance.now === "function"){
-        d += performance.now(); //use high-precision timer if available
+        d += performance.now(); 
     }
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = (d + Math.random()*16)%16 | 0;
@@ -88,13 +95,14 @@ class FabricContainer extends React.Component {
 
   /** draw polyline methods */
   makeRoof(roofPoints, callback) {
-      let left = this.findLeftPaddingForRoof(roofPoints)
-      let top = this.findTopPaddingForRoof(roofPoints)
+      let left = this.leftPadding(roofPoints)
+      let top = this.rightPadding(roofPoints)
       roofPoints.push(new Point(roofPoints[0].x, roofPoints[0].y))
       callback('polyline', { roofPoints : roofPoints, left: left, top: top, id: this.generateUUID() });
   }
 
-  findTopPaddingForRoof(roofPoints) {
+  /** used to draw polygon */
+  rightPadding(roofPoints) {
       let result = 999999;
       for(let f = 0; f < this.lineCounter; f++) {
           if(roofPoints[f].y < result) {
@@ -105,7 +113,8 @@ class FabricContainer extends React.Component {
       return Math.abs(result)
   }
 
-  findLeftPaddingForRoof(roofPoints) {
+  /** used to draw polygon */
+  leftPadding(roofPoints) {
       let result = 999999;
       for(let i = 0; i < this.lineCounter; i++) {
           if(roofPoints[i].x < result) {
@@ -119,6 +128,42 @@ class FabricContainer extends React.Component {
   /** Creates canvas after component has mounted */
   componentDidMount() {
     const canvas = new fabric.Canvas(this.c)
+
+   
+    /** registers key events on canvas obj */
+    const key_down = (event) => {
+      event.preventDefault()
+      console.log("Running key down..")
+      console.log(event);
+
+      event.preventDefault()
+      let keyCode = event.keyCode || event.which;
+      let activeGroup = this.canvas.getActiveObject();
+
+      if(Array.isArray(activeGroup)) {
+        activeGroup.forEach(object => {
+          switch (keyCode) {
+            case 37:
+              obj.left = obj.left - STEP; 
+              break;
+            case 38:
+              obj.top = obj.top - STEP;
+              break;
+            case 39:
+              obj.left = obj.left + STEP;
+              break;
+            case 40:
+              obj.top = obj.top + STEP;
+              break;
+          }
+          object.setCoords();
+        });
+        this.canvas.renderAll()
+        
+      }
+
+    }
+    this.c.onkeydown = key_down;
 
     var rect = this.rect;
     var ellipse = this.ellipse;
@@ -141,8 +186,9 @@ class FabricContainer extends React.Component {
       });
     });
 
+    
 
-
+    /** changes canvas listeners - removes and adds function */
     const switch_functions = (type, oldFunction, newFunction, callback) => {
       canvas.off(type, oldFunction)
       callback(type, newFunction)
@@ -190,8 +236,6 @@ class FabricContainer extends React.Component {
     /** on dobble click on the background or active object to toggle popup, listener temporary removed when drawing polygon */
     const oldDobbleClick = (options) => {
       let activeObject = canvas.getActiveObject();
-      console.log(activeObject._objects)
-      console.log(activeObject._objects[0].id)
       
       if(activeObject === null || activeObject === undefined) {
         this.togglePopup('BG')
@@ -247,14 +291,12 @@ class FabricContainer extends React.Component {
     }
 
 
-    /** returns behaviour if polygon is being drawn, used to draw lines */
+    /** returns behaviour if shape is being drawn, used to draw lines */
     const mouse_down = (options) => {
       options.e.preventDefault();
       options.e.stopPropagation();
-
   
       if(freeDrawing !== false && this.drawingObject.type !== null && this.drawingObject.type !== undefined && this.drawingObject.type !== "") {
-        console.log("rly?")
         isDown = true;
         var pointer = canvas.getPointer(options.e)
         origX = pointer.x;
@@ -314,7 +356,7 @@ class FabricContainer extends React.Component {
     canvas.on('mouse:down', mouse_down)
 
 
-    /** runs when mouse moves, returns behaviour if polygon is being drawn */
+    /** runs when mouse moves, returns behaviour if shape is being drawn */
     const mouse_move = (options) => {
       options.e.preventDefault();
       options.e.stopPropagation();
@@ -371,14 +413,17 @@ class FabricContainer extends React.Component {
         });
       canvas.renderAll();
       }
+     
 
     }
     canvas.on('mouse:move', mouse_move)
 
-
+    /** returns behaviour when shape has been drawm */
     const mouse_up = (options) => {
       options.e.preventDefault();
       options.e.stopPropagation();
+      let activeObject = canvas.getActiveObject()
+    
 
       if(freeDrawing && this.drawingObject.type !== "") {
         isDown = false;
@@ -413,13 +458,14 @@ class FabricContainer extends React.Component {
       
       var objs = canvas.getObjects();
       for(var i = 0; i < objs.length; i++) {
+     
         objs[i].setCoords()
       }
 
     }
     canvas.on('mouse:up', mouse_up)
 
-
+    /**  */
     const object_modified = (options) => {
       try {
         var obj = options.e.target;
@@ -433,6 +479,7 @@ class FabricContainer extends React.Component {
     canvas.on("object:modified", object_modified)
 
 
+  
     /** changes dobble click function from selecting objects to ending current polygon */
     const object_added = (options) => {
       
@@ -459,7 +506,7 @@ class FabricContainer extends React.Component {
     const annotation = this.props.annotation;
     const annotations = this.props.annotations;
 
-
+    /** children passed in from WrapperComponent */
     const children = React.Children.map(this.props.children, child => {
       return React.cloneElement(child, {
         canvas: this.state.canvas,
@@ -524,7 +571,7 @@ class FabricContainer extends React.Component {
     )
   }
 
-  /** */
+  /** start drawing ellipse */
   startEllipse(e) {
     if (this.drawingObject.type === "ellipse") {
       this.drawingObject.type = "";
@@ -533,6 +580,7 @@ class FabricContainer extends React.Component {
     this.freeDrawing = true;
   }
 
+  /**start drawing rect */
   startRect(e) {
     if (this.drawingObject.type === "rect") {
       this.drawingObject.type = "";
@@ -542,7 +590,7 @@ class FabricContainer extends React.Component {
   }
 
 
-  /** **/
+  /** start drawing polyline**/
   startPolyline(e) {
     if (this.drawingObject.type == "roof") {
       let canvas = this.state.canvas;
@@ -563,13 +611,13 @@ class FabricContainer extends React.Component {
     }
   }
 
-  /** **/
+  /** [unused] add a new object by passing object to back to Wrapper component  **/
   addNewObject(e) {
     e.preventDefault()
     this.props.addNewObject(e.target.getAttribute('value'))
   }
 
-  /** **/
+  /** used to reset zoom on canvas **/
   resetZoomOnCanvas(e) {
     let canvas = this.state.canvas;
     canvas.setViewportTransform([1,0,0,1,0,0]);
@@ -592,9 +640,9 @@ class FabricContainer extends React.Component {
       console.log('[1]are we here?')
       this.props.removeObjectFromState(activeObject['id'])
     })
-
   }
 
+  /** moves to next annotation */
   nextAnnotation(e) {
     e.preventDefault()
     let canvas = this.state.canvas;
@@ -605,6 +653,7 @@ class FabricContainer extends React.Component {
 
   }
 
+  /** moves to previous annotation */
   prevAnnotation(e) {
     e.preventDefault()
     let canvas = this.state.canvas;
@@ -615,6 +664,7 @@ class FabricContainer extends React.Component {
 
   }
 
+  /** removes object from canvas and calls callback function */
   removeObjectsFromCanvas(canvas, objects, callback) {
     objects.forEach(object => {
       canvas.remove(object)
@@ -671,6 +721,7 @@ class FabricContainer extends React.Component {
     }
   }
 
+  /** add to global annotations, either add file description or area */
   addNewToGlobalAnnotations(newAnnotation) {
     const currentAnnotation = this.props.annotation;
     const currentShapeId = this.state.popup_current_id;

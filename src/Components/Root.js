@@ -5,6 +5,9 @@ import PropTypes from 'prop-types'
 
 import App from './App';
 import MainComponent from './Containers/MainComponent';
+import AboutComponent from './StaticComponents/AboutComponent';
+import InstructionsComponent from './StaticComponents/InstructionsComponent';
+import UWrapperComponent from "./Containers/UploadComponents/UWrapperComponent";
 
 /** 
  * Root component 
@@ -14,11 +17,13 @@ console.log(process.env)
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router  >
+        <Router basename="/"  >
               <Switch>
                   <App >
-                    <Route path="/" component={() => { return <MainComponent /> } } />
-
+                    <Route exact path="/" component={() => { console.log("A");  return <MainComponent /> } } />
+                    <Route exact path="/about" component={() => { console.log("B"); return <AboutComponent /> } } />
+                    <Route exact path="/instructions" component={() => { console.log("C"); return <InstructionsComponent /> } } />
+                    <Route exact path="/upload" component={() => { console.log("C"); return <UWrapperComponent /> } } />
                   </App>
             </Switch>
         </Router>

@@ -40,8 +40,8 @@ class Polygon extends React.Component {
             })
         }
 
-        //const a = Math.round(this.props.points.length/2)
-   
+      
+        /** add text element to the polygon */
         let text = new fabric.Text(this.props.text_content.toUpperCase(), {
             fontSize: this.props.fontSize,
             fontFamily: 'Helvetica',
@@ -51,13 +51,14 @@ class Polygon extends React.Component {
             top: this.props.points[0].y,
             left: this.props.points[0].x
         });
-          
+
+        /** add shape and corresponding text to group element */  
         let group = new fabric.Group([ polygon, text ], {
            
         });
           
 
-
+        /** add group to canvas */
         this.props.canvas.add(group)
     }
 
@@ -93,7 +94,9 @@ Polygon.defaultProps = {
     stroke: '#cd6133',
     strokeWidth: 5,
     fontSize: 20,
-    fill:'transparent'
+    fill:'transparent',
+
+    text_content: 'undefined'
 };
 
 

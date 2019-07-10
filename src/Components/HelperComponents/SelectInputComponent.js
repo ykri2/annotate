@@ -18,6 +18,7 @@ const SelectInputComponent = ({ field, value, label, error, onChange, options })
     </div>
     )
 
+/** must-have props for select-input */
 SelectInputComponent.prototype = {
     field: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
@@ -26,7 +27,8 @@ SelectInputComponent.prototype = {
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired
 }
-    
+
+/** must-have default prop values for select-input */
 SelectInputComponent.defaultProps = {
       
 }

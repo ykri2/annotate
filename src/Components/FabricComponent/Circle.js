@@ -7,6 +7,7 @@ import { fabric } from 'fabric';
 /**
  * React+Fabric component
  * Creates Circle shapes
+ * [ unused ]
  **/
 class Circle extends React.Component {
     constructor(props){

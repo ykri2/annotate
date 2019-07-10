@@ -30,7 +30,7 @@ class MainComponent extends Component {
 
   render() {
     const errors = this.state.errors
-    const isLoading = this.state.isLoading
+    const isLoading = this.props.isLoading
 
  
     
@@ -58,17 +58,21 @@ class MainComponent extends Component {
 
 }
 
+/** add must-have props here */
 MainComponent.propTypes = {
 
 };
 
+/** add default values for props here */
 MainComponent.defaultProps = {
 
 };
 
 /** Unused **/
 function mapStateToProps(state, props) {
-    return {};
+    return {
+      isLoading: state.annotations.fetching
+    };
 }
 
 /** Unused **/

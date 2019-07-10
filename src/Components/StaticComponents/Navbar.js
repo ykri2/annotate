@@ -32,32 +32,39 @@ class Navbar extends React.Component {
                     </RouterNavLink>
                 </div>  
                <div className="navbar_item" id="navbar_item_2" >
-                    <RouterNavLink to="/"  id='navbartext' >
+                    <RouterNavLink to="/about"  id='navbartext' >
                         <p className="navitem_text" id="" >ABOUT</p>
                     </RouterNavLink>
                </div>
                <div className="navbar_item" id="navbar_item_3" >
-                    <RouterNavLink to="/"  id='navbartext' >
+                    <RouterNavLink to="/instructions"  id='navbartext' >
                         <p className="navitem_text" id="" >INSTRUCTIONS</p>
                     </RouterNavLink>
                </div>
-               <div className="navbar_item" id="navbar_item_4" >
-                    <RouterNavLink to="/"  id='navbartext' >
+               <div className="navbar_item" id="navbar_item_4"  >
+                    <a href="https://www.uib.no" id='navbartext' >
                         <p className="navitem_text" id="" >UIB</p>
-                    </RouterNavLink>
+                    </a>
                </div>
            </div>
         )
     }
 
-    logginOut() {
+    /** logout function - not used */
+    loggingOut() {
         this.props.history.push('/');
     }
 
 
 }
 
+/** add must-have prop types here */
 Navbar.propTypes = {
+
+}
+
+/** add default prop values here */
+Navbar.defaultProps = {
 
 }
 

@@ -87,35 +87,35 @@ class WrapperComponent extends Component {
                 <div className="settings_menu_upper">
                     <OptionMenu listitems={{
                             btn_type: 'ANNOTATIONS',
-                            items: ['All annotations','Annotations by picture', 'Get image with annotations']
+                            items: [{item: 'All annotations', destination: '/'},{item:'Annotations by picture', destination: '/'}, {item:'Get image with annotations', destination: '/'}]
                         }} 
                     />
                     <OptionMenu listitems={{
                             btn_type: 'DISPLAY',
-                            items: ['Canvas','Image list', 'Summary']
+                            items: [{item: 'Canvas', destination: '/'},{item: 'Image list', destination: '/'}, {item: 'Summary', destination: '/'}]
                         }} 
                     />
                     <OptionMenu listitems={{
                             btn_type: 'SOMETHING',
-                            items: ['loading...']
+                            items: [{item: 'loading...', destination: '/'}]
                         }}
                     />
                     <OptionMenu listitems={{
                             btn_type: 'UPLOAD',
-                            items: ['Upload image']
+                            items: [{item: 'Upload image', destination: '/upload' }]
                         }} 
                     />
                     <OptionMenu listitems={{
                             btn_type: 'EXPORT',
-                            items: ['Export to .json','Export to .csv']
+                            items: [{item: 'Export to .json', destination: '/'},{item: 'Export to .csv', destination: '/'}]
                         }} 
                     />
                 </div>
                 
                 <div className="editor_menu_lower">
                     <div className="editor_menu_left">
-                        <button className="editor_side_option" ><p className="editor_side_option_p"> OVERVIEW </p></button>
-                        <button className="editor_side_option" ><p className="editor_side_option_p"> SHORTCUTS </p></button>
+                        <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
+                        <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
                         <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
                         <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
                         <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>

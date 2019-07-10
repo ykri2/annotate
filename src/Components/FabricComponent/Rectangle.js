@@ -8,6 +8,7 @@ import { fabric } from 'fabric';
  * React+Fabric component
  * Creates Rectangle shapes
  **/
+
 class Rectangle extends React.Component {
     constructor(props){
         super(props);
@@ -18,8 +19,17 @@ class Rectangle extends React.Component {
     }
 
     componentDidMount() {
-        const rect = new fabric.Rect(this.props)
-
+        const rect = new fabric.Rect({top: this.props.top,
+            left: this.props.left,
+            width: this.props.width,
+            height: this.props.height,
+            fill: this.props.fill,
+            stroke: this.props.stroke,
+            strokeWidth: this.props.strokeWidth,
+            id: this.props.id
+        })
+        
+        /** add text element to the rectangle */ 
         var text = new fabric.Text(this.props.text_content.toUpperCase(), {
             fontSize: this.props.fontSize,
             fontFamily: 'Helvetica',
@@ -30,12 +40,12 @@ class Rectangle extends React.Component {
             left: this.props.left + (this.props.width/2 - (this.props.fontSize/3) - 15),
         });
           
+        /** add shape and corresponding text to group element */  
         var group = new fabric.Group([ rect, text ], {
            
         });
           
-
-
+        /** add group to canvas */
         this.props.canvas.add(group)
     }
 

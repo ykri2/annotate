@@ -19,6 +19,7 @@ const TextInputComponent = ({ field, value, label, error, onChange, type }) => (
     </div>
     )
 
+/** must-have props in text-input */
 TextInputComponent.prototype = {
     field: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
@@ -27,7 +28,8 @@ TextInputComponent.prototype = {
     type: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
 }
-    
+
+/** default values for must-have props in text-input */   
 TextInputComponent.defaultProps = {
         type: 'text'
 }
