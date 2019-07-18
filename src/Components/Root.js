@@ -8,22 +8,26 @@ import MainComponent from './Containers/MainComponent';
 import AboutComponent from './StaticComponents/AboutComponent';
 import InstructionsComponent from './StaticComponents/InstructionsComponent';
 import UWrapperComponent from "./Containers/UploadComponents/UWrapperComponent";
+import EWrapperComponent from "./Containers/ExportComponent/EWrapperComponent";
+import CWrapperComponent from "./Containers/ConceptComponent/CWrapperComponent";
 
 /** 
  * Root component 
  * Wrappes app and routes to provider
  **/
-
+console.log(process.env)
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router basename={process.env.PUBLIC_URL}  >
+        <Router basename="/"  >
               <Switch>
                   <App >
                     <Route exact path="/" component={() => { console.log("A");  return <MainComponent /> } } />
                     <Route exact path="/about" component={() => { console.log("B"); return <AboutComponent /> } } />
                     <Route exact path="/instructions" component={() => { console.log("C"); return <InstructionsComponent /> } } />
                     <Route exact path="/upload" component={() => { console.log("D"); return <UWrapperComponent /> } } />
+                    <Route exact path="/export" component={() => { console.log("E"); return <EWrapperComponent /> } } />
+                    <Route exact path="/upload_concepts" component={() => { console.log("F"); return <CWrapperComponent /> } } />
                   </App>
             </Switch>
         </Router>

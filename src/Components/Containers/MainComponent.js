@@ -32,8 +32,6 @@ class MainComponent extends Component {
     const errors = this.state.errors
     const isLoading = this.props.isLoading
 
- 
-    
     if(isLoading === true) {
 
       return (
@@ -41,8 +39,6 @@ class MainComponent extends Component {
               <GridLoader fill="#9ed1e7" />
         </div>
       )
-
-
     } else {
 
         return (

@@ -1,5 +1,14 @@
 import React from 'react';
 
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import PropTypes from 'prop-types';
+
+import UploadComponent from './UploadComponent';
+import ShowcaseFilesComponent from './ShowcaseFilesComponent'
+
+
 /** 
  * Upload Wrapper component 
  * 
@@ -17,23 +26,27 @@ class UWrapperComponent extends React.Component {
     }
 
     render() {
+
+        const files = this.props.files;
+
         return (
             <div className='uwrapper_comp'>
                <div className="uwrapper_comp_infobox">
                    
                    <p className="uwrapper_comp_title" >IMAGE UPLOAD</p>
-                   <div className="uwrapper_comp_section" >
-                       <p className="uwrapper_paragraph_header"> SELECT IMAGE </p>
-                       <p className="uwrapper_comp_paragraph">       
-                        Penatibus et magnis dis parturient montes nascetur. Sit amet consectetur adipiscing elit. Lectus mauris ultrices eros in cursus. Ornare suspendisse sed nisi lacus sed viverra tellus in.
-                       </p>
+
+                   <div className="uwrapper_comp_section_one" >               
+                       <UploadComponent />
                    </div>
 
-                   <div className="uwrapper_comp_section" >
-                       <p className="uwrapper_paragraph_header"> UPLOADED IMAGES </p>
-                       <p className="uwrapper_comp_paragraph">       
-                        Penatibus et magnis dis parturient montes nascetur. Sit amet consectetur adipiscing elit. Lectus mauris ultrices eros in cursus. Ornare suspendisse sed nisi lacus sed viverra tellus in.
-                       </p>
+                   <div className="uwrapper_comp_section_two" >
+                       <p className="uwrapper_paragraph_header"> { files !== undefined ? files.length : null} </p>
+                       { 
+                        files.length > 0 ? 
+                        <ShowcaseFilesComponent files={files} />
+                        :
+                        <p className="uwrapper_paragraph_header"> NO FILES UPLOADED </p>
+                       }
                    </div>
                </div>
             </div>
@@ -41,4 +54,16 @@ class UWrapperComponent extends React.Component {
     }
 }
 
-export default UWrapperComponent;
+/** wrap global annotations to local component **/
+function mapStateToProps(state, props) {
+    return {
+        files: state.files.files
+        
+    };
+}
+
+/** map functions to props **/
+const mapDispatchToProps = (dispatch) => ({
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UWrapperComponent);

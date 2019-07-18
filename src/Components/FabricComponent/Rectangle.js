@@ -30,7 +30,7 @@ class Rectangle extends React.Component {
         })
         
         /** add text element to the rectangle */ 
-        var text = new fabric.Text(this.props.text_content.toUpperCase(), {
+        var text = new fabric.Text(this.props.text_content[0].toUpperCase(), {
             fontSize: this.props.fontSize,
             fontFamily: 'Helvetica',
             fill: this.props.stroke,

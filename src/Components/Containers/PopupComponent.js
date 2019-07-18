@@ -3,23 +3,30 @@ import PropTypes from 'prop-types'
 
 import TextInputComponent from '../HelperComponents/TextInputComponent';
 import SelectInputComponent from '../HelperComponents/SelectInputComponent';
+import AutoSuggestComponent from '../HelperComponents/AutoSuggestComponent';
 
 /** 
  * Popup component 
  * shows when a shape is double clicked
  * used for annotating image content
  **/
+
 class PopupComponent extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
         what: undefined,
+        suggestions: [],
+
         type: undefined,
+        type_suggestions: [],
+
         clear_view: undefined,
         well_illuminated: undefined,
 
         short_description: undefined,
         filename: undefined,
+
 
         errors: {}
       }
@@ -27,8 +34,77 @@ class PopupComponent extends React.Component {
       this.onChangeSelect = this.onChangeSelect.bind(this)
       this.onChangeText = this.onChangeText.bind(this)
       this.saveAnnotation = this.saveAnnotation.bind(this)
+
+
+
+    this.onChangeAs = this.onChangeAs.bind(this)
+    this.onSelectAs = this.onSelectAs.bind(this)
+
+    this.onChangeAs_type = this.onChangeAs_type.bind(this)
+    this.onSelectAs_type = this.onSelectAs_type.bind(this)
+
+    }
+    
+    onChangeAs(e) {
+      const value = e.target.value;
+      let valArr = value.split(',')
+      let suggestions = [];
+      if(valArr.length > 0) {
+          let val = valArr[valArr.length -1]
+          const regex = new RegExp(`^${val}`, 'i');
+          suggestions = this.props.concepts.sort().filter(v => regex.test(v));
+      }
+
+      this.setState({ suggestions: suggestions, what: valArr });
     }
 
+    onSelectAs(value) {
+      let what = this.state.what;
+      what[what.length - 1] = value
+      this.setState(() => ({
+        what: what,
+        suggestions: []
+    }))
+    }
+
+    onChangeAs_type(e) {
+      const value = e.target.value;
+        let valArr = value.split(',')
+        let suggestions = [];
+        if(valArr.length > 0) {
+            let val = valArr[valArr.length - 1]
+            const regex = new RegExp(`^${val}`, 'i');
+            suggestions = this.props.concept_types.sort().filter(v => regex.test(v));
+        }
+
+        
+        this.setState({ type_suggestions: suggestions, type: valArr });
+        
+
+    }
+
+    onSelectAs_type(value) {
+      let type = this.state.type;
+      type[type.length -1 ] = value
+      this.setState(() => ({
+        type: type,
+        type_suggestions: []
+    }))
+    }
+
+    turnToText(what) {
+      console.log(what)
+      let a = [];
+      if(typeof what === 'string' && what === "")  {
+        a = 'start to write';
+      } else if(typeof what === 'string' && what !== "") {
+        a = what;
+      } else {
+        let value = what;
+        a = value.join(',')
+      }
+      return a;
+    }
 
     /** sets state with either annotation or file properties */
     componentWillMount() {
@@ -64,7 +140,13 @@ class PopupComponent extends React.Component {
     }
     
     render() {
-      const area = this.state
+    
+      const area = this.state;
+
+      const concepts = this.props.concepts;
+      const concept_types = this.props.concept_types;
+
+
       const errors = this.state.errors;
       const options = ['false', 'true'].map((val, key) => {
         return <option key={key} value={val} >{ val }</option>
@@ -92,25 +174,43 @@ class PopupComponent extends React.Component {
                       />
                     </div>
                   : null }
+
+                { concepts !== undefined && concepts !== null && concepts.length > 0 
+                ?
                 <div className="input_row_wrapper">
-                  <TextInputComponent 
-                    error={errors.what}
-                    label="What : "
-                    onChange={this.onChangeText}
-                    value={area.what}
-                    field="what"
-                    type="text"      
+
+                  <AutoSuggestComponent
+                    error={errors.as_one}
+                    field={"what"}
+                    value={ this.turnToText(this.state.what) }
+                    onChange={this.onChangeAs}
+                    onSelect={this.onSelectAs}
+                    suggestions={this.state.suggestions}
+                    type={"text"}
+                    
                   />
 
-                  <TextInputComponent 
-                    error={errors.type}
-                    label="Type : "
-                    onChange={this.onChangeText}
-                    value={area.type}
-                    field="type"
-                    type="text"      
-                  />
+                { concept_types !== undefined && concept_types !== null && concept_types.length > 0 
+                ?
+                <AutoSuggestComponent
+                    error={errors.as_two}
+                    field={"type"}
+                    value={ this.turnToText(this.state.type) }
+                    onChange={this.onChangeAs_type}
+                    onSelect={this.onSelectAs_type}
+                    suggestions={this.state.type_suggestions}
+                    type={"text"}
+                    
+                  /> : null
+                }
+
+                </div>  
+                :
+                <div className="input_row_wrapper">
+                  <p className="no_concept_available_p"> Go to concept page and load JSON file. </p>
                 </div>
+              
+                }
 
                 { this.state.filename === undefined ?
 
@@ -152,7 +252,7 @@ class PopupComponent extends React.Component {
       e.preventDefault();
       const currentState = this.state
       if(currentState.filename !== undefined && currentState.filename !== null) {
-        console.log('[+]  save file annotation')
+      
         this.props.addNewToGlobalAnnotations({
           filename: currentState.filename,
           short_description: currentState.short_description,
@@ -160,7 +260,7 @@ class PopupComponent extends React.Component {
           type: currentState.type
         })
       } else {
-        console.log('[+]  save area annotation')
+  
         this.props.addNewToGlobalAnnotations({
           what: currentState.what,
           type: currentState.type,
@@ -176,12 +276,13 @@ class PopupComponent extends React.Component {
   /** must-have props for popup component */
   PopupComponent.propTypes = {
     current_area: PropTypes.object.isRequired,
-    closePopup: PropTypes.func.isRequired
+    closePopup: PropTypes.func.isRequired,
+
   };
   
   /** default props for popup component */
   PopupComponent.defaultProps = {
-  
+
   };
 
   export default PopupComponent;

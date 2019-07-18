@@ -12,7 +12,7 @@ import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionTo
 
 /** Baseurl - required for running on GitHub Pages */
 let baseurl = "."
-let img = require(`${'../resources/anntph.jpg'}`);
+
 
 
 /**
@@ -35,8 +35,10 @@ class FabricContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      annotation: this.props.annotation,
-      annotations: this.props.annotations,
+      //annotation: this.props.annotation,
+      //annotations: this.props.annotations,
+      //file: this.props.file,
+      //files: this.props.files,
       popup_current_area: undefined,
       popup_current_id: undefined,
 
@@ -49,7 +51,7 @@ class FabricContainer extends React.Component {
   
     }
     this.addNewToGlobalAnnotations = this.addNewToGlobalAnnotations.bind(this)
-    this.addNewObject= this.addNewObject.bind(this)
+    this.addNewObject = this.addNewObject.bind(this)
     this.nextAnnotation = this.nextAnnotation.bind(this)
     this.prevAnnotation = this.prevAnnotation.bind(this)
     this.togglePopup = this.togglePopup.bind(this)
@@ -71,11 +73,13 @@ class FabricContainer extends React.Component {
     this.ellipse; 
     this.isDown; 
     this.origX; 
-    this.origY, 
-    this.freeDrawing = true, 
-    this.textVal, 
+    this.origY; 
+    this.freeDrawing = true; 
+    this.textVal; 
     this.activeObj;
   }
+
+
 
   
 
@@ -124,46 +128,30 @@ class FabricContainer extends React.Component {
       return Math.abs(result)
   }
 
+  componentWillReceiveProps({ file }) {
+    if(file !== this.props.file && file !== undefined) { 
+      this.forceCanvasBackgroundChange(file) 
+    }
+  }
+
+  forceCanvasBackgroundChange(file) {
+    let canvas = this.state.canvas;
+    fabric.Image.fromURL(file.local_url, function(img) {
+      console.log('[0] force background to change')
+      canvas.setHeight(img.height);
+      canvas.setWidth(img.width);
+      // add background image
+      canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+        scaleX: canvas.width / img.width,
+        scaleY: canvas.height / img.height
+      });
+    })    
+  }
 
   /** Creates canvas after component has mounted */
   componentDidMount() {
-    const canvas = new fabric.Canvas(this.c)
+    let canvas = new fabric.Canvas(this.c)
 
-   
-    /** registers key events on canvas obj */
-    const key_down = (event) => {
-      event.preventDefault()
-      console.log("Running key down..")
-      console.log(event);
-
-      event.preventDefault()
-      let keyCode = event.keyCode || event.which;
-      let activeGroup = this.canvas.getActiveObject();
-
-      if(Array.isArray(activeGroup)) {
-        activeGroup.forEach(object => {
-          switch (keyCode) {
-            case 37:
-              obj.left = obj.left - STEP; 
-              break;
-            case 38:
-              obj.top = obj.top - STEP;
-              break;
-            case 39:
-              obj.left = obj.left + STEP;
-              break;
-            case 40:
-              obj.top = obj.top + STEP;
-              break;
-          }
-          object.setCoords();
-        });
-        this.canvas.renderAll()
-        
-      }
-
-    }
-    this.c.onkeydown = key_down;
 
     var rect = this.rect;
     var ellipse = this.ellipse;
@@ -173,9 +161,11 @@ class FabricContainer extends React.Component {
     var freeDrawing =this.freeDrawing;
     var textVal = this.textVal;
     var activeObj = this.activeObj; 
- 
+    
+    let file = this.props.file;
 
-    fabric.Image.fromURL(baseurl + img, function(img) {
+   
+    fabric.Image.fromURL(file.local_url, function(img) {
 
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
@@ -184,7 +174,11 @@ class FabricContainer extends React.Component {
         scaleX: canvas.width / img.width,
         scaleY: canvas.height / img.height
       });
-    });
+  
+  
+    })
+ 
+    
 
     
 
@@ -503,8 +497,12 @@ class FabricContainer extends React.Component {
 
   render() {
 
-    const annotation = this.props.annotation;
+    let annotation = this.props.annotation;
     const annotations = this.props.annotations;
+    const file = this.props.file;
+    const files = this.props.files;
+    const concepts = this.props.concepts;
+    const concept_types = this.props.concept_types;
 
     /** children passed in from WrapperComponent */
     const children = React.Children.map(this.props.children, child => {
@@ -518,11 +516,19 @@ class FabricContainer extends React.Component {
         <div className="canvas_btns" id="canvas_btns_upper">
           <button className="canvas_btn" 
             onClick={this.prevAnnotation.bind()}
-            disabled={annotation.index === 0}
+            disabled={file.index === 0}
           ><p className="canvas_btn_p">PREV</p></button>
+
+      <button className="zoom_btn" onClick={() => { 
+      console.log('zooming -')
+      }} ><p className="zoom_btn_p" >-</p></button>
+      <button className="zoom_btn" onClick={() => {
+        console.log('zooming +')
+      }} ><p className="zoom_btn_p" >+</p></button>
+
           <button className="canvas_btn"
             onClick={this.nextAnnotation.bind()}
-            disabled={annotation.index === annotations.length - 1}
+            disabled={file.index === files.length - 1}
           ><p className="canvas_btn_p">NEXT</p></button>
         </div>
 
@@ -540,9 +546,9 @@ class FabricContainer extends React.Component {
           </div>
         </div>
 
-        <p className="annotation_id_p" >{annotation.index}</p>
+        <p className="annotation_id_p" >{ annotation === undefined ? "0" : annotation.index  }</p>
 
-        <canvas ref={c => (this.c = c)} width={"500px"} heihgt={"500px"} style={{
+        <canvas ref={c => (this.c = c)} width={500} heihgt={700} style={{
           outline: 'black 3px solid'
         }} />
         { this.state.canvas && children }
@@ -553,12 +559,14 @@ class FabricContainer extends React.Component {
             current_area={this.state.popup_current_area}
             closePopup={this.togglePopup.bind(this)}
             addNewToGlobalAnnotations={this.addNewToGlobalAnnotations.bind(this)}
+            concepts={concepts}
+            concept_types={concept_types}
           />
           : null
         }
         <div className="canvas_btns" id="canvas_btns_bottom">
           <button className="canvas_btn" onClick={this.previewCurrentObjectsJSON.bind(this)}>
-            <p className="canvas_btn_p">PREVIEW JSON</p>
+            <p className="canvas_btn_p">PREVIEW SHAPE</p>
           </button>
           <button className="canvas_btn" onClick={this.removeSelectedObject.bind(this)}>
             <p className="canvas_btn_p">REMOVE SELECTED</p>
@@ -627,17 +635,24 @@ class FabricContainer extends React.Component {
   /** Display json of current shapes/annotations */
   previewCurrentObjectsJSON(e) {
     e.preventDefault()
-    this.props.previewJsonInWrapper(this.state.canvas.toJSON())
+    let canvas = this.state.canvas;
+    try {
+      let activeObject = canvas.getActiveObject()
+      this.props.previewJsonInWrapper(activeObject)
+    } catch(error) {
+      console.log(error)
+    }
+    
   }
 
   /** Remove selected shape from canvas */
   removeSelectedObject(e) {
-    e.preventDefault()
-    console.log('[0]are we here?')
+    e.preventDefault() 
+
     let canvas = this.state.canvas;
     let activeObject = canvas.getActiveObject()
     this.removeObjectsFromCanvas(canvas, [activeObject], () => {
-      console.log('[1]are we here?')
+
       this.props.removeObjectFromState(activeObject['id'])
     })
   }
@@ -732,9 +747,9 @@ class FabricContainer extends React.Component {
       }
     })
     if(newAnnotation.filename !== undefined && newAnnotation.filename !== null) {
-      this.props.addDescriptionToGlobalAnnotation(currentAnnotation, newAnnotation)
+      this.props.addDescriptionToGlobalAnnotation(currentAnnotation, newAnnotation, currentAnnotation.local_id)
     } else {
-      this.props.addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, currentCanvasObject)
+      this.props.addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, currentCanvasObject, currentAnnotation.local_id)
     }
   }
   
@@ -745,7 +760,7 @@ class FabricContainer extends React.Component {
 /** Unused **/
 function mapStateToProps(state, props) {
   return {
-
+    
   };
 }
 

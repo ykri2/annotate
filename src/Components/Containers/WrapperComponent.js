@@ -14,6 +14,10 @@ import Ellipse from '../FabricComponent/Ellipse.js';
 
 import { removeAreaFromGlobalAnnotation } from '../../Actions/removeAreaFromGlobalAnnotation'
 
+import { getAbsolutePosition } from '../../Components/resources/getAbsolutePosition'
+import { addCurrentFileAction } from '../../Actions/addCurrentFileAction';
+import PreviewComponent from '../HelperComponents/PreviewComponent.js';
+
 
 class WrapperComponent extends Component {
     constructor(props){
@@ -21,9 +25,13 @@ class WrapperComponent extends Component {
         this.state = {
             currentObjects: [],
             oldObjects: [],
-            showcase_annotations: [],
+            showcase_object: undefined,
             annotations: this.props.global_annotations,
-            annotation: this.props.global_annotations[0],
+            annotation: undefined,
+            files: this.props.global_files,
+            file: this.props.global_files[0],
+            concepts: this.props.concepts,
+            concept_types: this.props.concept_types,
             isLoading: false,
         
             errors: {}
@@ -38,18 +46,57 @@ class WrapperComponent extends Component {
     }
 
     componentWillMount() {
-        this.updateCurrentObjects()
+        
+        if(this.props.currentFile === undefined && this.props.global_files[0] !== undefined) {
+            this.props.addCurrentFileAction(0)
+        }
+
+        if(this.props.currentFile !== undefined) {
+
+            const nIndex = this.props.currentFile
+        
+            this.checkIfCurrentAnnotationExists(nIndex, (exists, annoIndex) => {
+                
+               
+
+                if(exists) {
+                    this.setState({ annotation : this.state.annotations[annoIndex], file: this.state.files[nIndex], currentObjects: [] }, () => {
+                    
+                        this.updateCurrentObjects()
+                    })
+
+                } else {
+                    this.setState({ annotation: { 
+                    index: 'temp', 
+                    local_id: this.state.files[nIndex].local_id, 
+                    file_properties: {
+                        what: '',
+                        type: '',
+                        filename: this.state.files[nIndex].filename,
+                        short_description: ''
+                    }, 
+                    areas: [] 
+                    }, file: this.state.files[nIndex], currentObjects: [] }, () => {
+                    
+                        this.updateCurrentObjects()
+                    })
+                }
+
+            }) 
+        }
+
     }
 
     updateCurrentObjects() {
-        const { annotation, currentObjects } = this.state;
+        const { annotation } = this.state;
         //  Are there currently any annotations?
-        if(annotation !== undefined) {
+        if(annotation !== undefined && annotation.areas !== undefined)  {
             if(annotation.areas.length >= 1) {
                 this.addExistingObject(annotation.areas)
                         
             }
         }
+ 
     }       
 
     /** unused for validation **/
@@ -62,42 +109,137 @@ class WrapperComponent extends Component {
         }
     }
 
+    checkIfCurrentAnnotationExists(index, callback) {
+
+        const annotations = this.state.annotations;
+        if(annotations.length >= 1) {
+
+            let files = this.state.files;
+       
+            let oIndex = annotations.findIndex(anno => anno.local_id === files[index].local_id)
+
+            if(oIndex !== -1) {
+                callback(true, oIndex)
+            } else { callback(false, 0) }
+
+        } else {
+            callback(false, 0)
+        }
+        
+    }
+
     nextAnnotation = () => {
-        const nIndex = this.state.annotation.index + 1;
-        this.setState({ annotation : this.state.annotations[nIndex], currentObjects: [] }, () => {
-            this.updateCurrentObjects()
-        })
+        const nIndex = this.state.file.index + 1;
+    
+        this.checkIfCurrentAnnotationExists(nIndex, (exists, annoIndex) => {
+            
+            // update redux current file
+            this.props.addCurrentFileAction(nIndex)
+    
+            if(exists) {
+                this.setState({ annotation : this.state.annotations[annoIndex], file: this.state.files[nIndex], currentObjects: [] }, () => {
+                 
+                    this.updateCurrentObjects()
+                })
+
+            } else {
+                this.setState({ annotation: { 
+                index: 'temp', 
+                local_id: this.state.files[nIndex].local_id, 
+                file_properties: {
+                    what: '',
+                    type: '',
+                    filename: this.state.files[nIndex].filename,
+                    short_description: ''
+                }, 
+                areas: [] 
+                }, file: this.state.files[nIndex], currentObjects: [] }, () => {
+                 
+                    this.updateCurrentObjects()
+                })
+            }
+
+        }) 
+
     }
   
     prevAnnotation = () => {
-        const nIndex = this.state.annotation.index - 1;
-        this.setState({ annotation : this.state.annotations[nIndex], currentObjects: [] }, () => {
-          this.updateCurrentObjects()
-      })
+        const nIndex = this.state.file.index - 1;
+     
+        this.checkIfCurrentAnnotationExists(nIndex, (exists, annoIndex) => {
+
+            // update redux current file
+            this.props.addCurrentFileAction(nIndex)
+               
+                if(exists) {
+                    this.setState({ annotation : this.state.annotations[annoIndex], file: this.state.files[nIndex], currentObjects: [] }, () => {
+               
+                        this.updateCurrentObjects()
+                    })
+    
+                } else {
+                    this.setState({ annotation: { 
+                        index: 'temp', 
+                        local_id: this.state.files[nIndex].local_id, 
+                        file_properties: {
+                            what: '',
+                            type: '',
+                            filename: this.state.files[nIndex].filename,
+                            short_description: ''
+                        }, 
+                        areas: [] 
+                    }, file: this.state.files[nIndex], currentObjects: [] }, () => {
+
+                        this.updateCurrentObjects()
+                    })
+                }
+            
+        })
     }
 
     render() { 
         const errors = this.state.errors;
-        const { annotations, annotation, currentObjects } = this.state;
+        let { annotations, annotation, files, file, concepts, concept_types, currentObjects } = this.state;
 
+        if(annotation === undefined && file === undefined) {
+            annotation = { index: 0, local_id: 'anno_temp', file_properties: {}, areas: [] }
+        } else if (annotation === undefined && file !== undefined) {
+            annotation = { 
+                index: 'temp', 
+                local_id: file.local_id, 
+                file_properties: {
+                    what: '',
+                    type: '',
+                    filename: file.filename,
+                    short_description: ''
+                }, 
+                areas: [] 
+            }
+        }
+
+
+        if(file === undefined) {
+            file = { index: 0, local_url : 0, local_id: 'file_temp' }
+        }
+   
         return (
             <div className="wrapper_component">
                 
                 <div className="wrapper_component_inner" >
                 <div className="settings_menu_upper">
                     <OptionMenu listitems={{
-                            btn_type: 'ANNOTATIONS',
-                            items: [{item: 'All annotations', destination: '/'},{item:'Annotations by picture', destination: '/'}, {item:'Get image with annotations', destination: '/'}]
+                            btn_type: 'OVERVIEW',
+                            items: [{item: 'Empty', destination: '/'}]
                         }} 
                     />
                     <OptionMenu listitems={{
-                            btn_type: 'DISPLAY',
-                            items: [{item: 'Canvas', destination: '/'},{item: 'Image list', destination: '/'}, {item: 'Summary', destination: '/'}]
+                            btn_type: 'EMPTY',
+                            items: [{item: 'Empty', destination: '/'}]
                         }} 
                     />
                     <OptionMenu listitems={{
-                            btn_type: 'SOMETHING',
-                            items: [{item: 'loading...', destination: '/'}]
+                            btn_type: 'CONCEPTS',
+                            items: [{item: 'Load concepts', destination: '/upload_concepts'}]
                         }}
                     />
                     <OptionMenu listitems={{
@@ -107,22 +249,19 @@ class WrapperComponent extends Component {
                     />
                     <OptionMenu listitems={{
                             btn_type: 'EXPORT',
-                            items: [{item: 'Export to .json', destination: '/'},{item: 'Export to .csv', destination: '/'}]
+                            items: [{item: 'Export to file', destination: '/export'}]
                         }} 
                     />
                 </div>
                 
                 <div className="editor_menu_lower">
-                    <div className="editor_menu_left">
-                        <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
-                        <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
-                        <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
-                        <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
-                        <button className="editor_side_option" ><p className="editor_side_option_p"> ? </p></button>
-                    </div>
                
                     <div className="editor_window_right">
-                        <FabricContainer 
+                        <FabricContainer
+                            file={file}
+                            files={files}
+                            concepts={concepts}
+                            concept_types={concept_types} 
                             annotation={annotation}
                             annotations={annotations}
                             addNewObject={this.addNewObject.bind(this)} 
@@ -136,19 +275,17 @@ class WrapperComponent extends Component {
                     </div>
                     
                 </div>
+                
+            </div>
                 <div className="editor_window_bottom" >
                     {
-                    this.state.showcase_annotations.length >= 1
+                    this.state.showcase_object !== undefined && this.state.showcase_object !== null
                     ?
-                    <TextAreaComponent 
-                        rows={"8"} 
-                        cols={"140"}
-                        placeholder={"preview output"}
-                        content={this.state.showcase_annotations}
+                    <PreviewComponent
+                        preview={this.state.showcase_object}
                     /> : null
                     }
                 </div>
-            </div>
 
             </div>
         );
@@ -156,8 +293,55 @@ class WrapperComponent extends Component {
     
     /** used to display json preview of annotations, sets state of component **/
     previewJsonInWrapper(json_preview) {
-        const annotations = json_preview.objects;
-        this.setState({ showcase_annotations: annotations })
+        
+        let active = json_preview._objects[0]
+        let preview = {}
+
+        if(active.type === "rect") {
+            let point = getAbsolutePosition(active, 'point')
+            preview = {
+                type: active.type,
+				x: point.x,
+				y: point.y,
+				width: (active.width * active.group.scaleX),
+				height: (active.height * active.group.scaleY),
+				id: active.id,
+            }
+
+        } else if( active.type === "ellipse") {
+            let point = getAbsolutePosition(active, 'point')
+            preview = {
+                type: active.type,
+				x: point.x,
+				y: point.y,
+				rx: (active.rx * active.group.scaleX),
+				ry: (active.ry * active.group.scaleY),
+				originX: active.originX,
+				originY: active.originY,
+				id: active.id,
+            }
+
+        } else {
+            if((active.group.scaleX <  1 || active.group.scaleX > 1) || (active.group.scaleY > 1 || active.group.scaleY < 1)) {
+                let matrix = active.calcTransformMatrix();
+                active.points = active.points.map((point) => {			
+                    return new fabric.Point(
+                        point.x - active.pathOffset.x,
+                        point.y - active.pathOffset.y);
+                }).map((point) => {			
+                    return fabric.util.transformPoint(point, matrix);
+                })
+            }
+            preview = {
+                type: active.type,
+				all_points: active.points,
+				width: (active.width * active.group.scaleX),
+				height: (active.height * active.group.scaleY),
+				id: active.id,
+            }
+
+        }
+        this.setState({ showcase_object: preview })
     } 
 
 
@@ -285,12 +469,18 @@ class WrapperComponent extends Component {
 function mapStateToProps(state, props) {
     return {
         global_annotations: state.annotations.annotations,
+        global_files: state.files.files,
+        currentFile: state.currentFile.currentFile,
+        
+        concepts: state.concepts.concepts,
+        concept_types: state.concept_types.concept_types
     };
 }
 
 /** unused **/
 const mapDispatchToProps = (dispatch) => ({
-    removeAreaFromGlobalAnnotation: bindActionCreators(removeAreaFromGlobalAnnotation, dispatch)
+    removeAreaFromGlobalAnnotation: bindActionCreators(removeAreaFromGlobalAnnotation, dispatch),
+    addCurrentFileAction: bindActionCreators(addCurrentFileAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrapperComponent);

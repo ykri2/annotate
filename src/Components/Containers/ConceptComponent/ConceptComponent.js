@@ -2,23 +2,23 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ProgressComponent from './ProgressComponent';
 import PropTypes from 'prop-types';
 
-import DropzoneComponent from './DropzoneComponent';
 
-import { sendFilesToStore } from '../../../Actions/sendFilesToStore';
+import { addGlobalConcepts } from '../../../Actions/addGlobalConcepts';
+
+import DropzoneComponent from '../UploadComponents/DropzoneComponent';
 
 /* eslint import/no-webpack-loader-syntax: off */
 import GridLoader from '-!react-svg-loader!../../resources/grid.svg';
 
 
 /** 
- * Upload Wrapper component 
+ * Concept Wrapper component 
  * 
  **/
 
-class UploadComponent extends React.Component {
+class ConceptComponent extends React.Component {
 
     constructor(props){
         super(props);
@@ -27,12 +27,32 @@ class UploadComponent extends React.Component {
           uploading: false,
           uploadProgess: {},
           successfullUploaded: false,
+
+          LoadedJsonFile: undefined,
         }
-        
+
         this.onFilesAdded = this.onFilesAdded.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
 
         this.renderActions = this.renderActions.bind(this);
+
+    }
+
+    static readUploadAsText = (file) => {
+
+        const fileReader = new FileReader()
+
+        return new Promise((resolve, reject) => {
+            fileReader.onError = () => {
+                fileReader.abort()
+                reject(new DOMException("Probelm parsing input file."))
+            }
+
+            fileReader.onload = (e) => {
+                resolve(JSON.parse(fileReader.result));
+            }
+            fileReader.readAsText(file)
+        })
 
     }
 
@@ -65,7 +85,7 @@ class UploadComponent extends React.Component {
             <div className='upload_card'>
               
               <div className="upload">
-                <span className="title">UPLOAD FILES</span>
+                <span className="title">UPLOAD CONCEPT FILE</span>
                 <div className="upload_content">
                     <div className="dropzone_wrapper">
                         <DropzoneComponent 
@@ -74,7 +94,7 @@ class UploadComponent extends React.Component {
                         />
                     </div>
                     <div className="files">
-                        { this.state.files.length < 1 ? <p className="action_no_files">NO FILES</p> :
+                        { this.state.files.length < 1 ? <p className="action_no_files">NO FILE - REQ. FORMAT IS {"{"} concepts = ["People", "Car", "Food", ..] {"}"}</p> :
                             this.state.files.map(file => {
                                 return (
                                     <div key={file.name} className="row" >
@@ -102,53 +122,41 @@ class UploadComponent extends React.Component {
                     onClick={() => {
                         this.setState({ files: [], successfullUploaded: false })
                     }}
-                ><p className="upload_btn_p">REMOVE FILES</p></button>
+                ><p className="upload_btn_p">REMOVE CONCEPTS</p></button>
             )
         } else {
             return (
                 <button className="upload_btn"
                     disabled={this.state.files.length < 0 || this.state.uploading} 
                     onClick={this.uploadFiles.bind(this)}
-                ><p className="upload_btn_p">UPLOAD FILES</p></button>
+                ><p className="upload_btn_p">UPLOAD CONCEPTS</p></button>
             )
         }
     }
 
-    getUniqueId() {
-        var d = new Date().getTime();
-        if(window.performance && typeof window.performance.now === "function"){
-            d += performance.now(); 
+
+
+    async createFileObject (files, callback) {
+        let textFile = files[0]
+
+        try {
+            const fileContent = await ConceptComponent.readUploadAsText(textFile)
+            return callback(fileContent.concepts)
+        } catch (e) {
+            
+            console.log(e)
+            this.setState({ successfullUploaded: false, uploading: false })
         }
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = (d + Math.random()*16)%16 | 0;
-            d = Math.floor(d/16);
-            return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-        });
-        return uuid;
     }
 
-    createFileObject(files, callback) {
-        let counter = 0;
-        const nfile = files.map(file => {
-            const obj = {
-                index: counter,
-                filename: file.name,
-                local_id: this.getUniqueId(),
-                local_url: URL.createObjectURL(file),
-            }
-            counter++;
-            return obj 
-        })
-        return callback(nfile)
-        
-    }
 
 
     uploadFiles() {
         this.setState({ uploadProgress: {}, uploaing: true })
         const files = this.state.files;
         this.createFileObject(files, (f) => {
-            this.props.sendFilesToStore(f)
+    
+            this.props.addGlobalConcepts(f)
             this.setState({ successfullUploaded: true, uploading: false })
         })
 
@@ -161,14 +169,14 @@ class UploadComponent extends React.Component {
 /** wrap global annotations to local component **/
 function mapStateToProps(state, props) {
     return {
-        fetching_files: state.files.fetching,
         
     };
 }
 
 /** map functions to props **/
 const mapDispatchToProps = (dispatch) => ({
-    sendFilesToStore: bindActionCreators(sendFilesToStore, dispatch)
+    addGlobalConcepts: bindActionCreators(addGlobalConcepts, dispatch),
+    
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ConceptComponent);

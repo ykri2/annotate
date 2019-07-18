@@ -2,51 +2,27 @@ import { fabric } from 'fabric';
 
 
 
-const getAbsolutePosition = (canvasObject, key) =>{
-	if(canvasObject.group) {
-		if(key === 'point') {
-			let matrix = canvasObject.calcTransformMatrix();
-			return fabric.util.transformPoint({y: canvasObject.top, x: canvasObject.left}, matrix)
-		}
-		else if(key === 'angle') {
-			return canvasObject.angle + canvasObject.group.angle;
-		}
-		else if(key === 'scaleX') {
-			return canvasObject.scaleX * canvasObject.group.scaleX;
-		} 
-		else if(key === 'scaleY') {
-			return canvasObject.scaleY * canvasObject.group.scaleY;
-		}
-	}
-	return 'none'
-}
-
+import { getAbsolutePosition } from '../Components/resources/getAbsolutePosition'
 
 
 
 /** Redux action - adds a new area to redux store "global" annotations */
-export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canvasObject){
+export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canvasObject, local_id){
 	let currentAnnotationObj = currentAnnotation;
 	let areas = currentAnnotationObj.areas;
 	let exists = false;
 	let newArea = {};
 
-	console.log(getAbsolutePosition(canvasObject, 'point'))
-	console.log(canvasObject.type)
-	console.log(canvasObject)
 
 	/** decide on which type of object to add */
 	if(canvasObject.type === 'polyline') {
 		if((canvasObject.group.scaleX <  1 || canvasObject.group.scaleX > 1) || (canvasObject.group.scaleY > 1 || canvasObject.group.scaleY < 1)) {
-			console.log('wehere?')
 			let matrix = canvasObject.calcTransformMatrix();
-			canvasObject.points = canvasObject.points.map((point) => {
-				console.log("here?1")
+			canvasObject.points = canvasObject.points.map((point) => {			
 				return new fabric.Point(
 					point.x - canvasObject.pathOffset.x,
 					point.y - canvasObject.pathOffset.y);
-			}).map((point) => {
-				console.log("here?2")
+			}).map((point) => {			
 				return fabric.util.transformPoint(point, matrix);
 			})
 		}
@@ -123,8 +99,15 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 	}
 
 	/** set currentAnnotation.areas to new array of areas */
-	currentAnnotation.areas = areas;
+	currentAnnotationObj.areas = areas;
 
+
+	if(currentAnnotationObj.index !== "temp") {
+		exists = true
+	}
+	currentAnnotationObj.index = "saved"
+	
+	console.log(currentAnnotationObj)
 
 	return function(dispatch){
 
@@ -132,8 +115,8 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 
 		/** set timeout - switch with API-call when backend is added  */
 		setTimeout(function(){ 
-			dispatch({type: 'ADD_AREA_FULFILLED', payload: currentAnnotationObj}) 
-		}, 2000);
+			dispatch({type: 'ADD_AREA_FULFILLED', payload: { co: currentAnnotationObj, local_id: local_id, exists: exists } } ) 
+		}, 500);
 
 	}
 }
