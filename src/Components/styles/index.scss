@@ -246,6 +246,7 @@
                                                 .text_input {
                                                     width: 100%;
                                                     height: 50px;
+                                                    border: 1px solid #182C61;
                                                     text-align: center;
                                                 }
                                             }
@@ -277,10 +278,17 @@
                                                 display: flex;
                                                 flex-direction: column;
                                                 align-items: center;
-                                 
                                                 padding: 3px;
-                                                border: 0.5px solid black;
-                                                z-index: 1;
+                                                
+                                                
+
+                                                .as_input_label {
+                                                    font-family: 'Ubuntu Condensed', sans-serif;
+                                                    font-size: 1em;
+                                                    text-align: center;
+                                                    color: #182C61;
+                                                
+                                                }
 
                                                 .help_block {
                                                     margin: 3px 0 10px 0;
@@ -296,32 +304,34 @@
                                                 .as_input {
                                                     height: 50px;
                                                     width: 100%;
-                                                    border: none;
+                                                    border: 1px solid #182C61;
                                                     text-align: center;
-
+                                
                                              
                                                 }
 
                                                 .as_ul {
-                                                    width:100%;
+                                                    width: 99%;
                                                     height: auto;
                                                     list-style-type: none;
-                                                    text-align: left;
+                                                    
                                                     margin: 0;
                                                     padding: 0;
-                                                    border-top: 0.7px solid #182C61;
+                                                    border-left: 0.7px solid #182C61;
+                                                    border-bottom: 0.7px solid #182C61;
+                                                    border-right: 0.7px solid #182C61;
                                                     z-index: 1;
-                                           
+                                                    background-color: #FFF;
 
                                                     .as_li {
                                                         height: 30px;
-                                                        width: 95%;
+                                                        width: 98%;
                                                         padding: 10px 5px;
                                                         border-bottom: 0.7px solid #182C61;
                                                         color: #182C61;
                                                         cursor: pointer;
                                                         z-index: 1;
-
+                                                        
                                                         .li_p {
                                                             margin: 5px 0 5px 0;
                                                             text-align: center;
@@ -363,7 +373,7 @@
                                                     font-family: 'Ubuntu Condensed', sans-serif;
                                                     font-size: 1em;
                                                     text-align: center;
-                                                    color: #4d4f50;
+                                                    color: #182C61;
                                                 }
                                                 .help_block {
                                                     margin: 3px 0 10px 0;
@@ -394,7 +404,7 @@
                                                     font-family: 'Ubuntu Condensed', sans-serif;
                                                     font-size: 1em;
                                                     text-align: center;
-                                                    color: #4d4f50;
+                                                    color: #182C61;
                                                 }
                                                 .help_block {
                                                     margin: 3px 0 10px 0;
@@ -697,6 +707,7 @@
                 color: #182C61;
                 padding: 10px 10px 10px 10px;
             }
+
             .about_comp_section {
                 height: auto;
                 width: 100%;    
@@ -906,28 +917,52 @@
                             align-items: center;
                             justify-content: center;
 
-                            border: 1px solid #182C61;
+                            border: 1px solid transparent;
                             border-radius: 2.4px;
-                            background-color: #ffffff;
 
                             .export_btn_p {
                                 font-size: 1em;
                                 font-family: 'Ubuntu Mono', monospace;
                                 font-weight: 400;
-                                color: #182C61;
                                 text-align: center;
                             }
                         }
-                        .export_btn:hover {
+                        #export_btn_csv {
                             background-color: #182C61;
 
                             .export_btn_p {
-                                font-size: 1.5em;
-                                color: #FFFFFF
+                                color: #ffffff;
                             }
-                        }   
-                    
-                    }
+                        }
+                        
+                        #export_btn_csv:hover {
+                            background-color: #FFFFFF;
+                            border: 0.8px solid #182C61;
+
+                            .export_btn_p {
+                                color: #182C61;
+                                font-size: 1.1em;
+                            }
+                        }
+                        #export_btn_json {
+                            background-color: rgb(26, 158, 149);
+                             
+                            .export_btn_p {
+                                color: #FFFFFF;
+                              
+                            }
+                        }
+                        
+                        #export_btn_json:hover {
+                            background-color: #FFFFFF;
+                            border: 0.8px solid rgb(26, 158, 149);
+
+                            .export_btn_p {
+                                color: rgb(26, 158, 149);
+                                font-size: 1.1em;
+                            }
+                        }
+                    }   
                     
                 }
             }
@@ -1150,6 +1185,7 @@
                                     align-items: center;
                                     justify-content: center;
                                     overflow-y: auto;
+                                    overflow-x: auto;
                                     border: 1px solid #182C61;
 
                                     .action_no_files {
@@ -1182,33 +1218,7 @@
                                         }
                                     }
 
-                                    .progress_wrapper {
-                                        display: flex;
-                                        flex: 1;
-                                        flex-direction: row;
-                                        align-items: center;
-                                        
-                                        .check_icon {
-                                            opacity: 0.5;
-                                            margin-left: 32px;
-                                            color: #182C61;
-                                        }
-
-                                        .progress_component {
-                                            width: 100%;
-                                            height: 8px;
-                                            background-color: rgb(215, 198, 243);
-                                            border-radius: 5px;
-                                            
-
-                                            .progress_div {
-                                                background-color: rgba(103, 58, 183, 1);
-                                                height: 100%;
-                                                margin: 0;
-                                                border-radius: 5px;
-                                            }
-                                        }
-                                    }
+                              
 
                                 }
 

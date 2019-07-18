@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
+import { turnToText } from '../resources/turnToText';
+
 import TextInputComponent from '../HelperComponents/TextInputComponent';
 import SelectInputComponent from '../HelperComponents/SelectInputComponent';
 import AutoSuggestComponent from '../HelperComponents/AutoSuggestComponent';
@@ -92,28 +94,16 @@ class PopupComponent extends React.Component {
     }))
     }
 
-    turnToText(what) {
-      console.log(what)
-      let a = [];
-      if(typeof what === 'string' && what === "")  {
-        a = 'start to write';
-      } else if(typeof what === 'string' && what !== "") {
-        a = what;
-      } else {
-        let value = what;
-        a = value.join(',')
-      }
-      return a;
-    }
-
     /** sets state with either annotation or file properties */
     componentWillMount() {
-      if(Object.keys(this.props.current_area)[0].toLowerCase() === 'shape_attribute') {
+      
+      if(Object.keys(this.props.current_area)[0].toLowerCase() === "shape_attribute") {
+
         this.setState((state, props) => ({
           what: props.current_area.shape_properties.what,
           type: props.current_area.shape_properties.type,
-          clear_view: props.current_area.shape_properties.quality_remarks.clear_view === true ? 'true' : 'false',
-          well_illuminated: props.current_area.shape_properties.quality_remarks.well_illuminated === true ? 'true' : 'false' ,
+          clear_view: props.current_area.shape_properties.quality_remarks.clear_view === "true" && props.current_area.shape_properties.quality_remarks.clear_view !== undefined ? 'true' : 'false',
+          well_illuminated: props.current_area.shape_properties.quality_remarks.well_illuminated === "true" && props.current_area.shape_properties.quality_remarks.well_illuminated !== undefined  ? 'true' : 'false' ,
         }))
       } else {
         this.setState((state, props) => ({
@@ -180,9 +170,10 @@ class PopupComponent extends React.Component {
                 <div className="input_row_wrapper">
 
                   <AutoSuggestComponent
+                    label={"What: "}
                     error={errors.as_one}
                     field={"what"}
-                    value={ this.turnToText(this.state.what) }
+                    value={ turnToText(this.state.what) }
                     onChange={this.onChangeAs}
                     onSelect={this.onSelectAs}
                     suggestions={this.state.suggestions}
@@ -193,9 +184,10 @@ class PopupComponent extends React.Component {
                 { concept_types !== undefined && concept_types !== null && concept_types.length > 0 
                 ?
                 <AutoSuggestComponent
+                    label={"Type: "}
                     error={errors.as_two}
                     field={"type"}
-                    value={ this.turnToText(this.state.type) }
+                    value={ turnToText(this.state.type) }
                     onChange={this.onChangeAs_type}
                     onSelect={this.onSelectAs_type}
                     suggestions={this.state.type_suggestions}

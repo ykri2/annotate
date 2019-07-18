@@ -12,8 +12,9 @@ const showSuggestions = (suggestions, suggestionSelected) => {
     )
 }
 
-const AutoSuggestComponent = ({ error, field, value, onChange, onSelect, suggestions, type }) => (
+const AutoSuggestComponent = ({ label, error, field, value, onChange, onSelect, suggestions, type }) => (
     <div className="autosuggest_component">
+        <label className="as_input_label">{label}</label>
         <input
             error={error}
             field={field}
