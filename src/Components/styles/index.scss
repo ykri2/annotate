@@ -498,7 +498,7 @@
                                     justify-content: center;
                                     text-align: center;
                                     background-color: rgba(22, 108, 149, 0.8);
-                                    border-radius: 2.3px;
+                                    border-radius: 2.4px;
                                     cursor: pointer;
 
                                     .editor_shape_option_p {
@@ -540,18 +540,55 @@
                             flex-direction: row;
                             align-items: center;
                             justify-content: center;
+                        
+
+                            .text_input_div {
+                                height: auto;
+                                width: 13%;
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                margin-top: 1.5px;
+                                margin: 0 10px 0 -10px;
+                                padding: 3px;
+
+                                .text_input_label {
+                                    font-family: 'Ubuntu Condensed', sans-serif;
+                                    font-size: 0.82em;
+                                    text-align: center;
+                                    color: #182C61;
+                                    margin: 10px 6px 10px 6px;
+                                }
+                                .help_block {
+                                    margin: 3px 0 10px 0;
+                                    width: 80%;
+                                    height: auto;
+                                    background-color: #a31212;
+                                    border-radius: 12.5px;
+                                    border: 0.5px solid rgb(0, 0, 0);
+                                    padding: 5px 0 5px 0;
+                                    color: #FFFFFF;
+                                }
+                                .text_input {
+                                    width: 70%;
+                                    height: 37px;
+                                    border: 0.8px solid #182C61;
+                                    border-radius: 3.7px;
+                                    text-align: center;
+                                }
+                            }
 
                             .zoom_btn {
                                 margin: 10px 15px 10px 15px;
                                 border: 0.6px solid transparent;
                                 height: 40px;
-                                width: 10%;        
+                                width: 9%;        
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
                                 justify-content: center;
                                 background-color: #182C61;
-                                border-radius: 2.3px;
+                                border-radius: 2.4px;
                                 cursor: pointer;
 
                                 .zoom_btn_p {
@@ -573,6 +610,67 @@
                                 }
                             }
 
+                            .toggle_zoom_btn {
+                                margin: 10px 15px 10px 15px;
+                                border: 0.6px solid transparent;
+                                height: 40px;
+                                width: 9%;        
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                border-radius: 2.4px;
+                                cursor: pointer;
+                                background-color: rgb(54, 139, 71);
+
+                                .zoom_btn_p {
+                                    padding: 6px 5px 6px 5px;;
+                                    font-family: 'Ubuntu', monospace;
+                                    color: rgb(255, 255, 255);
+                                    font-size: 0.8em;
+                                }
+                            }
+                            .toggle_zoom_btn_off {
+                                margin: 10px 15px 10px 15px;
+                                border: 0.6px solid transparent;
+                                height: 40px;
+                                width: 9%;      
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                border-radius: 2.4px;
+                                cursor: pointer;
+                                background-color: rgb(190, 57, 57);
+
+                                .zoom_btn_p {
+                                    padding: 6px 5px 6px 5px;;
+                                    font-family: 'Ubuntu', monospace;
+                                    color: rgb(255, 255, 255);
+                                    font-size: 0.8em;
+                                }
+                            }
+                            .toggle_zoom_btn_off:hover {
+                                background-color: #FFFFFF;
+                                box-shadow: 0px 1px 7px 3px rgba(0,0,0,0.2);
+
+                                .zoom_btn_p {
+                                    font-family: 'Ubuntu', monospace;
+                                    color: #182C61;
+                                    font-size: 0.8em;
+                                }
+                            }
+                            .toogle_zoom_btn:hover {
+                                background-color: #FFFFFF;
+                                box-shadow: 0px 1px 7px 3px rgba(0,0,0,0.2);
+
+                                .zoom_btn_p {
+                                    color: #182C61;
+                                    font-size: 1em;
+                                }
+                            }
+
+
                             .canvas_btn {
                                 margin: 10px 15px 10px 15px;
                                 border: 0.6px solid transparent;
@@ -583,7 +681,7 @@
                                 align-items: center;
                                 justify-content: center;
                                 background-color: #182C61;
-                                border-radius: 2.3px;
+                                border-radius: 2.4px;
                                 cursor: pointer;
 
                                 .canvas_btn_p {
@@ -971,6 +1069,241 @@
 
     }
 
+    /**  OVERVIEW COMPONENT ****/
+    .owrapper_comp {
+        height: auto;
+        width: 100%;    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1.5px solid #182C61;
+        border-top: 1.5px solid #182C61;
+        margin: 40px 0 40px 0;
+
+        .owrapper_comp_title {
+            font-family: 'Ubuntu Condensed', sans-serif;
+            font-size: 1.3em;
+            font-weight: 400;
+            text-align: center;
+            color: #182C61;
+            margin: 20px 0px 0px 0px;
+            padding: 10px 10px 10px 10px;
+            text-decoration: underline;
+        }
+
+        .overview {
+            height: auto;
+            width: 100%;
+            margin: 10px 0 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            
+            .overview_row {
+                height: auto;
+                width: 95%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: center;
+
+                .overview_card {
+                    background-color: #fff;
+                    padding: 10px;
+                    width: 30%;
+                    height: 270px;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-start;
+                    border-radius: 2.5px;
+                    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+                    box-sizing: border-box;
+                    margin: 40px 15px 40px 15px;
+
+                .overview_inner_wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    flex: 1;
+                    overflow: hidden; 
+                    width: 100%;
+    
+                
+                    .title {
+                        margin: 30px 0 20px 0;
+                        color: #182C61;
+                        font-size: 1em;
+                        font-weight: 400;
+                        text-align: center;
+                        font-family: 'Ubuntu Condensed', sans-serif;
+                    }
+
+                    .overview_content {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        width: 70%;
+                        padding: 16px;
+                        box-sizing: border-box;
+                        width: 100%;
+
+
+                        .overview_max_image_one {
+                            width: 100%;
+                            height: auto;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            border-bottom: 1.4px solid #182C61;
+
+                            .overview_index_p {
+                                margin: 10px 3 10px 3;
+                                color: #182C61;
+                                font-size: 1.5em;
+                                font-weight: 400;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                                text-decoration: underline;
+                            }
+                       
+                        }
+                        .overview_max_image_two {
+                            width: 90%;
+                            height: auto;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: center;
+                            padding-top: 7px;
+
+                            .overview_index_p {
+                                margin: 10px 3 10px 3;
+                                color: rgb(26, 158, 149);
+                                font-size: 2em;
+                                font-weight: 600;
+                                text-align: center;
+                                font-family: 'Ubuntu Condensed', sans-serif;
+                                text-decoration: underline;
+                            }
+                        }
+
+                        .overview_current_index {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            width: 100%;
+
+                            .overview_index_p {
+                                margin: 20px 0 20px 0;
+                                color: rgb(26, 158, 149);
+                                font-size: 2.5em;
+                                font-weight: 600;
+                                text-align: center;
+                                font-family: 'Ubuntu Condensed', sans-serif;
+                            }
+                            .overview_no_p {
+                                margin: 10px 0 10px 0;
+                                color: #182C61;
+                                font-size: 0.7em;
+                                font-weight: 300;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                            }
+                        }
+
+                        .overview_words_two {
+                            width: 100%;
+                            height: auto;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            padding-top: 10px;
+
+                            .overview_words_lower_p {
+                                margin: 3px 0 3px 0;
+                                color: #182C61;
+                                font-size: 0.8em;
+                                font-weight: 300;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                            }
+
+                            overflow-x: auto; 
+                            white-space: pre-wrap; 
+                            white-space: -moz-pre-wrap !important; 
+                            word-wrap: break-word; 
+                            white-space : normal;
+                            
+                        }
+
+                        .overview_one {
+                            width: 100%;
+                            height: auto;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            border-bottom: 1.4px solid #182C61;
+
+                            .overview_upper_p {
+                                margin: 15px 0 15px 0;
+                                color: rgb(26, 158, 149);
+                                font-size: 1.6em;
+                                font-weight: 400;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                            }
+                            .overview_no_p {
+                                margin: 20px 0 20px 0;
+                                color: #182C61;
+                                font-size: 0.7em;
+                                font-weight: 300;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                            }
+                        }
+
+                        .overview_two {
+                            width: 100%;
+                            height: auto;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+
+                            .overview_lower_p {
+                                margin: 15px 0 15px 0;
+                                color: #182C61;
+                                font-size: 1.4em;
+                                font-weight: 400;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                            }
+                            .overview_no_p {
+                                margin: 20px 0 20px 0;
+                                color: #182C61;
+                                font-size: 0.7em;
+                                font-weight: 300;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+    }
 
     /*** UPLOAD WRAPPPER COMPONENT **/
     .uwrapper_comp {

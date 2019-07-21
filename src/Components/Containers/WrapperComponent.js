@@ -229,7 +229,7 @@ class WrapperComponent extends Component {
                 <div className="settings_menu_upper">
                     <OptionMenu listitems={{
                             btn_type: 'OVERVIEW',
-                            items: [{item: 'Empty', destination: '/'}]
+                            items: [{item: 'App data overview', destination: '/overview'}]
                         }} 
                     />
                     <OptionMenu listitems={{

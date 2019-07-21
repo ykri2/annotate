@@ -13,8 +13,8 @@ const TextInputComponent = ({ field, value, label, error, onChange, type }) => (
             type={type}
             name={field}
             className="text_input"
-            max={ type === 'number' ? 12 : null }
-            min={ type === 'number' ? 2 : null }
+            max={ type === 'number' ? 100 : null }
+            min={ type === 'number' ? 1 : null }
             />
     </div>
     )

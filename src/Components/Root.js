@@ -10,6 +10,8 @@ import InstructionsComponent from './StaticComponents/InstructionsComponent';
 import UWrapperComponent from "./Containers/UploadComponents/UWrapperComponent";
 import EWrapperComponent from "./Containers/ExportComponent/EWrapperComponent";
 import CWrapperComponent from "./Containers/ConceptComponent/CWrapperComponent";
+import OWrapperComponent from "./Containers/OverviewComponent/OWrapperComponent";
+
 
 /** 
  * Root component 
@@ -19,15 +21,16 @@ console.log(process.env)
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router basename="/"  >
+        <Router basename="/annotate/"  >
               <Switch>
                   <App >
                     <Route exact path="/" component={() => { console.log("A");  return <MainComponent /> } } />
                     <Route exact path="/about" component={() => { console.log("B"); return <AboutComponent /> } } />
                     <Route exact path="/instructions" component={() => { console.log("C"); return <InstructionsComponent /> } } />
-                    <Route exact path="/upload" component={() => { console.log("D"); return <UWrapperComponent /> } } />
-                    <Route exact path="/export" component={() => { console.log("E"); return <EWrapperComponent /> } } />
-                    <Route exact path="/upload_concepts" component={() => { console.log("F"); return <CWrapperComponent /> } } />
+                    <Route exact path="/overview" component={() => { console.log("D"); return <OWrapperComponent /> } } />
+                    <Route exact path="/upload" component={() => { console.log("E"); return <UWrapperComponent /> } } />
+                    <Route exact path="/export" component={() => { console.log("F"); return <EWrapperComponent /> } } />
+                    <Route exact path="/upload_concepts" component={() => { console.log("G"); return <CWrapperComponent /> } } />
                   </App>
             </Switch>
         </Router>

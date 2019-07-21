@@ -5,10 +5,17 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types'
 import { fabric } from 'fabric';
 
+/** functions */
+
+import { mouseWheelZoom }  from './functions/mouseWheelZoom';
+import { removeObjectsFromCanvas }  from './functions/removeObjectsFromCanvas';
+import { switch_functions }  from './functions/switch_functions';
+import { getMouseCoordinates }  from './functions/getMouseCoordinates';
 
 import PopupComponent from '../Containers/PopupComponent';
 import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotation';
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
+import TextInputComponent from '../HelperComponents/TextInputComponent';
 
 /** Baseurl - required for running on GitHub Pages */
 let baseurl = "."
@@ -42,6 +49,8 @@ class FabricContainer extends React.Component {
       popup_current_area: undefined,
       popup_current_id: undefined,
 
+      mouseZoomOn: false,
+      zoom_rate: 0,
       isLoading: false,
       errors: {},
 
@@ -55,7 +64,16 @@ class FabricContainer extends React.Component {
     this.nextAnnotation = this.nextAnnotation.bind(this)
     this.prevAnnotation = this.prevAnnotation.bind(this)
     this.togglePopup = this.togglePopup.bind(this)
-    
+
+    this.moveImageDown = this.moveImageDown.bind(this)
+    this.moveImageLeft = this.moveImageLeft.bind(this)
+    this.moveImageUp = this.moveImageUp.bind(this)
+    this.moveImageRight = this.moveImageRight.bind(this)
+
+    this.zoomIn = this.zoomIn.bind(this)
+    this.zoomOut = this.zoomOut.bind(this)
+    this.onChangeZoomRate = this.onChangeZoomRate.bind(this)
+
     this.x = 0;
     this.y = 0;
 
@@ -77,6 +95,10 @@ class FabricContainer extends React.Component {
     this.freeDrawing = true; 
     this.textVal; 
     this.activeObj;
+
+
+    /** move bg img */
+
   }
 
 
@@ -134,6 +156,7 @@ class FabricContainer extends React.Component {
     }
   }
 
+
   forceCanvasBackgroundChange(file) {
     let canvas = this.state.canvas;
     fabric.Image.fromURL(file.local_url, function(img) {
@@ -152,15 +175,13 @@ class FabricContainer extends React.Component {
   componentDidMount() {
     let canvas = new fabric.Canvas(this.c)
 
-
     var rect = this.rect;
     var ellipse = this.ellipse;
     var isDown = this.isDown;
     var origX = this.origX;
     var origY = this.origY;
-    var freeDrawing =this.freeDrawing;
-    var textVal = this.textVal;
-    var activeObj = this.activeObj; 
+    var freeDrawing = this.freeDrawing;
+    var activeObj = this.activeObj;
     
     let file = this.props.file;
 
@@ -172,62 +193,24 @@ class FabricContainer extends React.Component {
       // add background image
       canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
         scaleX: canvas.width / img.width,
-        scaleY: canvas.height / img.height
+        scaleY: canvas.height / img.height,
+        selectable: true,
       });
+   
   
   
     })
- 
-    
-
-    
-
-    /** changes canvas listeners - removes and adds function */
-    const switch_functions = (type, oldFunction, newFunction, callback) => {
-      canvas.off(type, oldFunction)
-      callback(type, newFunction)
-    }
 
 
     /** Canvas event on wheel-scroll for zooming **/
     const mouse_wheel = (options) => {
-      var delta = options.e.deltaY;
-      var zoom = canvas.getZoom();
-      zoom = zoom + delta/200;
-      if(zoom > 20) { 
-        zoom = 20; 
+      if(this.state.mouseZoomOn === true) {
+        mouseWheelZoom(canvas, options)
       }
-      if(zoom < 0.01) {
-        zoom = 0.01;
-      }
-
-      canvas.zoomToPoint({ x: options.e.offsetX , y: options.e.offsetY }, zoom)
-        options.e.preventDefault();
-        options.e.stopPropagation();
-        let vpt = canvas.viewportTransform;
-        if(zoom < 400 / canvas.getWidth()) {
-          canvas.viewportTransform[4] = 200 - canvas.getWidth() * zoom / 2;
-          canvas.viewportTransform[5] = 200 - canvas.getHeight() * zoom / 2;
-        } else {
-          if(vpt[4] >= 0) {
-            canvas.viewportTransform[4] = 0;
-          } else if(vpt[4] < canvas.getWidth() - 1000 * zoom) {
-            canvas.viewportTransform[4] = canvas.getWidth() - 1000 * zoom;
-          }
-          if(vpt[5] >= 0) {
-            canvas.viewportTransform[5] = 0;
-          } else if(vpt[5] < canvas.getHeight() - 1000 * zoom) {
-            canvas.viewportTransform[5] = canvas.getHeight() - 1000 * zoom;
-          }
-        }
     }
     canvas.on('mouse:wheel', mouse_wheel)
 
-
-  
-
-
-    /** on dobble click on the background or active object to toggle popup, listener temporary removed when drawing polygon */
+/** on dobble click on the background or active object to toggle popup, listener temporary removed when drawing polygon */
     const oldDobbleClick = (options) => {
       let activeObject = canvas.getActiveObject();
       
@@ -265,21 +248,11 @@ class FabricContainer extends React.Component {
       this.setState({ canvas })
     }
 
-    
-    /** used to get mouse coordinates when drawing polygon */
-    const getMouseCoordinates = (options) => {
-      var pointer = canvas.getPointer(options.e);
-      var px = pointer.x;
-      var py = pointer.y;
-
-      return [px, py]
-    }
-
     /** used to to set line start x and y to current mouse coordinates  */
     const setStartingPoint = (options) => {
       const offsetTop = this.c.offsetTop;
       const offsetLeft = this.c.offsetLeft;
-      const values  = getMouseCoordinates(options)
+      const values  = getMouseCoordinates(canvas, options)
       this.x = values[0] - offsetTop; 
       this.y = values[1] - offsetLeft;
     }
@@ -289,6 +262,14 @@ class FabricContainer extends React.Component {
     const mouse_down = (options) => {
       options.e.preventDefault();
       options.e.stopPropagation();
+
+      var evt = options.e;
+      if (evt.altKey === true) {
+        canvas.isDragging = true;
+        canvas.selection = false;
+        canvas.lastPosX = evt.clientX;
+        canvas.lastPosY = evt.clientY;
+      }
   
       if(freeDrawing !== false && this.drawingObject.type !== null && this.drawingObject.type !== undefined && this.drawingObject.type !== "") {
         isDown = true;
@@ -355,6 +336,18 @@ class FabricContainer extends React.Component {
       options.e.preventDefault();
       options.e.stopPropagation();
 
+
+
+      if (canvas.isDragging) {
+        var e = options.e;
+        canvas.viewportTransform[4] += e.clientX - canvas.lastPosX;
+        canvas.viewportTransform[5] += e.clientY - canvas.lastPosY;
+        canvas.requestRenderAll();
+        canvas.lastPosX = e.clientX;
+        canvas.lastPosY = e.clientY;
+      }
+
+
       if(isDown && freeDrawing) {
         var pointer = canvas.getPointer(options.e);
 
@@ -417,7 +410,10 @@ class FabricContainer extends React.Component {
       options.e.preventDefault();
       options.e.stopPropagation();
       let activeObject = canvas.getActiveObject()
-    
+      
+
+      canvas.isDragging = false;
+      canvas.selection = true;  
 
       if(freeDrawing && this.drawingObject.type !== "") {
         isDown = false;
@@ -519,13 +515,6 @@ class FabricContainer extends React.Component {
             disabled={file.index === 0}
           ><p className="canvas_btn_p">PREV</p></button>
 
-      <button className="zoom_btn" onClick={() => { 
-      console.log('zooming -')
-      }} ><p className="zoom_btn_p" >-</p></button>
-      <button className="zoom_btn" onClick={() => {
-        console.log('zooming +')
-      }} ><p className="zoom_btn_p" >+</p></button>
-
           <button className="canvas_btn"
             onClick={this.nextAnnotation.bind()}
             disabled={file.index === files.length - 1}
@@ -563,7 +552,24 @@ class FabricContainer extends React.Component {
             concept_types={concept_types}
           />
           : null
+        
         }
+        <div className="canvas_btns" id="canvas_btns_tool">
+          <button className="zoom_btn" onClick={this.moveImageLeft.bind(this)} ><p className="zoom_btn_p" >{"<-"}</p></button>
+          <button className="zoom_btn" onClick={this.moveImageUp.bind(this)} ><p className="zoom_btn_p">UP</p></button>
+          <button className="zoom_btn" onClick={this.moveImageDown.bind(this)} ><p className="zoom_btn_p">DOWN</p></button>
+          <button className="zoom_btn" onClick={this.moveImageRight.bind(this)} ><p className="zoom_btn_p">{"->"}</p></button>
+          <button className="zoom_btn" onClick={this.zoomOut.bind(this)} ><p className="zoom_btn_p" >-</p></button>
+          <button className="zoom_btn" onClick={this.zoomIn.bind(this)} ><p className="zoom_btn_p" >+</p></button>
+
+          { this.state.mouseZoomOn !== false ?
+             null 
+             : 
+             <TextInputComponent field={'zoom_rate'} value={this.state.zoom_rate} label={'zoom rate'} error={undefined} onChange={this.onChangeZoomRate.bind(this)} type={'number'}  
+             /> }
+          
+          <button className={ this.state.mouseZoomOn === true ? "toggle_zoom_btn" : "toggle_zoom_btn_off" } onClick={this.toggleMouseZoom.bind(this)} ><p className="zoom_btn_p" >MOUSE ZOOM</p></button>
+        </div>
         <div className="canvas_btns" id="canvas_btns_bottom">
           <button className="canvas_btn" onClick={this.previewCurrentObjectsJSON.bind(this)}>
             <p className="canvas_btn_p">PREVIEW SHAPE</p>
@@ -578,6 +584,71 @@ class FabricContainer extends React.Component {
       </Fragment>
     )
   }
+
+
+onChangeZoomRate(e) {
+  e.preventDefault();
+  this.setState({
+    zoom_rate: e.target.value
+  })
+}
+
+
+zoomIn(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  let canvas = this.state.canvas;
+  let zoom_rate = Number(this.state.zoom_rate);
+  let zoom = canvas.getZoom()
+  console.log("zoooom out")
+  console.log(zoom)
+  console.log("zoom rate")
+  console.log(zoom_rate)
+  console.log("zoom rate / 100")
+  console.log(zoom_rate/100)
+  console.log(1 + (zoom_rate/100))
+  zoom *= 1 + (zoom_rate/100)
+  canvas.setZoom(zoom)
+  canvas.renderAll();
+}
+
+
+zoomOut(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  let canvas = this.state.canvas;
+  let zoom_rate = this.state.zoom_rate;
+  let zoom = canvas.getZoom()
+  console.log("zoooom out")
+  console.log(zoom)
+  console.log("zoom rate")
+  console.log(zoom_rate)
+  console.log("zoom rate / 100")
+  console.log(zoom_rate/100)
+  console.log(1 - (zoom_rate/100))
+  zoom *= 1 - (zoom_rate/100)
+  canvas.setZoom(zoom)
+  canvas.renderAll();  
+}
+
+moveImageDown() {
+
+}
+moveImageLeft() {
+
+}
+moveImageRight() {
+
+}
+moveImageUp() {
+
+}
+
+toggleMouseZoom() {
+  this.setState({
+    mouseZoomOn: !this.state.mouseZoomOn
+  })
+}
 
   /** start drawing ellipse */
   startEllipse(e) {
@@ -651,7 +722,7 @@ class FabricContainer extends React.Component {
 
     let canvas = this.state.canvas;
     let activeObject = canvas.getActiveObject()
-    this.removeObjectsFromCanvas(canvas, [activeObject], () => {
+    removeObjectsFromCanvas(canvas, [activeObject], () => {
 
       this.props.removeObjectFromState(activeObject['id'])
     })
@@ -662,7 +733,7 @@ class FabricContainer extends React.Component {
     e.preventDefault()
     let canvas = this.state.canvas;
     let objects = canvas.getObjects()
-    this.removeObjectsFromCanvas(canvas, objects, () => {
+    removeObjectsFromCanvas(canvas, objects, () => {
       this.props.nextAnnotation()
     })
 
@@ -673,19 +744,13 @@ class FabricContainer extends React.Component {
     e.preventDefault()
     let canvas = this.state.canvas;
     let objects = canvas.getObjects()
-    this.removeObjectsFromCanvas(canvas, objects, () => {
+    removeObjectsFromCanvas(canvas, objects, () => {
       this.props.prevAnnotation()
     })
 
   }
 
-  /** removes object from canvas and calls callback function */
-  removeObjectsFromCanvas(canvas, objects, callback) {
-    objects.forEach(object => {
-      canvas.remove(object)
-    })
-    callback()
-  }
+
 
   /** Show popup on shape selection */
   togglePopup(...args) {

@@ -43,8 +43,7 @@ class ExportComponent extends React.Component {
 
         const images = this.props.global_files;
         const annot = this.props.global_annotations;
-        console.log(annot)
-        console.log(images)
+   
         return (
             <div className='export'>
                 <div className="export_card">
