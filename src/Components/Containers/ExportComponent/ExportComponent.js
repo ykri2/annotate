@@ -51,7 +51,7 @@ class ExportComponent extends React.Component {
                     <span className="title">EXPORT CSV</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button className="export_btn"  id="export_btn_csv" onClick={() => {
+                                <button disabled={ annot !== undefined && annot.length < 0 ? true : false } className="export_btn"  id="export_btn_csv" onClick={() => {
                                     this.exportCsvFile();
                                 }} >
                                     <p className="export_btn_p" >CSV</p>
@@ -68,7 +68,7 @@ class ExportComponent extends React.Component {
                         <span className="title">EXPORT JSON</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button className="export_btn" id="export_btn_json" onClick={() => {
+                                <button disabled={ annot !== undefined && annot.length < 0 ? true : false } className="export_btn" id="export_btn_json" onClick={() => {
                                     this.exportJsonFile();
                                 }} >
                                     <p className="export_btn_p" >JSON</p>
@@ -85,7 +85,7 @@ class ExportComponent extends React.Component {
                         <span className="title">EXPORT IMAGE CSV</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button className="export_btn" id="export_btn_csv" onClick={() => {
+                                <button disabled={ iamges !== undefined && images.length < 0 ? true : false } className="export_btn" id="export_btn_csv" onClick={() => {
                                     this.exportImageCsvFile();
                                 }} >
                                     <p className="export_btn_p" >CSV</p>
@@ -102,7 +102,7 @@ class ExportComponent extends React.Component {
                         <span className="title">EXPORT IMAGE JSON</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button className="export_btn"  id="export_btn_json" onClick={() => {
+                                <button disabled={ images !== undefined && images.length < 0 ? true : false } className="export_btn"  id="export_btn_json" onClick={() => {
                                     this.exportImageJsonFile();
                                 }} >
                                     <p className="export_btn_p" >JSON</p>

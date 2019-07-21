@@ -26,8 +26,12 @@ class TypeConceptComponent extends React.Component {
           uploading: false,
           uploadProgess: {},
           successfullUploaded: false,
+
+          wrong_file_type: false,
         }
         
+        this.checkUploadJSON = this.checkUploadJSON.bind(this);
+
         this.onFilesAdded = this.onFilesAdded.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
 
@@ -106,10 +110,12 @@ class TypeConceptComponent extends React.Component {
             )
         } else {
             return (
-                <button className="upload_btn"
+                <button className="upload_btn" id={ this.state.wrong_file_type ? "btn_error_alert" : null }
                     disabled={this.state.files.length < 0 || this.state.uploading} 
-                    onClick={this.uploadFiles.bind(this)}
-                ><p className="upload_btn_p">UPLOAD CONCEPT TYPES</p></button>
+                    onClick={ !this.state.wrong_file_type ? this.uploadFiles.bind(this) : () => {
+                        this.setState({ files: [], successfullUploaded: false, wrong_file_type: false })
+                    }}
+                ><p className="upload_btn_p" > { this.state.wrong_file_type ? "WRONG FILE TYPE - REMOVE" : "UPLOAD FILES"  }</p></button>
             )
         }
     }
@@ -128,16 +134,38 @@ class TypeConceptComponent extends React.Component {
         }
     }
 
+    checkUploadJSON() {
+        const files = this.state.files;
+        if(files !== undefined && files.length > 0) {
+            let type = files[0].type.split('/')
+            if(type[1] === "json") {
+                return true; 
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
 
 
+    /** function attached to upload btn, start async function to read file */
     uploadFiles() {
         this.setState({ uploadProgress: {}, uploaing: true })
         const files = this.state.files;
-        this.createFileObject(files, (f) => {
-            this.props.addGlobalConceptTypes(f)
-            this.setState({ successfullUploaded: true, uploading: false })
-        })
+        let shouldItProgress = this.checkUploadJSON();
 
+        if(files.length > 0 && shouldItProgress) {
+            this.createFileObject(files, (f) => {
+                this.props.addGlobalConceptTypes(f)
+                this.setState({ successfullUploaded: true, uploading: false, wrong_file_type: false })
+            })
+        } else {
+            this.setState({
+                wrong_file_type: true
+            })
+        }
 
     }
 

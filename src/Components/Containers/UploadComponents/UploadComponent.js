@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ProgressComponent from './ProgressComponent';
 import PropTypes from 'prop-types';
 
 import DropzoneComponent from './DropzoneComponent';
@@ -27,8 +26,11 @@ class UploadComponent extends React.Component {
           uploading: false,
           uploadProgess: {},
           successfullUploaded: false,
+
+          wrong_file_type: false
         }
-        
+
+        this.checkUpload = this.checkUpload.bind(this);
         this.onFilesAdded = this.onFilesAdded.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
 
@@ -36,24 +38,7 @@ class UploadComponent extends React.Component {
 
     }
 
-    renderProgress(file) {
-        const uploadProgress = this.state.uploadProgess[file.name];
-        if(this.state.uploading || this.state.successfullUploaded) {
-            return (
-                <div className="progress_wrapper">
-                    <ProgressComponent progress={ uploadProgress ? uploadProgess.percentage : 0 } />
-                    <GridLoader 
-                        className="check_icon"
-                        alt="done"
-                        style={{
-                            opacity: uploadProgress && uploadProgress.state === "done" ? 0.5 : 0
-                        }}
-                    />
-                </div>
-            )
-        }
-    }
-
+    /** on change listener for files */
     onFilesAdded(files) {
         this.setState(prevState => ({
             files: prevState.files.concat(files)
@@ -95,6 +80,8 @@ class UploadComponent extends React.Component {
         )
     }
 
+
+    /** renders upload btn when no files had been loaded and renders remove btn if not */
     renderActions() {
         if(this.state.successfullUploaded) {
             return (
@@ -106,14 +93,18 @@ class UploadComponent extends React.Component {
             )
         } else {
             return (
-                <button className="upload_btn"
-                    disabled={this.state.files.length < 0 || this.state.uploading} 
-                    onClick={this.uploadFiles.bind(this)}
-                ><p className="upload_btn_p">UPLOAD FILES</p></button>
+                <button className="upload_btn" id={ this.state.wrong_file_type ? "btn_error_alert" : null } 
+                    disabled={ this.state.files.length < 0 || this.state.uploading } 
+                    onClick={ !this.state.wrong_file_type ? this.uploadFiles.bind(this) : () => {
+                        this.setState({ files: [], successfullUploaded: false, wrong_file_type: false })
+                    } }
+                ><p className="upload_btn_p" > { this.state.wrong_file_type ? "WRONG FILE TYPE - REMOVE" : "UPLOAD FILES"  }</p></button>
             )
         }
     }
 
+
+    /** function gets unique id, is used to compate image and annotation object */
     getUniqueId() {
         var d = new Date().getTime();
         if(window.performance && typeof window.performance.now === "function"){
@@ -127,6 +118,7 @@ class UploadComponent extends React.Component {
         return uuid;
     }
 
+    /** function create files objects file unique id and object URL for temporary local storage */
     createFileObject(files, callback) {
         let counter = 0;
         const nfile = files.map(file => {
@@ -143,14 +135,35 @@ class UploadComponent extends React.Component {
         
     }
 
+    checkUpload() {
+        const files = this.state.files;
+        if(files !== undefined && files.length > 0) {
+            let type = files[0].type.split('/')
+            if(type[0] === "image") {
+                return true; 
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
+    /**  upload function - get files and send to redux store */
     uploadFiles() {
         this.setState({ uploadProgress: {}, uploaing: true })
         const files = this.state.files;
-        this.createFileObject(files, (f) => {
-            this.props.sendFilesToStore(f)
-            this.setState({ successfullUploaded: true, uploading: false })
-        })
+        let shouldItProgress = this.checkUpload()
+        if(files.length > 0 && shouldItProgress) {
+            this.createFileObject(files, (f) => {
+                this.props.sendFilesToStore(f)
+                this.setState({ successfullUploaded: true, uploading: false, wrong_file_type: false })
+            })
+        } else {
+            this.setState({
+                wrong_file_type: true
+            })
+        }
 
 
     }

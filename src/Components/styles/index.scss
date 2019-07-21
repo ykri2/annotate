@@ -1060,6 +1060,7 @@
                                 font-size: 1.1em;
                             }
                         }
+                        
                     }   
                     
                 }
@@ -1134,10 +1135,19 @@
     
                 
                     .title {
-                        margin: 30px 0 20px 0;
+                        margin: 30px 0 2px 0;
                         color: #182C61;
                         font-size: 1em;
                         font-weight: 400;
+                        text-align: center;
+                        font-family: 'Ubuntu Condensed', sans-serif;
+                    }
+
+                    .undertitle {
+                        margin: 5px 0 10px 0;
+                        color: #182C61;
+                        font-size: 0.7em;
+                        font-weight: 300;
                         text-align: center;
                         font-family: 'Ubuntu Condensed', sans-serif;
                     }
@@ -1152,7 +1162,6 @@
                         box-sizing: border-box;
                         width: 100%;
 
-
                         .overview_max_image_one {
                             width: 100%;
                             height: auto;
@@ -1163,13 +1172,13 @@
                             border-bottom: 1.4px solid #182C61;
 
                             .overview_index_p {
-                                margin: 10px 3 10px 3;
+                                margin: 20px 0 20px 0;
                                 color: #182C61;
                                 font-size: 1.5em;
                                 font-weight: 400;
                                 text-align: center;
                                 font-family: 'Ubuntu', monospace;
-                                text-decoration: underline;
+                            
                             }
                        
                         }
@@ -1183,38 +1192,13 @@
                             padding-top: 7px;
 
                             .overview_index_p {
-                                margin: 10px 3 10px 3;
+                                margin: 25px 8px 20px 8px;
                                 color: rgb(26, 158, 149);
-                                font-size: 2em;
+                                font-size: 1.2em;
                                 font-weight: 600;
                                 text-align: center;
                                 font-family: 'Ubuntu Condensed', sans-serif;
                                 text-decoration: underline;
-                            }
-                        }
-
-                        .overview_current_index {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            width: 100%;
-
-                            .overview_index_p {
-                                margin: 20px 0 20px 0;
-                                color: rgb(26, 158, 149);
-                                font-size: 2.5em;
-                                font-weight: 600;
-                                text-align: center;
-                                font-family: 'Ubuntu Condensed', sans-serif;
-                            }
-                            .overview_no_p {
-                                margin: 10px 0 10px 0;
-                                color: #182C61;
-                                font-size: 0.7em;
-                                font-weight: 300;
-                                text-align: center;
-                                font-family: 'Ubuntu', monospace;
                             }
                         }
 
@@ -1253,6 +1237,15 @@
                             justify-content: center;
                             border-bottom: 1.4px solid #182C61;
 
+                            .overview_current_index_p {
+                                margin: 20px 0 20px 0;
+                                color: rgb(26, 158, 149);
+                                font-size: 2em;
+                                font-weight: 400;
+                                text-align: center;
+                                font-family: 'Ubuntu', monospace;
+                            }
+
                             .overview_upper_p {
                                 margin: 15px 0 15px 0;
                                 color: rgb(26, 158, 149);
@@ -1279,6 +1272,76 @@
                             align-items: center;
                             justify-content: center;
 
+
+                            .overview_move_current_index {
+                                width: 90%;
+                                height: auto;
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: center;
+
+                                .text_input_div {
+                                    height: auto;
+                                    width: 20%;
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    margin-top: 1.5px;
+                                    margin: 0 10px 0 -10px;
+                                    padding: 3px;
+    
+                                    .text_input_label {
+                                        font-family: 'Ubuntu Condensed', sans-serif;
+                                        font-size: 0.82em;
+                                        text-align: center;
+                                        color: #182C61;
+                                        margin: 10px 6px 10px 6px;
+                                    }
+                                    .help_block {
+                                        margin: 3px 0 10px 0;
+                                        width: 80%;
+                                        height: auto;
+                                        background-color: #a31212;
+                                        border-radius: 12.5px;
+                                        border: 0.5px solid rgb(0, 0, 0);
+                                        padding: 5px 0 5px 0;
+                                        color: #FFFFFF;
+                                    }
+                                    .text_input {
+                                        width: 70%;
+                                        height: 37px;
+                                        border: 0.8px solid #182C61;
+                                        border-radius: 3.7px;
+                                        text-align: center;
+                                    }
+                                }
+
+                                .overview_goto_btn {
+                                    margin: 10px 15px 10px 15px;
+                                    border: 0.6px solid transparent;
+                                    height: 40px;
+                                    width: 10%;      
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    justify-content: center;
+                                    border-radius: 2.4px;
+                                    cursor: pointer;
+                                    background-color: rgb(54, 139, 71);
+
+                                    .goto_btn_p {
+                                        padding: 6px 5px 6px 5px;;
+                                        font-family: 'Ubuntu Condensed', sans-serif;
+                                        color: rgb(255, 255, 255);
+                                        font-size: 0.8em;
+                                    }
+
+                                }
+
+                            }
+
+
                             .overview_lower_p {
                                 margin: 15px 0 15px 0;
                                 color: #182C61;
@@ -1297,6 +1360,8 @@
                             }
 
                         }
+
+
 
                     }
                 }
@@ -1473,7 +1538,7 @@
                                     outline: 0;
                                     border: 1px solid transparent;
                                     border-radius: 2.5px;
-                                    background: #182C61;
+                                    background-color: #182C61;
                                     cursor: pointer;
                                     
                                     .upload_btn_p {
@@ -1485,7 +1550,7 @@
                                     
                                 }
                                 .upload_btn:hover {
-                                    background: #fff;
+                                    background-color: #fff;
                                     border: 0.8px solid #182C61;
 
                                     .upload_btn_p {
@@ -1494,11 +1559,18 @@
                                     }
                                 }
                                 .upload_btn:disabled {
-                                    background: rgb(179, 173, 173);
+                                    background-color: rgb(179, 173, 173);
                                     cursor: default;
                                 }
                             }
 
+                            #btn_error_alert {
+                                background-color: none;
+                                background-color: rgb(190, 57, 57);
+                            }
+                            #btn_error_alert:hover {
+                                background-color: #FFFFFF;
+                            }
                             .upload_content {
                                 display: flex;
                                 flex-direction: row;

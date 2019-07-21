@@ -600,13 +600,7 @@ zoomIn(e) {
   let canvas = this.state.canvas;
   let zoom_rate = Number(this.state.zoom_rate);
   let zoom = canvas.getZoom()
-  console.log("zoooom out")
-  console.log(zoom)
-  console.log("zoom rate")
-  console.log(zoom_rate)
-  console.log("zoom rate / 100")
-  console.log(zoom_rate/100)
-  console.log(1 + (zoom_rate/100))
+
   zoom *= 1 + (zoom_rate/100)
   canvas.setZoom(zoom)
   canvas.renderAll();
@@ -619,13 +613,7 @@ zoomOut(e) {
   let canvas = this.state.canvas;
   let zoom_rate = this.state.zoom_rate;
   let zoom = canvas.getZoom()
-  console.log("zoooom out")
-  console.log(zoom)
-  console.log("zoom rate")
-  console.log(zoom_rate)
-  console.log("zoom rate / 100")
-  console.log(zoom_rate/100)
-  console.log(1 - (zoom_rate/100))
+
   zoom *= 1 - (zoom_rate/100)
   canvas.setZoom(zoom)
   canvas.renderAll();  

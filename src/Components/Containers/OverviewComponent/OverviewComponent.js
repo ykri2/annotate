@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Cipher } from 'crypto';
 
-
+import TextInputComponent from '../../HelperComponents/TextInputComponent';
 
 /** 
  * Overview component 
@@ -18,7 +18,7 @@ class OverviewComponent extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-          
+            goto_index: undefined,
         }
         
 
@@ -77,12 +77,36 @@ class OverviewComponent extends React.Component {
                     <span className="title"> CURRENT IMAGE FILE </span>
                         <div className="overview_content">
                             <div className="overview_current_index">
-                                 { properties.currentFile !== undefined 
-                                    ? 
-                                    <p className="overview_index_p">{properties.currentFile}</p> 
-                                    : 
-                                    <p className="overview_no_p">no current index available</p> 
-                                } 
+                              <div className="overview_one">
+                                    { 
+                                        properties.currentFile !== undefined
+                                        ? 
+                                        <p className="overview_current_index_p">{properties.currentFile}</p>   
+                                        : 
+                                        <p className="overview_no_p">no current annotations available</p> 
+                                    } 
+                            </div>
+                            <div className="overview_two">
+                                    { properties.currentFile !== undefined 
+                                        ? 
+                                        <div className="overview_move_current_index" >
+                                            <TextInputComponent 
+                                                field={'goto_index'} 
+                                                value={this.state.goto_index} 
+                                                label={'MOVE INDEX'}
+                                                error={undefined} 
+                                                onChange={() => {
+                                                    console.log('[+] on change')
+                                                }} 
+                                                type={'number'}  
+                                            />
+                                            <button className={ "overview_goto_btn" } onClick={()=>{console.log("[+] goto btn")}} ><p className="goto_btn_p" >GO</p></button>
+                                        </div>
+                                        : 
+                                        <p className="overview_no_p">no current image available</p> 
+                                    } 
+                            </div>
+
                             </div>
                         </div>
                     </div>
@@ -131,7 +155,7 @@ class OverviewComponent extends React.Component {
                         </div>
                         :
                         <div className="overview_content">
-                            <div className="overview_current_index">
+                            <div className="overview_one">
                                 <p className="overview_no_p">no current index available</p> 
                             </div>
                         </div>
@@ -141,12 +165,12 @@ class OverviewComponent extends React.Component {
                 <div className="overview_card">
                     <div className="overview_inner_wrapper">
                     <span className="title"> MOST ANNOTATED IMAGE </span>
-                    <span className="title"> TOTAL NR / IDS </span>
+                    <span className="undertitle"> TOTAL NR / IDS </span>
                         { mostAnnotatedImage !== false && mostAnnotatedImage !== undefined
                         ?
                         <div className="overview_content">
                         <div className="overview_max_image_one">
-                                <p className="overview_upper_p">{mostAnnotatedImage.max_length}</p> 
+                                <p className="overview_index_p">{mostAnnotatedImage.max_length}</p> 
                             </div>
                             <div className="overview_max_image_two">
                                 {
@@ -156,7 +180,7 @@ class OverviewComponent extends React.Component {
                         </div>
                         :
                         <div className="overview_content">
-                            <div className="overview_current_index">
+                            <div className="overview_one">
                                 <p className="overview_no_p">no current index available</p> 
                             </div>
                         </div>
@@ -180,7 +204,7 @@ class OverviewComponent extends React.Component {
                         </div>
                         :
                         <div className="overview_content">
-                            <div className="overview_current_index">
+                            <div className="overview_one">
                                 <p className="overview_no_p">no current index available</p> 
                             </div>
                         </div>
@@ -192,6 +216,11 @@ class OverviewComponent extends React.Component {
             </div>
         )
     }
+
+
+
+    empty_overview_content
+
 
     countFrequency(array) {
         return array.reduce(function(count, word) {
@@ -277,6 +306,7 @@ class OverviewComponent extends React.Component {
         return { max_length: mostanno.max_length, all_indexs: mostanno.all_ids.map((id) => {
             let img;
             for(img in images) {
+ 
                 if(id === images[img].local_id) {
                     return images[img].index;
                 }
@@ -288,6 +318,7 @@ class OverviewComponent extends React.Component {
     mostAnnotatedImage(annotations, images) {
         try {
             let mostanno = this.findMostAnnotatedId(annotations)
+  
             return this.findImagesById(mostanno, images)
         } catch (e) {
 
