@@ -43,6 +43,7 @@ class ExportComponent extends React.Component {
 
         const images = this.props.global_files;
         const annot = this.props.global_annotations;
+     
    
         return (
             <div className='export'>
@@ -51,7 +52,7 @@ class ExportComponent extends React.Component {
                     <span className="title">EXPORT CSV</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button disabled={ annot !== undefined && annot.length < 0 ? true : false } className="export_btn"  id="export_btn_csv" onClick={() => {
+                                <button disabled={ annot === undefined || annot.length < 1 ? true : false } className="export_btn"  id="export_btn_csv" onClick={() => {
                                     this.exportCsvFile();
                                 }} >
                                     <p className="export_btn_p" >CSV</p>
@@ -68,7 +69,7 @@ class ExportComponent extends React.Component {
                         <span className="title">EXPORT JSON</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button disabled={ annot !== undefined && annot.length < 0 ? true : false } className="export_btn" id="export_btn_json" onClick={() => {
+                                <button disabled={ annot === undefined || annot.length < 1 ? true : false } className="export_btn" id="export_btn_json" onClick={() => {
                                     this.exportJsonFile();
                                 }} >
                                     <p className="export_btn_p" >JSON</p>
@@ -85,14 +86,14 @@ class ExportComponent extends React.Component {
                         <span className="title">EXPORT IMAGE CSV</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button disabled={ iamges !== undefined && images.length < 0 ? true : false } className="export_btn" id="export_btn_csv" onClick={() => {
+                                <button disabled={ images === undefined || images.length < 1 ? true : false } className="export_btn" id="export_btn_csv" onClick={() => {
                                     this.exportImageCsvFile();
                                 }} >
                                     <p className="export_btn_p" >CSV</p>
                                 </button>
                             </div>
                             <div className="files">
-                                <p className="action_no_files"> { images === undefined || images.length < 1 ?  "First import, then export" : "Click the button to download CSV file with image anme and corresponding annotation id." } </p>
+                                <p className="action_no_files"> { images === undefined || images.length < 1 ?  "First import, then export" : "Click the button to download CSV file with image name and corresponding annotation id." } </p>
                             </div>
                         </div>
                     </div>
@@ -102,7 +103,7 @@ class ExportComponent extends React.Component {
                         <span className="title">EXPORT IMAGE JSON</span>
                         <div className="export_content">
                             <div className="export_btn_wrapper">
-                                <button disabled={ images !== undefined && images.length < 0 ? true : false } className="export_btn"  id="export_btn_json" onClick={() => {
+                                <button disabled={ images == undefined || images.length < 1 ? true : false } className="export_btn"  id="export_btn_json" onClick={() => {
                                     this.exportImageJsonFile();
                                 }} >
                                     <p className="export_btn_p" >JSON</p>

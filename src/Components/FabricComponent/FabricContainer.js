@@ -65,10 +65,6 @@ class FabricContainer extends React.Component {
     this.prevAnnotation = this.prevAnnotation.bind(this)
     this.togglePopup = this.togglePopup.bind(this)
 
-    this.moveImageDown = this.moveImageDown.bind(this)
-    this.moveImageLeft = this.moveImageLeft.bind(this)
-    this.moveImageUp = this.moveImageUp.bind(this)
-    this.moveImageRight = this.moveImageRight.bind(this)
 
     this.zoomIn = this.zoomIn.bind(this)
     this.zoomOut = this.zoomOut.bind(this)
@@ -555,10 +551,7 @@ class FabricContainer extends React.Component {
         
         }
         <div className="canvas_btns" id="canvas_btns_tool">
-          <button className="zoom_btn" onClick={this.moveImageLeft.bind(this)} ><p className="zoom_btn_p" >{"<-"}</p></button>
-          <button className="zoom_btn" onClick={this.moveImageUp.bind(this)} ><p className="zoom_btn_p">UP</p></button>
-          <button className="zoom_btn" onClick={this.moveImageDown.bind(this)} ><p className="zoom_btn_p">DOWN</p></button>
-          <button className="zoom_btn" onClick={this.moveImageRight.bind(this)} ><p className="zoom_btn_p">{"->"}</p></button>
+
           <button className="zoom_btn" onClick={this.zoomOut.bind(this)} ><p className="zoom_btn_p" >-</p></button>
           <button className="zoom_btn" onClick={this.zoomIn.bind(this)} ><p className="zoom_btn_p" >+</p></button>
 
@@ -619,18 +612,7 @@ zoomOut(e) {
   canvas.renderAll();  
 }
 
-moveImageDown() {
 
-}
-moveImageLeft() {
-
-}
-moveImageRight() {
-
-}
-moveImageUp() {
-
-}
 
 toggleMouseZoom() {
   this.setState({
@@ -707,11 +689,11 @@ toggleMouseZoom() {
   /** Remove selected shape from canvas */
   removeSelectedObject(e) {
     e.preventDefault() 
-
+    console.log('[+] starting remove')
     let canvas = this.state.canvas;
     let activeObject = canvas.getActiveObject()
     removeObjectsFromCanvas(canvas, [activeObject], () => {
-
+      console.log('[+] Active object id - in callback')
       this.props.removeObjectFromState(activeObject['id'])
     })
   }

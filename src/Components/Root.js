@@ -17,11 +17,11 @@ import OWrapperComponent from "./Containers/OverviewComponent/OWrapperComponent"
  * Root component 
  * Wrappes app and routes to provider
  **/
-console.log(process.env)
+
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router basename="/"  >
+        <Router basename="/annotate/"  >
               <Switch>
                   <App >
                     <Route exact path="/" component={() => { console.log("A");  return <MainComponent /> } } />
