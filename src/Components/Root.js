@@ -21,7 +21,7 @@ import OWrapperComponent from "./Containers/OverviewComponent/OWrapperComponent"
 const Root = ({ store }) => (
       
       <Provider store={store} >
-        <Router basename="/annotate/"  >
+        <Router basename="/"  >
               <Switch>
                   <App >
                     <Route exact path="/" component={() => { console.log("A");  return <MainComponent /> } } />

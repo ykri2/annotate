@@ -65,9 +65,15 @@ export default function reducer(state=initialState, action){
             annotations: state.annotations.map((annotation) => {
                if(annotation.local_id === action.payload.local_id) {
                   let areas = annotation.areas
-                  annotation.areas = areas.splice(areas.findIndex(e => e.shape_attribute.id === action.payload.id), 1)
-               }
-               return annotation
+                  const placement = areas.findIndex(e => e.shape_attribute.id === action.payload.id);
+              
+                  annotation.areas = areas.filter((area) => {
+                     return area.shape_attribute.id !== action.payload.id
+                  })
+                  
+                  return annotation
+               } else { return  annotation }
+       
             })
          }
       }

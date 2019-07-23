@@ -691,10 +691,26 @@ toggleMouseZoom() {
     e.preventDefault() 
     console.log('[+] starting remove')
     let canvas = this.state.canvas;
+    let annotation = this.props.annotation;
+    
     let activeObject = canvas.getActiveObject()
+    const id = activeObject._objects[0].id
+
+    const isObjectInAnnotations = annotation.areas.filter((object) => {
+      return object.shape_attribute.id === id;
+    })
+
+
     removeObjectsFromCanvas(canvas, [activeObject], () => {
-      console.log('[+] Active object id - in callback')
-      this.props.removeObjectFromState(activeObject['id'])
+    
+
+      if(isObjectInAnnotations[0] !== undefined && isObjectInAnnotations.length > 0) {
+        this.props.removeObjectFromState(id, annotation.local_id)
+
+      } else {
+        console.log("[-] not a saved area")
+      }
+      
     })
   }
 

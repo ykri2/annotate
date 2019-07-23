@@ -347,27 +347,27 @@ class WrapperComponent extends Component {
 
     removeFromCurrentObjects(id){
         let currentObjects = this.state.currentObjects
-        let counter = undefined
+        let counter = 0;
         for (let i = 0; i <= currentObjects.length - 1; i++) {
+           
             if(currentObjects[i].props.id === id) {
+
                 currentObjects.splice(i, 1)
-                let counter = i;
+                counter = i;
             } 
         }
         return counter;
     }
 
+    
+
     /** used to remove object/shape from component state **/
-    removeObjectFromState(id) {
+    removeObjectFromState(id, local_id) {
+       // const object_position  = this.removeFromCurrentObjects(id)
 
-        const object_position  = this.removeFromCurrentObjects(id)
-        
-        
-        console.log('object pos: ' + object_position)
+       // console.log('[{+}] object position : ' + object_position)
 
-        if(object_position <= this.state.annotation.areas.length - 1) {
-            this.props.removeAreaFromGlobalAnnotation(this.state.annotation.index, id, object_position)
-        }
+        this.props.removeAreaFromGlobalAnnotation(id, local_id)
     }
 
     /** Adds a new shape to the canvas **/
@@ -477,7 +477,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-/** unused **/
+/** required actions **/
 const mapDispatchToProps = (dispatch) => ({
     removeAreaFromGlobalAnnotation: bindActionCreators(removeAreaFromGlobalAnnotation, dispatch),
     addCurrentFileAction: bindActionCreators(addCurrentFileAction, dispatch)
