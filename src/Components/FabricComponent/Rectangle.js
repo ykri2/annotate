@@ -28,11 +28,13 @@ class Rectangle extends React.Component {
             strokeWidth: this.props.strokeWidth,
             id: this.props.id
         })
-        let text_content = this.props.text_content[0]
+        let text_content = this.props.text_content
 
         if(text_content === undefined || text_content === null) {
-            text_content = "undefined"
+            text_content = []
         }
+
+        text_content = text_content.length + ''
         
         /** add text element to the rectangle */ 
         var text = new fabric.Text(text_content.toUpperCase(), {
@@ -81,9 +83,9 @@ Rectangle.defaultProps = {
 
     stroke: '#cd6133',
     strokeWidth: 5,
-    fontSize: 20,
+    fontSize: 10,
     fill:'transparent',
-    text_content: 'undefined'
+    text_content: []
 };
 
 

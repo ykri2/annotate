@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types'
 
 
-const TextInputComponent = ({ field, value, label, error, onChange, type }) => (
+const TextInputComponent = ({ field, value, label, error, onChange, type, max_length, min_length }) => (
     <div className="text_input_div" id='input_id'>
         <label className="text_input_label">{label}</label>
         { error && <span className="help-block">{error}</span> } 
@@ -12,9 +12,9 @@ const TextInputComponent = ({ field, value, label, error, onChange, type }) => (
             value={value}
             type={type}
             name={field}
-            className="text_input"
-            max={ type === 'number' ? 100 : null }
-            min={ type === 'number' ? 1 : null }
+            className="text_input"  
+            max={ type !== 'number' ? null : max_length !== undefined ? max_length : 100 }
+            min={ type !== 'number' ? null : min_length !== undefined ? min_length : 1 }
             />
     </div>
     )

@@ -1283,7 +1283,7 @@
 
                                 .text_input_div {
                                     height: auto;
-                                    width: 20%;
+                                    width: 50%;
                                     display: flex;
                                     flex-direction: row;
                                     align-items: center;
@@ -1321,7 +1321,7 @@
                                     margin: 10px 15px 10px 15px;
                                     border: 0.6px solid transparent;
                                     height: 40px;
-                                    width: 10%;      
+                                    width: 40%;      
                                     display: flex;
                                     flex-direction: column;
                                     align-items: center;
@@ -1335,6 +1335,16 @@
                                         font-family: 'Ubuntu Condensed', sans-serif;
                                         color: rgb(255, 255, 255);
                                         font-size: 0.8em;
+                                    }
+
+                                }
+                                .overview_goto_btn:hover {
+                                    border: 0.6px solid rgb(54, 139, 71);
+                                    background-color: rgb(253, 255, 253);
+
+                                    .goto_btn_p {          
+                                        color: rgb(54, 139, 71);
+                                        font-size: 0.9em;
                                     }
 
                                 }

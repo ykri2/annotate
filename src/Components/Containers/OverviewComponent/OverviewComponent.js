@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import PropTypes from 'prop-types';
-import { Cipher } from 'crypto';
+
 
 import TextInputComponent from '../../HelperComponents/TextInputComponent';
 
@@ -39,9 +39,7 @@ class OverviewComponent extends React.Component {
             mostusedtypes = this.produceMostUsedTypes(properties.annotations)
 
         }
-        console.log(mostAnnotatedImage)
-
-
+   
 
         return (
             <div className='overview'>
@@ -97,7 +95,9 @@ class OverviewComponent extends React.Component {
                                                 error={undefined} 
                                                 onChange={() => {
                                                     console.log('[+] on change')
-                                                }} 
+                                                    console.log(properties.files.length - 1)
+                                                }}
+                                                max_length={properties.files.length - 1}
                                                 type={'number'}  
                                             />
                                             <button className={ "overview_goto_btn" } onClick={()=>{console.log("[+] goto btn")}} ><p className="goto_btn_p" >GO</p></button>

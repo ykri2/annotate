@@ -31,11 +31,13 @@ class Ellipse extends React.Component {
 
             id: this.props.id
         })
-        let text_content = this.props.text_content[0]
+        let text_content = this.props.text_content
 
         if(text_content === undefined || text_content === null) {
-            text_content = "undefined"
+            text_content = []
         }
+
+        text_content = text_content.length + ''
 
         /** add text element to the ellipse */ 
         var text = new fabric.Text(text_content.toUpperCase(), {
@@ -85,11 +87,11 @@ Ellipse.defaultProps = {
     left: 0,
     rx: 100,
     ry: 70,
-    text_content: 'undefined',
+    text_content: [],
     originX: 'left',
     originY: 'top',
     stroke: '#cd6133',
-    fontSize: 20,
+    fontSize: 10,
     strokeWidth: 5,
     fill:'transparent'
 };
