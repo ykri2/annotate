@@ -37,16 +37,16 @@ class PopupComponent extends React.Component {
       this.onChangeText = this.onChangeText.bind(this)
       this.saveAnnotation = this.saveAnnotation.bind(this)
 
+      this.onChangeAs = this.onChangeAs.bind(this)
+      this.onSelectAs = this.onSelectAs.bind(this)
 
-
-    this.onChangeAs = this.onChangeAs.bind(this)
-    this.onSelectAs = this.onSelectAs.bind(this)
-
-    this.onChangeAs_type = this.onChangeAs_type.bind(this)
-    this.onSelectAs_type = this.onSelectAs_type.bind(this)
+      this.onChangeAs_type = this.onChangeAs_type.bind(this)
+      this.onSelectAs_type = this.onSelectAs_type.bind(this)
 
     }
     
+    /** on change autocomplete content(what) text field 
+     * - record whats written and show suggestions */
     onChangeAs(e) {
       const value = e.target.value;
       let valArr = value.split(',')
@@ -60,6 +60,9 @@ class PopupComponent extends React.Component {
       this.setState({ suggestions: suggestions, what: valArr });
     }
 
+    /** on select autocomplete content(what) text field
+     * - add to component state and clear suggestion list
+     */
     onSelectAs(value) {
       let what = this.state.what;
       what[what.length - 1] = value
@@ -69,6 +72,8 @@ class PopupComponent extends React.Component {
     }))
     }
 
+    /** on change autocomplete type text field 
+     * - record whats written and show suggestions */
     onChangeAs_type(e) {
       const value = e.target.value;
         let valArr = value.split(',')
@@ -85,6 +90,9 @@ class PopupComponent extends React.Component {
 
     }
 
+    /** on select autocomplete type text field
+     * - add to component state and clear suggestion list
+     */
     onSelectAs_type(value) {
       let type = this.state.type;
       type[type.length -1 ] = value

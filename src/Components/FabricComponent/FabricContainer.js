@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import { fabric } from 'fabric';
 
 /** functions */
-
 import { mouseWheelZoom }  from './functions/mouseWheelZoom';
 import { removeObjectsFromCanvas }  from './functions/removeObjectsFromCanvas';
 import { switch_functions }  from './functions/switch_functions';
@@ -17,7 +16,7 @@ import { addAreaToGlobalAnnotation } from '../../Actions/addAreaToGlobalAnnotati
 import { addDescriptionToGlobalAnnotation } from '../../Actions/addDescriptionToGlobalAnnotation';
 import TextInputComponent from '../HelperComponents/TextInputComponent';
 
-/** Baseurl - required for running on GitHub Pages */
+/** Baseurl */
 let baseurl = "."
 
 
@@ -42,10 +41,6 @@ class FabricContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      //annotation: this.props.annotation,
-      //annotations: this.props.annotations,
-      //file: this.props.file,
-      //files: this.props.files,
       popup_current_area: undefined,
       popup_current_id: undefined,
 
@@ -59,6 +54,7 @@ class FabricContainer extends React.Component {
       show_popup: false,
   
     }
+ 
     this.addNewToGlobalAnnotations = this.addNewToGlobalAnnotations.bind(this)
     this.addNewObject = this.addNewObject.bind(this)
     this.nextAnnotation = this.nextAnnotation.bind(this)
@@ -92,14 +88,7 @@ class FabricContainer extends React.Component {
     this.textVal; 
     this.activeObj;
 
-
-    /** move bg img */
-
   }
-
-
-
-  
 
   /** Used to generate unique id for each shape on canvas -  ID also used for saving annotations */
   generateUUID() {
@@ -146,17 +135,18 @@ class FabricContainer extends React.Component {
       return Math.abs(result)
   }
 
+  /** check on props when something changes, 
+   * if new file has been selected force a change of backgroundon canvas */
   componentWillReceiveProps({ file }) {
     if(file !== this.props.file && file !== undefined) { 
       this.forceCanvasBackgroundChange(file) 
     }
   }
 
-
+  /** takes new image file and renders a new backgroud on the canvas */
   forceCanvasBackgroundChange(file) {
     let canvas = this.state.canvas;
     fabric.Image.fromURL(file.local_url, function(img) {
-      console.log('[0] force background to change')
       canvas.setHeight(img.height);
       canvas.setWidth(img.width);
       // add background image
@@ -578,7 +568,7 @@ class FabricContainer extends React.Component {
     )
   }
 
-
+/** on change method for changing the zoom rate for default zoom with button click */
 onChangeZoomRate(e) {
   e.preventDefault();
   this.setState({
@@ -586,7 +576,7 @@ onChangeZoomRate(e) {
   })
 }
 
-
+/** used to zoom in by button */
 zoomIn(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -599,7 +589,7 @@ zoomIn(e) {
   canvas.renderAll();
 }
 
-
+/** used to zoom out by button */
 zoomOut(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -612,8 +602,7 @@ zoomOut(e) {
   canvas.renderAll();  
 }
 
-
-
+/** used to toggle on and off zooming with the mouse wheel */
 toggleMouseZoom() {
   this.setState({
     mouseZoomOn: !this.state.mouseZoomOn
@@ -683,13 +672,11 @@ toggleMouseZoom() {
     } catch(error) {
       console.log(error)
     }
-    
   }
 
   /** Remove selected shape from canvas */
   removeSelectedObject(e) {
     e.preventDefault() 
-    console.log('[+] starting remove')
     let canvas = this.state.canvas;
     let annotation = this.props.annotation;
     
@@ -702,8 +689,6 @@ toggleMouseZoom() {
 
 
     removeObjectsFromCanvas(canvas, [activeObject], () => {
-    
-
       if(isObjectInAnnotations[0] !== undefined && isObjectInAnnotations.length > 0) {
         this.props.removeObjectFromState(id, annotation.local_id)
 
@@ -738,10 +723,13 @@ toggleMouseZoom() {
 
 
 
-  /** Show popup on shape selection */
+  /** Show popup on shape selection 
+   * - array of arg, only use nr 1 (0)
+   * - if popup is open then close it, if id is BG is then open popup
+   * - else check if current shape annotation exists and if not make temp
+  */
   togglePopup(...args) {
     const annotation = this.props.annotation;
-
 
     if(this.state.popup_current_area !== undefined) {
       this.setState((state, props) => ({
@@ -815,17 +803,19 @@ function mapStateToProps(state, props) {
   };
 }
 
-/** Unused **/
+/** bind outside actions to component properties **/
 const mapDispatchToProps = (dispatch) => ({
   addAreaToGlobalAnnotation: bindActionCreators(addAreaToGlobalAnnotation, dispatch),
   addDescriptionToGlobalAnnotation: bindActionCreators(addDescriptionToGlobalAnnotation, dispatch)
 })
 
+/** must-have props for Fabric container comp */
 FabricContainer.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
 };
 
+/** default props for Fabric container comp */
 FabricContainer.defaultProps = {
     width: 600,
     height: 400,

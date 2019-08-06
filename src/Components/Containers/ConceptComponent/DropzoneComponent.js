@@ -2,7 +2,6 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
 
 /* eslint import/no-webpack-loader-syntax: off */
@@ -32,20 +31,22 @@ class DropzoneComponent extends React.Component {
 
     }
 
+    /** highlight on mouse enter dropzone */
     onDragOver(e) {
         e.preventDefault();
       
         if (this.props.disabled) {
             return;
         }
-      
         this.setState({ hightlight: true });
-      }
+    }
     
+    /** remove highlight on mouse leave dropzone */
     onDragLeave() {
         this.setState({ hightlight: false });
     }
 
+    /** on drop change function, send files to parent component state on drop */
     onDrop(e) {
         e.preventDefault();
       
@@ -54,10 +55,7 @@ class DropzoneComponent extends React.Component {
         }
 
         let files = e.dataTransfer.files;
-
-
         if (this.props.onFilesAdded) {
-
             const array = this.fileListToArray(files);
             this.props.onFilesAdded(array);
         }
@@ -99,6 +97,7 @@ class DropzoneComponent extends React.Component {
         )
     }
 
+    /** dialog window to select files manually */
     openFileDialog() {
         if(this.props.disabled) {
             return;
@@ -106,6 +105,7 @@ class DropzoneComponent extends React.Component {
         this.fileInputRef.current.click()
     }
 
+    /** on files added by using dialog, sends files to parent component state */
     onFilesAdded(e) {
         if(this.props.disabled) { 
             return; 
@@ -117,6 +117,7 @@ class DropzoneComponent extends React.Component {
         }
     }
 
+    /** returns array of files from uploaded image files */
     fileListToArray(list) {
         const array = []
         for(let i = 0; i < list.length; i++) {
@@ -127,7 +128,7 @@ class DropzoneComponent extends React.Component {
 
 }
 
-/** wrap global annotations to local component **/
+/** wrap global state to local component **/
 function mapStateToProps(state, props) {
     return {
         fetching_files: state.files.fetching,

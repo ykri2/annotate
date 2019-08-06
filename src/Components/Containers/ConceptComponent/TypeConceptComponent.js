@@ -1,15 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
 
 import { addGlobalConceptTypes } from '../../../Actions/addGlobalConceptTypes';
 
 import DropzoneComponent from '../UploadComponents/DropzoneComponent';
 
-/* eslint import/no-webpack-loader-syntax: off */
-import GridLoader from '-!react-svg-loader!../../resources/grid.svg';
 
 
 /** 
@@ -39,7 +36,7 @@ class TypeConceptComponent extends React.Component {
 
     }
 
-    
+    /** read text files and return content in json */
     static readUploadAsText = (file) => {
 
         const fileReader = new FileReader()
@@ -58,6 +55,7 @@ class TypeConceptComponent extends React.Component {
 
     }
 
+    /** on change function for adding files to component state */
     onFilesAdded(files) {
         this.setState(prevState => ({
             files: prevState.files.concat(files)
@@ -99,6 +97,9 @@ class TypeConceptComponent extends React.Component {
         )
     }
 
+    /** display buttons, 
+     * - if files have not been uploaded it shows upload button 
+     * - if sucessfull upload show remove button */
     renderActions() {
         if(this.state.successfullUploaded) {
             return (
@@ -120,7 +121,9 @@ class TypeConceptComponent extends React.Component {
         }
     }
 
-
+    /** returns file object
+     * - takes file and a callback function to run after reading file
+     */
     async createFileObject (files, callback) {
         let textFile = files[0]
 
@@ -134,6 +137,7 @@ class TypeConceptComponent extends React.Component {
         }
     }
 
+    /** checks if the uploaded file is type json */
     checkUploadJSON() {
         const files = this.state.files;
         if(files !== undefined && files.length > 0) {
@@ -147,8 +151,6 @@ class TypeConceptComponent extends React.Component {
             return false;
         }
     }
-    
-
 
     /** function attached to upload btn, start async function to read file */
     uploadFiles() {
@@ -172,7 +174,7 @@ class TypeConceptComponent extends React.Component {
 }
 
 
-/** wrap global annotations to local component **/
+/** wrap global state to local component **/
 function mapStateToProps(state, props) {
     return {
         

@@ -1,5 +1,5 @@
 
-/** Redux action - removes area from redux store "global" annotation */
+/** Redux action - removes area from redux store global annotation */
 export function removeAreaFromGlobalAnnotation(id, local_id){
 
 
@@ -7,7 +7,7 @@ export function removeAreaFromGlobalAnnotation(id, local_id){
 
 		dispatch({type: 'REMOVE_AREA_PROGRESSING'})
 
-		/** set timeout - switch with API-call when backend is added  */
+		/** set timeout  */
 		setTimeout(function(){ 
 			dispatch({type: 'REMOVE_AREA_FULFILLED', payload: { id: id, local_id: local_id }}) 
 		}, 1000);

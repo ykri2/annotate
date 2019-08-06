@@ -21,7 +21,6 @@ class TextAreaComponent extends Component {
   render() {
     const errors = this.state.errors;
     const config = this.props;
-    console.log(config.content)
 
     return (
         <div className="textarea_component">

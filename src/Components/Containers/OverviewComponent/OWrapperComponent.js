@@ -29,21 +29,16 @@ class OWrapperComponent extends React.Component {
 
         const properties = this.props;
 
-    
-
         return (
             <div className='owrapper_comp'>
                 <p className="owrapper_comp_title" > DATA OVERVIEW  </p>
-
-                             
                 <OverviewComponent properties={properties} />
-             
             </div>
         )
     }
 }
 
-/** wrap global annotations to local component **/
+/** wrap global state to local component **/
 function mapStateToProps(state, props) {
     return {
         annotations: state.annotations.annotations,

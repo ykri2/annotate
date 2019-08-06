@@ -1,8 +1,6 @@
 
-/** Redux action */
+/** Redux action - add new concepts to global redux store */
 export function addGlobalConcepts(newConcepts){
-    console.log(newConcepts)
-
 	return function(dispatch){
 
 		dispatch({type: 'ADD_CONCEPTS_PROGRESSING'})

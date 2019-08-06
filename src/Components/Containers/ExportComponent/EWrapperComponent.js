@@ -1,8 +1,6 @@
 import React from 'react';
-
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
 
 import ExportComponent from './ExportComponent';
@@ -41,7 +39,7 @@ class EWrapperComponent extends React.Component {
     }
 }
 
-/** wrap global annotations to local component **/
+/** wrap global state to local component **/
 function mapStateToProps(state, props) {
     return {
      

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 /** 
  * Preview component 
  * used to display current active object on canvas
+ * only displays canvas object information and not information on what the shape contains
  **/
 class PreviewComponent extends Component {
   constructor(props){
@@ -14,8 +15,6 @@ class PreviewComponent extends Component {
   }
 
   renderPreview(preview) {
-      console.log("in render preview")
-      console.log(preview.preview)
       if(preview.preview.type === "rect") {
         return (
             <div className="preview_innerwrapper">
@@ -57,9 +56,7 @@ class PreviewComponent extends Component {
   }
 
   render() {
- 
     const preview = this.props;
-    console.log(preview)
 
     return (
         <div className="preview_component">

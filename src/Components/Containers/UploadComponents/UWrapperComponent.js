@@ -11,7 +11,8 @@ import ShowcaseFilesComponent from './ShowcaseFilesComponent'
 
 /** 
  * Upload Wrapper component 
- * 
+ * - Upload component - load images into the application
+ * - Showcase component - display uploaded image files at the bottom of the page
  **/
 
 class UWrapperComponent extends React.Component {
@@ -54,7 +55,7 @@ class UWrapperComponent extends React.Component {
     }
 }
 
-/** wrap global annotations to local component **/
+/** wrap global state to local component **/
 function mapStateToProps(state, props) {
     return {
         files: state.files.files

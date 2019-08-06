@@ -1,16 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
 
-
 import { addGlobalConcepts } from '../../../Actions/addGlobalConcepts';
-
 import DropzoneComponent from '../UploadComponents/DropzoneComponent';
 
-/* eslint import/no-webpack-loader-syntax: off */
-import GridLoader from '-!react-svg-loader!../../resources/grid.svg';
 
 
 /** 
@@ -40,6 +35,7 @@ class ConceptComponent extends React.Component {
 
     }
 
+    /** read text files and return content in json */
     static readUploadAsText = (file) => {
 
         const fileReader = new FileReader()
@@ -59,6 +55,7 @@ class ConceptComponent extends React.Component {
     }
 
 
+    /** on change function for adding files to component state */
     onFilesAdded(files) {
         this.setState(prevState => ({
             files: prevState.files.concat(files)
@@ -100,6 +97,10 @@ class ConceptComponent extends React.Component {
         )
     }
 
+    /** display buttons, 
+     * - if files have not been uploaded it shows upload button 
+     * - if sucessfull upload show remove button 
+     */
     renderActions() {
         if(this.state.successfullUploaded) {
             return (
@@ -122,7 +123,9 @@ class ConceptComponent extends React.Component {
     }
 
 
-
+     /** returns file object
+     * - takes file and a callback function to run after reading file
+     */
     async createFileObject (files, callback) {
         let textFile = files[0]
       
@@ -137,7 +140,7 @@ class ConceptComponent extends React.Component {
         }
     }
 
-
+    /** checks if loaded file is type json */
     checkUploadJSON() {
         const files = this.state.files;
         if(files !== undefined && files.length > 0) {

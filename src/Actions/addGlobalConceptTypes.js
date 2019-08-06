@@ -1,13 +1,11 @@
 
-/** Redux action */
+/** Redux action - add new concept types to global redux store */
 export function addGlobalConceptTypes(newConceptTypes){
-    console.log(newConceptTypes)
-
 	return function(dispatch){
 
 		dispatch({type: 'ADD_CONCEPT_TYPES_PROGRESSING'})
 
-		/** set timeout - switch with API-call when backend is added  */
+		/** set timeout */
 		setTimeout(function(){ 
 			dispatch({type: 'ADD_CONCEPT_TYPES_FULFILLED', payload: newConceptTypes}) 
 		}, 1000);

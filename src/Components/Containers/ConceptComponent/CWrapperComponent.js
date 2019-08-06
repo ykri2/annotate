@@ -52,7 +52,7 @@ class CWrapperComponent extends React.Component {
     }
 }
 
-
+/** map global state to component props **/
 function mapStateToProps(state, props) {
     return {
         concepts: state.concepts.concepts,

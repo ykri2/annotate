@@ -1,6 +1,11 @@
 import React from "react";
 import PropTypes from 'prop-types'
 
+/**
+ * 
+ * Text input component (const)
+ * default type is text
+ */
 
 const TextInputComponent = ({ field, value, label, error, onChange, type, max_length, min_length }) => (
     <div className="text_input_div" id='input_id'>

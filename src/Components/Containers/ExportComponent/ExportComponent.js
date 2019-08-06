@@ -1,10 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
-
-
 
 
 /** 
@@ -22,8 +19,7 @@ class ExportComponent extends React.Component {
           uploadProgess: {},
           successfullUploaded: false,
         }
-        
-        this.onFilesAdded = this.onFilesAdded.bind(this);
+
         this.exportCsvFile = this.exportCsvFile.bind(this);
         this.exportJsonFile = this.exportJsonFile.bind(this);
 
@@ -32,19 +28,11 @@ class ExportComponent extends React.Component {
 
     }
 
-
-    onFilesAdded(files) {
-        this.setState(prevState => ({
-            files: prevState.files.concat(files)
-        }))
-    }
-
     render() {
 
         const images = this.props.global_files;
         const annot = this.props.global_annotations;
      
-   
         return (
             <div className='export'>
                 <div className="export_card">
@@ -119,13 +107,14 @@ class ExportComponent extends React.Component {
         )
     }
 
-
+    /** 
+      * expots csv file with information on all annotations 
+      * - makes file available as a download 
+    */
     exportCsvFile() {
 
         if(this.props.global_annotations !== undefined) {
-
             let annotations = this.props.global_annotations;
-
             let filename="annotations.csv"
 
             const create2Darr = (arr) => {
@@ -146,7 +135,6 @@ class ExportComponent extends React.Component {
                 
                 var result = arr.map( obj => setValue([], [], obj) );
                 return [[...mp.keys()], ...result];
-                
             }
 
             const toCsv = (arr) => {
@@ -156,11 +144,8 @@ class ExportComponent extends React.Component {
             }
             
             let csvfile = '';
-    
             csvfile += toCsv(create2Darr(annotations))
-          
             let blob = new Blob([csvfile], { type: 'text/csv/;charset=utf-8;'});
-
 
             if(navigator.msSaveBlob) {
                 navigator.msSaveBlob(blob, filename);
@@ -179,13 +164,14 @@ class ExportComponent extends React.Component {
         }
     }
 
-
+    /** 
+      * expots json file with information on all annotations
+      * - makes file available as a download 
+    */
     exportJsonFile() {
 
         if(this.props.global_annotations !== undefined) {
-
             let annotations = this.props.global_annotations;
-        
             let filename="annotations.json"
 
             const processJsonContent = (content) => {
@@ -193,10 +179,7 @@ class ExportComponent extends React.Component {
             }
             
             let jsonfile = processJsonContent(annotations)
-            
-
             let blob = new Blob([jsonfile], { type: 'text/json/;charset=utf-8;'});
-
 
             if(navigator.msSaveBlob) {
                 navigator.msSaveBlob(blob, filename);
@@ -215,18 +198,18 @@ class ExportComponent extends React.Component {
         }   
     }
 
+    /** 
+      * expots csv file with information on all images 
+      * - makes file available as a download 
+    */
     exportImageCsvFile() {
 
-
         if(this.props.global_files !== undefined) {
-
             let images = this.props.global_files;
-
             let filename="images.csv"
 
             const create2Darr = (arr) => {
-                var mp = new Map();
-                
+                var mp = new Map();              
                 function setValue(a, path, val) {
                     if (Object(val) !== val) { // primitive value
                         var pathStr = path.join('.');
@@ -242,7 +225,6 @@ class ExportComponent extends React.Component {
                 
                 var result = arr.map( obj => setValue([], [], obj) );
                 return [[...mp.keys()], ...result];
-                
             }
 
             const toCsv = (arr) => {
@@ -252,11 +234,8 @@ class ExportComponent extends React.Component {
             }
             
             let csvfile = '';
-    
             csvfile += toCsv(create2Darr(images))
-            console.log(csvfile)
             let blob = new Blob([csvfile], { type: 'text/csv/;charset=utf-8;'});
-
 
             if(navigator.msSaveBlob) {
                 navigator.msSaveBlob(blob, filename);
@@ -275,23 +254,21 @@ class ExportComponent extends React.Component {
         }
     }
 
+    /** 
+      * expots json file with information on all images 
+      * - makes file available as a download 
+    */
     exportImageJsonFile() {
-        console.log("correct function?")
         if(this.props.global_files !== undefined) {
             let images = this.props.global_files;
-            console.log(images)
             let filename="images.json"
 
             const processJsonContent = (content) => {
                 return JSON.stringify(content, null, "\t")
             }
 
-            
             let jsonfile = processJsonContent(images)
-                
-
             let blob = new Blob([jsonfile], { type: 'text/json/;charset=utf-8;'});
-
 
             if(navigator.msSaveBlob) {
                 navigator.msSaveBlob(blob, filename);

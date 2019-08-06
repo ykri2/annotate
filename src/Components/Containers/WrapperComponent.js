@@ -8,7 +8,6 @@ import FabricContainer from '../FabricComponent/FabricContainer.js';
 import Rectangle from '../FabricComponent/Rectangle';
 
 import OptionMenu from '../HelperComponents/OptionMenu';
-import TextAreaComponent from '../HelperComponents/TextAreaComponent';
 import Polygon from '../FabricComponent/Polygon.js';
 import Ellipse from '../FabricComponent/Ellipse.js';
 
@@ -18,6 +17,11 @@ import { getAbsolutePosition } from '../../Components/resources/getAbsolutePosit
 import { addCurrentFileAction } from '../../Actions/addCurrentFileAction';
 import PreviewComponent from '../HelperComponents/PreviewComponent.js';
 
+/**
+ * WRAPPER COMPONENT
+ * - wrapper component for fabric container
+ * - 
+ */
 
 class WrapperComponent extends Component {
     constructor(props){
@@ -45,6 +49,11 @@ class WrapperComponent extends Component {
 
     }
 
+    /** runs before component mounts
+     * - checks if current annotation exist for the current image file
+     * - updates annotated areas if current annotation exists
+     * - creates new annotation object for the file if one does not exists from before
+     */
     componentWillMount() {
         
         if(this.props.currentFile === undefined && this.props.global_files[0] !== undefined) {
@@ -87,6 +96,8 @@ class WrapperComponent extends Component {
 
     }
 
+    /** updates what objects are on the canvas
+     * - used on change of image to load existing annotated areas belonging the next image */
     updateCurrentObjects() {
         const { annotation } = this.state;
         //  Are there currently any annotations?
@@ -99,16 +110,9 @@ class WrapperComponent extends Component {
  
     }       
 
-    /** unused for validation **/
-    isValid(data) {
-        const isValid = false;
-        if(!isValid) {
-            this.setState({errors : errors })
-        } else {
-            return isValid
-        }
-    }
-
+    /** used to check if an annotation object exists for an image
+     * - takes index and a callback function
+     */
     checkIfCurrentAnnotationExists(index, callback) {
 
         const annotations = this.state.annotations;
@@ -128,6 +132,10 @@ class WrapperComponent extends Component {
         
     }
 
+    /** used to switch to the next annotation/image 
+    * if no annotation exists, create temp base annotation object
+    * updates current image file index in global state
+     */
     nextAnnotation = () => {
         const nIndex = this.state.file.index + 1;
     
@@ -162,7 +170,11 @@ class WrapperComponent extends Component {
         }) 
 
     }
-  
+    
+    /** used to switch to the previous annotation/image
+     * if no annotation exists, create temp base annotation object
+     * updates current image file index in global state
+     */
     prevAnnotation = () => {
         const nIndex = this.state.file.index - 1;
      
@@ -344,7 +356,9 @@ class WrapperComponent extends Component {
         this.setState({ showcase_object: preview })
     } 
 
-
+    /** unused - removes object from state
+     *  - takes id of object to remove
+     */
     removeFromCurrentObjects(id){
         let currentObjects = this.state.currentObjects
         let counter = 0;
@@ -366,11 +380,11 @@ class WrapperComponent extends Component {
        // const object_position  = this.removeFromCurrentObjects(id)
 
        // console.log('[{+}] object position : ' + object_position)
-
         this.props.removeAreaFromGlobalAnnotation(id, local_id)
     }
 
-    /** Adds a new shape to the canvas **/
+    /** Adds a new shape to the canvas 
+     * - used to add temporary shapes when before saving to annotations **/
     addNewObject(...args) {
         const which = args[0]
         let data= {}
@@ -414,6 +428,8 @@ class WrapperComponent extends Component {
         })
     }
 
+
+    /** used when adding objects from global annotations */
     addExistingObject(areas) {
 
         let ncurrentObjects = this.state.currentObjects;
@@ -477,7 +493,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-/** required actions **/
+/** required actions - remove and add to current global annotations **/
 const mapDispatchToProps = (dispatch) => ({
     removeAreaFromGlobalAnnotation: bindActionCreators(removeAreaFromGlobalAnnotation, dispatch),
     addCurrentFileAction: bindActionCreators(addCurrentFileAction, dispatch)

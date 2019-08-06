@@ -2,7 +2,7 @@ import React from 'react';
 
 /** 
  * About component
- * 
+ * - no real content, only lorum ipsum
  **/
 
 class AboutComponent extends React.Component {

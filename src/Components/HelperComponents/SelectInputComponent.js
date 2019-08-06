@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 
+/**
+ * 
+ * Select input components (const)
+ * used for rendering an input with options, takes options and on change function
+ */
 
 const SelectInputComponent = ({ field, value, label, error, onChange, options }) => (
     <div className="select_input_div" id='select_input_column'>

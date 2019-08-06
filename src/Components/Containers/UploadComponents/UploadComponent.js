@@ -1,15 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
 
 import DropzoneComponent from './DropzoneComponent';
 
 import { sendFilesToStore } from '../../../Actions/sendFilesToStore';
-
-/* eslint import/no-webpack-loader-syntax: off */
-import GridLoader from '-!react-svg-loader!../../resources/grid.svg';
 
 
 /** 
@@ -38,7 +34,7 @@ class UploadComponent extends React.Component {
 
     }
 
-    /** on change listener for files */
+    /** on change listener for image files */
     onFilesAdded(files) {
         this.setState(prevState => ({
             files: prevState.files.concat(files)
@@ -104,7 +100,7 @@ class UploadComponent extends React.Component {
     }
 
 
-    /** function gets unique id, is used to compate image and annotation object */
+    /** function gets unique id, used to compate image and annotation object */
     getUniqueId() {
         var d = new Date().getTime();
         if(window.performance && typeof window.performance.now === "function"){
@@ -118,7 +114,8 @@ class UploadComponent extends React.Component {
         return uuid;
     }
 
-    /** function create files objects file unique id and object URL for temporary local storage */
+    /** function creates image file objects 
+     * - unique id and object URL for temporary local storage */
     createFileObject(files, callback) {
         let counter = 0;
         const nfile = files.map(file => {
@@ -135,6 +132,7 @@ class UploadComponent extends React.Component {
         
     }
 
+    /** checks if file type is image */
     checkUpload() {
         const files = this.state.files;
         if(files !== undefined && files.length > 0) {
@@ -171,7 +169,7 @@ class UploadComponent extends React.Component {
 }
 
 
-/** wrap global annotations to local component **/
+/** wrap global state to local component **/
 function mapStateToProps(state, props) {
     return {
         fetching_files: state.files.fetching,

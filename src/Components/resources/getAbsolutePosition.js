@@ -1,3 +1,7 @@
+
+/** get absolute position 
+ * - used to retrieve absolute position of the shape on the canvas */
+
 export const getAbsolutePosition = (canvasObject, key) =>{
 	if(canvasObject.group) {
 		if(key === 'point') {

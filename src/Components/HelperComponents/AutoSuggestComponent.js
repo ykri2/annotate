@@ -1,6 +1,12 @@
 import React from "react";
 import PropTypes from 'prop-types'
 
+
+/**
+ * show suggestion 
+ * - takes all suggestions and renders list of alterntives to input
+ * - takes function for selecting an alternative in the list and attaches is to list elements 
+ */
 const showSuggestions = (suggestions, suggestionSelected) => {
     if(suggestions.length === 0) {
         return null;
@@ -12,6 +18,7 @@ const showSuggestions = (suggestions, suggestionSelected) => {
     )
 }
 
+/** Autocomplete Component (const)  - used for autocomplete text inputs */
 const AutoSuggestComponent = ({ label, error, field, value, onChange, onSelect, suggestions, type }) => (
     <div className="autosuggest_component">
         <label className="as_input_label">{label}</label>
@@ -29,7 +36,7 @@ const AutoSuggestComponent = ({ label, error, field, value, onChange, onSelect, 
     </div>
     )
 
-/** must-have props in text-input */
+/** must-have props in autosuggest */
 AutoSuggestComponent.prototype = {
     errors: PropTypes.string,
     value: PropTypes.string.isRequired,
@@ -41,7 +48,7 @@ AutoSuggestComponent.prototype = {
  
 }
 
-/** default values for must-have props in text-input */   
+/** default values for must-have props in autosuggest */   
 AutoSuggestComponent.defaultProps = {
         type: 'text'
 }

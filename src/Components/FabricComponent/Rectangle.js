@@ -60,7 +60,8 @@ class Rectangle extends React.Component {
         return null
     }
 }
- 
+
+/** must-have props for rectangle */
 Rectangle.propTypes = {
     canvas: PropTypes.object,
     top: PropTypes.number.isRequired,
@@ -74,6 +75,7 @@ Rectangle.propTypes = {
     fontSize: PropTypes.number.isRequired
 };
 
+/** default props for rectangle */
 Rectangle.defaultProps = {
     id: undefined,
     top: 0,

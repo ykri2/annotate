@@ -1,18 +1,15 @@
 import { fabric } from 'fabric';
 
-
-
+/** import from resource folder */
 import { getAbsolutePosition } from '../Components/resources/getAbsolutePosition'
 
 
-
-/** Redux action - adds a new area to redux store "global" annotations */
+/** Redux action - adds a new area to redux store global annotations */
 export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canvasObject, local_id){
 	let currentAnnotationObj = currentAnnotation;
 	let areas = currentAnnotationObj.areas;
 	let exists = false;
 	let newArea = {};
-
 
 	/** decide on which type of object to add */
 	if(canvasObject.type === 'polyline') {
@@ -100,20 +97,15 @@ export function addAreaToGlobalAnnotation(currentAnnotation, newAnnotation, canv
 
 	/** set currentAnnotation.areas to new array of areas */
 	currentAnnotationObj.areas = areas;
-
-
 	if(currentAnnotationObj.index !== "temp") {
 		exists = true
 	}
-	currentAnnotationObj.index = "saved"
-	
-	console.log(currentAnnotationObj)
-
+	currentAnnotationObj.index = "saved";
 	return function(dispatch){
 
 		dispatch({type: 'ADD_AREA_PROGRESSING'})
 
-		/** set timeout - switch with API-call when backend is added  */
+		/** set timeout - not really necessary */
 		setTimeout(function(){ 
 			dispatch({type: 'ADD_AREA_FULFILLED', payload: { co: currentAnnotationObj, local_id: local_id, exists: exists } } ) 
 		}, 500);

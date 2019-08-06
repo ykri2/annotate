@@ -64,7 +64,8 @@ class Ellipse extends React.Component {
         return null
     }
 }
- 
+
+/** must-have props for ellipse */ 
 Ellipse.propTypes = {
     canvas: PropTypes.object,
     top: PropTypes.number.isRequired,
@@ -81,6 +82,7 @@ Ellipse.propTypes = {
     id: PropTypes.string.isRequired
 };
 
+/** default props for rectangle */
 Ellipse.defaultProps = {
     id: undefined,
     top: 0,

@@ -16,10 +16,7 @@ const appReducer = combineReducers({
     concept_types
 });
 
-/** Logout action - unused at the moment as there is no login :D */
 export default (state, action) => {
-    if(action.type === 'FETCH_LOGOUT') {
-        state = undefined
-    }
+
     return appReducer(state, action);
 }

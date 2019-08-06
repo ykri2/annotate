@@ -5,6 +5,12 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types'
 import { NavLink as RouterNavLink } from 'react-router-dom';
 
+/**
+ * Option menu component
+ * - second smaller navbar
+ * - renders dropdown list elements
+ */
+
 class OptionMenu extends Component {
   constructor(props){
     super(props);

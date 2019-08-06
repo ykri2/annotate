@@ -2,7 +2,7 @@ import React from 'react';
 
 /** 
  * Instructions component 
- * 
+ * - display paragraphs of instuctions
  **/
 
 class InstructionsComponent extends React.Component {

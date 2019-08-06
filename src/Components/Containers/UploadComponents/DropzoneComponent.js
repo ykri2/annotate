@@ -2,7 +2,6 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
 
 /* eslint import/no-webpack-loader-syntax: off */
@@ -11,7 +10,7 @@ import UploadSVG from '-!react-svg-loader!../../resources/upload.svg';
 
 /** 
  * Dropzone component
- * 
+ * used for uploading images
  **/
 
 class DropzoneComponent extends React.Component {
@@ -29,6 +28,7 @@ class DropzoneComponent extends React.Component {
 
     }
 
+    /** highlight on mouse enter dropzone */
     onDragOver(e) {
         e.preventDefault();
       
@@ -39,10 +39,12 @@ class DropzoneComponent extends React.Component {
         this.setState({ hightlight: true });
       }
     
+    /** remove highlight dropzone on mouse leave */
     onDragLeave() {
         this.setState({ hightlight: false });
     }
 
+    /** on drop files */
     onDrop(e) {
         e.preventDefault();
       
@@ -93,6 +95,7 @@ class DropzoneComponent extends React.Component {
         )
     }
 
+    /** open file tree window to select file manually by clicking */
     openFileDialog() {
         if(this.props.disabled) {
             return;
@@ -100,6 +103,7 @@ class DropzoneComponent extends React.Component {
         this.fileInputRef.current.click()
     }
 
+    /** add image files to state on selecting through dialog */
     onFilesAdded(e) {
         if(this.props.disabled) { 
             return; 
@@ -111,6 +115,7 @@ class DropzoneComponent extends React.Component {
         }
     }
 
+    /** turns list of image files added to an array */
     fileListToArray(list) {
         const array = []
         for(let i = 0; i < list.length; i++) {

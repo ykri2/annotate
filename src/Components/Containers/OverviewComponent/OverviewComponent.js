@@ -2,9 +2,7 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
-
 
 import TextInputComponent from '../../HelperComponents/TextInputComponent';
 
@@ -27,14 +25,10 @@ class OverviewComponent extends React.Component {
     render() {
 
         const properties = this.props.properties;
-
         let mostused, mostusedtypes, mostAnnotatedImage;
 
         if(properties.annotations.length > 0) {
-            console.log('[1]')
-  
-            mostAnnotatedImage = this.mostAnnotatedImage(properties.annotations, properties.files)
-            
+            mostAnnotatedImage = this.mostAnnotatedImage(properties.annotations, properties.files)       
             mostused = this.produceMostUsed(properties.annotations)
             mostusedtypes = this.produceMostUsedTypes(properties.annotations)
 
@@ -217,11 +211,7 @@ class OverviewComponent extends React.Component {
         )
     }
 
-
-
-    empty_overview_content
-
-
+    /** return word frequency */
     countFrequency(array) {
         return array.reduce(function(count, word) {
             count[word] = count.hasOwnProperty(word) ? count[word] + 1 : 1;
@@ -230,6 +220,7 @@ class OverviewComponent extends React.Component {
         }, {})
     }
 
+    /** return most used concepts used among images */
     produceMostUsed(objects) {
         try {
 
@@ -252,8 +243,8 @@ class OverviewComponent extends React.Component {
         }
     }
 
+    /** returns the dict key with the heighest counter (list of words with the heighest frequency) */
     highestObjectProperty(input) {
-
         let curr = [], min = Infinity, max = -Infinity, counter = 0, x;
         for( x in input) {
           
@@ -265,10 +256,9 @@ class OverviewComponent extends React.Component {
         return { max_nr: max, all_words: curr }
     }
 
-
+    /** returns the most frequent type in image annoations */
     produceMostUsedTypes(objects) {
         try {
-            
             let array = [];
             objects.forEach(object => {
                 object.areas.forEach(innerObject => {
@@ -288,10 +278,7 @@ class OverviewComponent extends React.Component {
         }
     }
 
-
-
-
-
+    /** returns ids of images with the most annotations */
     findMostAnnotatedId(annotations) {
         let ids = [], counter = 0, x, max = -Infinity;
         for(x in annotations) {
@@ -302,6 +289,7 @@ class OverviewComponent extends React.Component {
         return { max_length: max, all_ids: ids }
     }
 
+    /** returns index of an image */
     findImagesById(mostanno, images) {
         return { max_length: mostanno.max_length, all_indexs: mostanno.all_ids.map((id) => {
             let img;
@@ -315,6 +303,7 @@ class OverviewComponent extends React.Component {
         }) }
     }
 
+    /** returns most annotated image */
     mostAnnotatedImage(annotations, images) {
         try {
             let mostanno = this.findMostAnnotatedId(annotations)
@@ -329,7 +318,7 @@ class OverviewComponent extends React.Component {
 
 }
 
-/** wrap global annotations to local component **/
+/** wrap global state to local component **/
 function mapStateToProps(state, props) {
     return {
      

@@ -1,14 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
 
 
 
 /** 
  * Showcase files component
- * 
+ * display loaded images
  **/
 
 class ShowcaseFilesComponent extends React.Component {
@@ -43,15 +42,14 @@ class ShowcaseFilesComponent extends React.Component {
     }
 }
 
-/** wrap global annotations to local component **/
+/** unused **/
 function mapStateToProps(state, props) {
     return {
-       
         
     };
 }
 
-/** map functions to props **/
+/** unused **/
 const mapDispatchToProps = (dispatch) => ({
 })
 

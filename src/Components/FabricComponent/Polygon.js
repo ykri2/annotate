@@ -77,6 +77,8 @@ class Polygon extends React.Component {
 
 }
 
+
+/** must-have props for polygon*/
 Polygon.propTypes = {
     canvas: PropTypes.object,
     lockRotation: PropTypes.bool.isRequired,
@@ -91,6 +93,7 @@ Polygon.propTypes = {
 
 };
 
+/** default props for rectangle */
 Polygon.defaultProps = {
     id: undefined,
     points: [],

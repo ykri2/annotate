@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 /**
  * Main navbar component
- *  
+ * 
  **/
 
 class Navbar extends React.Component {
@@ -49,12 +49,6 @@ class Navbar extends React.Component {
            </div>
         )
     }
-
-    /** logout function - not used */
-    loggingOut() {
-        this.props.history.push('/');
-    }
-
 
 }
 
