@@ -1,6 +1,8 @@
 
-/** Redux action - removes area from redux store global annotation */
+/** Redux action - changes the stored index that determines what image to show on canvas */
 export function addCurrentFileAction(newId){
+
+	
 	return function(dispatch){
 
 		dispatch({type: 'ADD_CURERNT_FILE_PROGRESSING'})

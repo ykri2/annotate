@@ -11,9 +11,9 @@ import OptionMenu from '../HelperComponents/OptionMenu';
 import Polygon from '../FabricComponent/Polygon.js';
 import Ellipse from '../FabricComponent/Ellipse.js';
 
-import { removeAreaFromGlobalAnnotation } from '../../Actions/removeAreaFromGlobalAnnotation'
+import { removeAreaFromGlobalAnnotation } from '../../Actions/removeAreaFromGlobalAnnotation';
 
-import { getAbsolutePosition } from '../../Components/resources/getAbsolutePosition'
+import { getAbsolutePosition } from '../../Components/resources/getAbsolutePosition';
 import { addCurrentFileAction } from '../../Actions/addCurrentFileAction';
 import PreviewComponent from '../HelperComponents/PreviewComponent.js';
 

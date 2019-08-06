@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 
 import TextInputComponent from '../../HelperComponents/TextInputComponent';
 
+import { addCurrentFileAction } from '../../../Actions/addCurrentFileAction';
+
 /** 
  * Overview component 
  * 
@@ -19,7 +21,15 @@ class OverviewComponent extends React.Component {
             goto_index: undefined,
         }
         
+        this.changeGlobalFileIndex = this.changeGlobalFileIndex.bind(this)
 
+    }
+
+    onChangeFileIndex(e) {
+        e.preventDefault()
+        this.setState({
+            goto_index: e.target.value
+        })
     }
 
     render() {
@@ -87,14 +97,11 @@ class OverviewComponent extends React.Component {
                                                 value={this.state.goto_index} 
                                                 label={'MOVE INDEX'}
                                                 error={undefined} 
-                                                onChange={() => {
-                                                    console.log('[+] on change')
-                                                    console.log(properties.files.length - 1)
-                                                }}
+                                                onChange={this.onChangeFileIndex.bind(this)}
                                                 max_length={properties.files.length - 1}
                                                 type={'number'}  
                                             />
-                                            <button className={ "overview_goto_btn" } onClick={()=>{console.log("[+] goto btn")}} ><p className="goto_btn_p" >GO</p></button>
+                                            <button className={ "overview_goto_btn" } onClick={this.changeGlobalFileIndex.bind(this)} ><p className="goto_btn_p" >GO</p></button>
                                         </div>
                                         : 
                                         <p className="overview_no_p">no current image available</p> 
@@ -210,6 +217,14 @@ class OverviewComponent extends React.Component {
             </div>
         )
     }
+
+    /** launches action to update current image index stored in global redux store */
+    changeGlobalFileIndex() {
+        const index = this.state.goto_index;
+        this.props.addCurrentFileAction(index)
+
+    }
+
 
     /** return word frequency */
     countFrequency(array) {
@@ -328,6 +343,7 @@ function mapStateToProps(state, props) {
 
 /** map functions to props **/
 const mapDispatchToProps = (dispatch) => ({
+    addCurrentFileAction: bindActionCreators(addCurrentFileAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(OverviewComponent);
