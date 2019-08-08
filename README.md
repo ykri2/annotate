@@ -10,7 +10,7 @@ The app allows users to upload images by drag and drop, flip through the images 
 
 # Download and install
 
-First download and install the latest stable version of [Nodejs](https://www.nodejs.com) on your computer. Node is the only thing other than the project folder that is needed. When installing Node make sure to add npm to *PATH*. After Node is installed open the command prompt of your choice and navigate to where the project folder is located. When inside the folder run the command  *__npm install__*   if Node is installed correctly npm should start to download the necessary dependencies to run the application.
+First download and install the latest stable version of [Nodejs](https://nodejs.org/en/) on your computer. Node is the only thing other than the project folder that is needed. When installing Node make sure to add npm to *PATH*. After Node is installed open the command prompt of your choice and navigate to where the project folder is located. When inside the folder run the command  *__npm install__*   if Node is installed correctly npm should start to download the necessary dependencies to run the application.
 
 
 
