@@ -1,28 +1,26 @@
-## README
+# README
 
 
-# About
+## About
 
 This project is a React application that can be run as a web app locally by downloading the project and running it through npm, or it can be hosted. It is a pure frontend and no web api attached, which means there is no way to save the data while running it. If you __refresh__ the page the uploaded images and annotation data will be deleted. It is a basic React/Redux web app, with Webpack as an organizer to include needed loaders to help deal with different files and bundle the javascript files into one.
 
 The app allows users to upload images by drag and drop, flip through the images by using canvas, marking areas on the images and write down what is in that area, and export JSON or CSV files for annotation objects corresponding to images and images loaded into the applications local memory.
 
 
-# Download and install
+## Download and install
 
 First download and install the latest stable version of [Nodejs](https://nodejs.org/en/) on your computer. Node is the only thing other than the project folder that is needed. When installing Node make sure to add npm to *PATH*. After Node is installed open the command prompt of your choice and navigate to where the project folder is located. When inside the folder run the command  *__npm install__*   if Node is installed correctly npm should start to download the necessary dependencies to run the application.
 
 
-
-# Run application
+## Run application
 
 To run the application all dependencies must be installed, when that is done run the command   npm start   and wait while the application launch in the browser at *localhost:8080*. The __‘’Start’’__ command runs the application through webpack in development mode, go to __*package.js*__ and __*webpack.config.js*__ to see more about commands to produce build bundle, deploy to Github, or specifications on launching the app and the required loaders.
  
 The browser will most likely launch by itself when the app is ready to start, if not, open it and go to *localhost:8080* when it says it is ready in the command prompt.
 
 
-
-# Tweak the application
+## Tweak the application
 
 *__Main structure of the application:__* The application is a basic react+redux+webpack project, the webpack is minimal in size and can be found at the top of the project folder, alongside the *package.js*, *.babelrc*, and *index.html*. The content of the src folder has three main sub folders to consider, the *Action folder*, *Reducer folder*, and *Components folder*. To better understand the basic structure of the app checkout more on React/Redux and Webpack. The CSS in the project is done in SCSS and loaders for those files are imported in the webpack file, the CSS is messy but just follow the nested structure.
 
@@ -38,7 +36,7 @@ The components in the *src/Components/FabricComponents* folder is imported at *s
 
 A *Reducers* is the part that takes the payload in the action and execute the desired changes to the global state based on which action was dispatched to the *store*. *Reducers* are baked into the store and consists of defined instructions, or commands, and a recipe for executing a change based on the instruction mentioned in the *action*. When a *Reducer* executes changes it takes the previous state and returns a new *global state*, and all components dependent on a changed property in the state will refresh. To learn more about *Reducers* and *Redux* go to: [Reducers](https://redux.js.org/basics/reducers).
 
-# Other components (src/Components/Containers/...)
+## Other components (src/Components/Containers/...)
 
 
 Nodejs: [Nodejs](https://www.nodejs.com)
