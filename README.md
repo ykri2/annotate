@@ -18,17 +18,17 @@ Nodejs: [Nodejs](https://www.nodejs.com)
 
 __bold__
 
-'''
+```
 npm install
-'''
+```
 
-'''
+```
 npm start
-'''
+```
 
-´´´
+```
 npm run deploy
-´´´
+```
 
 
 # Minor heading
