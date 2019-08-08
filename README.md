@@ -10,12 +10,20 @@ The app allows users to upload images by drag and drop, flip through the images 
 
 ## Download and install
 
-First download and install the latest stable version of [Nodejs](https://nodejs.org/en/) on your computer. Node is the only thing other than the project folder that is needed. When installing Node make sure to add npm to *PATH*. After Node is installed open the command prompt of your choice and navigate to where the project folder is located. When inside the folder run the command  *__npm install__*   if Node is installed correctly npm should start to download the necessary dependencies to run the application.
+First download and install the latest stable version of [Nodejs](https://nodejs.org/en/) on your computer. Node is the only thing other than the project folder that is needed. When installing Node make sure to add npm to *PATH*. After Node is installed open the command prompt of your choice and navigate to where the project folder is located. When inside the folder run the command 
+```
+npm install
+```
+if Node is installed correctly npm should start to download the necessary dependencies to run the application.
 
 
 ## Run application
 
-To run the application all dependencies must be installed, when that is done run the command   npm start   and wait while the application launch in the browser at *localhost:8080*. The __‘’Start’’__ command runs the application through webpack in development mode, go to __*package.js*__ and __*webpack.config.js*__ to see more about commands to produce build bundle, deploy to Github, or specifications on launching the app and the required loaders.
+To run the application all dependencies must be installed, when that is done run the command   
+```
+npm start
+```
+and wait while the application launch in the browser at *localhost:8080*. The __‘’Start’’__ command runs the application through webpack in development mode, go to __*package.js*__ and __*webpack.config.js*__ to see more about commands to produce build bundle, deploy to Github, or specifications on launching the app and the required loaders.
  
 The browser will most likely launch by itself when the app is ready to start, if not, open it and go to *localhost:8080* when it says it is ready in the command prompt.
 
@@ -36,24 +44,32 @@ The components in the *src/Components/FabricComponents* folder is imported at *s
 
 A *Reducers* is the part that takes the payload in the action and execute the desired changes to the global state based on which action was dispatched to the *store*. *Reducers* are baked into the store and consists of defined instructions, or commands, and a recipe for executing a change based on the instruction mentioned in the *action*. When a *Reducer* executes changes it takes the previous state and returns a new *global state*, and all components dependent on a changed property in the state will refresh. To learn more about *Reducers* and *Redux* go to: [Reducers](https://redux.js.org/basics/reducers).
 
-## Other components (src/Components/Containers/...)
+To find all action methods used look at the files in the a **Actions folder** at *src/Actions/...*, to find all the properties stored in the global state, the state changed by reducers, go to the **index.js** file in the **Reducers folder** at *src/Reducers/...* .
+
+## Other components in src/Components/Containers/..:
+
+*__Popup component (src/Components/Containers/PopupComponent):__*
+The *popup component* is rendered when the canvas or active shapes on the canvas is *double clicked*, and display different inputs, autocomplete text input, select type input with alternatives, and regular text input. Filename, input for description, and autocomplete is showed when selecting the canvas, on selecting active objects autocomplete inputs and select inputs are displayed for storing what is marked. The popup gives the opportunity to save the details and coordinates for the marked area and save to the Redux *store*. The inputs are found in seperate files as importable components in the folder at *src/Components/HelperComponents/...*
+ 
+*__Upload image (src/Components/Containers/UWrapperComponent/):__*
+The *upload image component wrapper* renders a component that import one component for uploading images with a dropzone and a list of selected files, and a button to upload after having dropped files, and a second component displayed below for showing uploaded images. The *upload image component* files are in the same folder. The image files are loaded into redux store through the imported action __sendFilesToStore__ from *src/Actions/sendFilesToStore.js*.
+ 
+*__Upload concept (src/Components/Containers/CWrapperComponent/):__*
+The component for *uploading concepts and types* that end up as options in the autocomplete inputs to note down what is in a marked area has two child components each with their own dropzone for the different files, __ConceptComponent.js__ and __TypeConceptComponent.js__. Each component imports the actions from *src/Actions/...* for sending the content read from the selected files to the redux *store*, the files must be JSON and consists of an object with an array, example files can be found at *src/Components/resources/..*  as __types.json__ and __concepts.json__.
+ 
+*__Export file (src/Components/Containers/ExportComponent/):__*
+The components for *exporting list of annotations* with id for each image and a *list of objects with image name and corresponding id*. The annotation objects also has the name of the file in the object, a json file with an example of an exported object can be found at *src/Components/resources/...* .   __ExportComponent.js__ binds the image file and annotation data in Redux *store* to component properties at the bottom of the file in the *mapStateToProps* function. The files are exported by downloading them as either JSON or CSV files, the functions to attach them as a download in the browser is in the component below the rendered HTML.
+ 
+*__Overview file (src/Components/Containers/OverviewComponent/):__*
+The *overview component* displays different cards with information, more or less a summary of all different information stored in the Redux *store*, and a card with a way to navigate between images by providing an *index*. By clicking the button next to the input field the current index stored in the Redux *store* is updated, the *action* to update is imported from the *actions folder*, the global state properties such as the *current index* can be found by checking the *Actions* and *Reducers* sections above.
+
+## Example files:
+
+In the folder at src/Components/resources/ example files are available for concept, types and for showcasing the output from exporting the json file of annotations through the Export page in the application. Files are: concepts.js, types.js, and annotations.js.
 
 
-Nodejs: [Nodejs](https://www.nodejs.com)
+## Deploy to Github:
 
-*italic*
-
-*__bold italic__*
-
-__bold__
-
-```
-npm install
-```
-
-```
-npm start
-```
 
 ```
 npm run deploy
