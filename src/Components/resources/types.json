@@ -1,0 +1,10 @@
+{
+    "types" : [
+        "Human",
+        "Structure",
+        "Undefined",
+        "Garbage",
+        "Nature",
+        "Food"
+    ]
+}

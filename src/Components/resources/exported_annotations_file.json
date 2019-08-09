@@ -1,0 +1,87 @@
+[
+	{
+		"index": "saved",
+		"local_id": "3f726a6c-d8b8-4774-86cf-0dc1eaced19f",
+		"file_properties": {
+			"what": "",
+			"type": "",
+			"filename": "img.jpg",
+			"short_description": ""
+		},
+		"areas": [
+			{
+				"shape_attribute": {
+					"type": "ellipse",
+					"x": 300.5,
+					"y": 21.149993896484375,
+					"rx": 79.5,
+					"ry": 74.5,
+					"originX": "left",
+					"originY": "top",
+					"id": "6e23e775-e0b2-4ad8-b745-69e1abc6d5ef"
+				},
+				"shape_properties": {
+					"what": [
+						"Nachos",
+						"Burgers",
+						"Sukini"
+					],
+					"type": [
+						"Structure"
+					],
+					"quality_remarks": {
+						"clear_view": "false",
+						"well_illuminated": "false"
+					}
+				}
+			},
+			{
+				"shape_attribute": {
+					"type": "rect",
+					"x": 132.5,
+					"y": 433.1499938964844,
+					"width": 77,
+					"height": 75,
+					"id": "d50d6b00-a447-457e-a33e-a444654924b0"
+				},
+				"shape_properties": {
+					"what": [
+						"Potato",
+						"Tomato"
+					],
+					"type": [
+						"Food",
+						"Nature"
+					],
+					"quality_remarks": {
+						"clear_view": "false",
+						"well_illuminated": "false"
+					}
+				}
+			},
+			{
+				"shape_attribute": {
+					"type": "rect",
+					"x": 548.5,
+					"y": 282.1499938964844,
+					"width": 150,
+					"height": 463,
+					"id": "0794b7bb-d4dd-4131-b5d8-f83f6009606e"
+				},
+				"shape_properties": {
+					"what": [
+						"Chicken",
+						"Apple"
+					],
+					"type": [
+						"Food"
+					],
+					"quality_remarks": {
+						"clear_view": "true",
+						"well_illuminated": "true"
+					}
+				}
+			}
+		]
+	}
+]
